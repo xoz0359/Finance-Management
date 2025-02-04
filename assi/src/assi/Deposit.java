@@ -28,7 +28,6 @@ public class Deposit {
 		if(rs.next()) {
 			do {
 				balance = rs.getInt("korbal");
-				System.out.println(balance);
 			}
 			while(rs.next());
 		}
