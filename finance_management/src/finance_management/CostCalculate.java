@@ -17,15 +17,59 @@ public class CostCalculate {
 		String pwd = "1234";
 		Connection conn = DriverManager.getConnection(url, user, pwd);
 
-		System.out.println("비용 등록 화면입니다");
-		System.out.println("발생한 비용을 입력해주세요");
-		System.out.println(">");
-		int input = in.nextInt();
-		// 그냥 입력된 값만큼 출금
-		String selectsql = "select korwith, korbal from korstate where lecno_kor in (select MAX(lecno_kor) from korstate)";
-
+		String selectsql = "select codename from title";
 		PreparedStatement pstmt = conn.prepareStatement(selectsql);
 		ResultSet rs = pstmt.executeQuery();
+		ArrayList<String> strlist = new <String> ArrayList();
+		if (!rs.next()) {
+			System.out.println("저장된 데이터가 없습니다");
+			rs.close();
+			pstmt.close();
+		}
+		do {
+			strlist.add(rs.getString("codename"));
+		} while (rs.next());
+		rs.close();
+		pstmt.close();
+		
+		System.out.println("비용 등록 화면입니다");
+		
+		selectsql = "select teamname from team";
+		pstmt = conn.prepareStatement(selectsql);
+		rs = pstmt.executeQuery();
+		ArrayList<String> strlist2 = new <String> ArrayList();
+		if (!rs.next()) {
+			System.out.println("저장된 데이터가 없습니다");
+			rs.close();
+			pstmt.close();
+		}
+		do {
+			strlist2.add(rs.getString("teamname"));
+		} while (rs.next());
+		rs.close();
+		pstmt.close();
+		
+		
+		System.out.println("비용 등록할 팀을 선택해주세요");
+		for (int i = 0; i<strlist2.size(); i++) {
+			System.out.println(i+1+". "+strlist2.get(i));
+		}
+		int input3 = in.nextInt();
+		
+		System.out.println("등록할 비용의 종류를 입력해주세요");
+		for (int i = 0; i<strlist.size(); i++) {
+			System.out.println(i+1+". "+strlist.get(i));
+		}
+		int input1 = in.nextInt();
+		
+		System.out.println("발생한 비용을 입력해주세요");
+		System.out.println(">");
+		int input2 = in.nextInt();
+		
+		//출금 처리 부분
+		selectsql = "select korwith, korbal from korstate where lecno_kor in (select MAX(lecno_kor) from korstate)";
+		pstmt = conn.prepareStatement(selectsql);
+		rs = pstmt.executeQuery();
 		int korbal;
 		if (!rs.next()) {
 			System.out.println("저장된 데이터가 없습니다");
@@ -36,7 +80,7 @@ public class CostCalculate {
 			korbal = rs.getInt("korbal");
 		} while (rs.next());
 
-		if (korbal - input < 0) {
+		if (korbal - input2 < 0) {
 			System.out.println("입력된 비용이 잔고보다 많습니다");
 			return;
 		}
@@ -49,12 +93,23 @@ public class CostCalculate {
 		String insertsql = "insert into korstate values (sq_korstate_lecno_kor.nextval, to_date('" + today
 				+ "', 'YYYY-MM-DD'), 0, ?, ?)";// 첫 파라미터는 전표번호
 		pstmt = conn.prepareStatement(insertsql);
-		pstmt.setInt(1, input);
-		pstmt.setInt(2, korbal - input);
+		pstmt.setInt(1, input2);
+		pstmt.setInt(2, korbal - input2);
 		int cnt = pstmt.executeUpdate();
 		System.out.println(cnt + "행 입력 성공");
-		// 뭔가 비용 칼럼을 저장할 테이블이 확정 되면 작업할 부분(비용이 등록되면 실매출과 매출등급을 실시간으로 조정한다)
-
+		// 비용 등록 부분
+		pstmt.close();
+		
+		
+		String updatesql = "update cost set "+strlist.get(input1-1)+" = ";
+		StringBuilder sb = new StringBuilder(updatesql);
+		sb.append(strlist.get(input1-1)+" + "+input2+" where code = ?");
+		pstmt = conn.prepareStatement(sb.toString());
+		pstmt.setInt(1, input1);
+		
+		
+		int cnt2 = pstmt.executeUpdate();
+		System.out.println(cnt2 + "행 입력 성공");
 	}
 
 }
