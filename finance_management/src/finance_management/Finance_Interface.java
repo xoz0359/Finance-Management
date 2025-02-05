@@ -3,7 +3,7 @@ import java.sql.*;
 
 public interface Finance_Interface {
 
-	ResultSet getinfo() throws SQLException;
+	ResultSet getInfo() throws SQLException;
 
 
 }

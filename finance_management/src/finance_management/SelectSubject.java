@@ -10,7 +10,7 @@ public abstract class SelectSubject extends Finance_Class implements Finance_Int
 	}
 	
 	@Override
-	public ResultSet getinfo() throws SQLException {
+	public ResultSet getInfo() throws SQLException {
 		String sql = "select * from title";
 		pstmt = conn.prepareStatement(sql);
 		rs = pstmt.executeQuery();
