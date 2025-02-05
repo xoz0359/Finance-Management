@@ -8,6 +8,7 @@ public class Finance_Class {
 	String url = "jdbc:oracle:thin:@localhost:1521:xe";
 	String user = "scott";
 	String pwd = "1234";
+	String sql;
 	Connection conn;
 	PreparedStatement pstmt;
 	ResultSet rs;
