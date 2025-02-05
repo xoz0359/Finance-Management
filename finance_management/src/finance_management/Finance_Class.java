@@ -19,7 +19,5 @@ public class Finance_Class {
 		pwd = "1234";
 		sc = new Scanner(System.in);
 		conn = DriverManager.getConnection(url, user, pwd);
-		pstmt = conn.prepareStatement("");
-		ResultSet rs = pstmt.executeQuery();
 	}
 }
