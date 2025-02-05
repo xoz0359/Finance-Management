@@ -6,7 +6,7 @@ import java.util.*;
 public class Finance_Class {
 	
 	String url ;
-	String user ";
+	String user ;
 	String pwd ;
 	String sql;
 	Connection conn;
