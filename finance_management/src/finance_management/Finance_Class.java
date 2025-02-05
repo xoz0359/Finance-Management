@@ -11,7 +11,7 @@ public class Finance_Class {
 	String sql;
 	Connection conn;
 	PreparedStatement pstmt;
-	ResultSet rs;
+	Object oj;
 	Scanner sc;
 	
 	public Finance_Class() throws SQLException {
