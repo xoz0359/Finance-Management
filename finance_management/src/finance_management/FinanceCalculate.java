@@ -1,112 +1,98 @@
 package finance_management;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.*;
 
-class FCalculate {
+public class FinanceCalculate {
 	ArrayList <Integer> valist;
 	ArrayList <String> namelist;
 	Scanner sc;
-	// 0. ë¼ì§€ì½”ë“œ 1. ìŠ¤ëª°ì½”ë“œ 2. í˜„ê¸ˆì„±ìì‚° 2. ìœ í˜•ìì‚° 3. ê¸°íƒ€ê¸ˆìœµìì‚° 4. ë§¤ì…ì±„ë¬´ 5. ì°¨ì…ê¸ˆ 6. ì˜ì—…ìˆ˜ìµ 7. ê¸ˆìœµìˆ˜ìµ 8. ì˜ì—…ë¹„ìš© 9. ê¸°íƒ€ë¹„ìš© 10. ê¸ˆìœµë¹„ìš© 11. ìœ í˜•ìì‚° ì·¨ë“ 12. ìœ í˜•ìì‚° ì²˜ë¶„ 13. ë¶€ì±„ìƒí™˜
-	public FCalculate(ArrayList <Integer> e) { // ì‚¬ìš©ìì—ê²Œ ì–´ë–¤ ìì‚°ì„ ì…ë ¥í•  ê±´ì§€ ë¬¼ì–´ë³´ëŠ” í”„ë¡¬í”„íŠ¸ ë©”ì„¸ì§€ ì‘ì„±
+	
+	public FinanceCalculate(ArrayList <Integer> s) { 
 		sc = new Scanner(System.in);
-		valist = e;
-		namelist.add("ë¼ì§€ì½”ë“œ");
-		namelist.add("ìŠ¤ëª°ì½”ë“œ");
-		namelist.add("í˜„ê¸ˆì„±ìì‚°");
-		namelist.add("ìœ í˜•ìì‚°");
-		namelist.add("ê¸°íƒ€ê¸ˆìœµìì‚°");
-		namelist.add("ë§¤ì…ì±„ë¬´");
-		namelist.add("ì°¨ì…ê¸ˆ");
-		namelist.add("ì˜ì—…ìˆ˜ìµ");
-		namelist.add("ê¸ˆìœµìˆ˜ìµ");
-		namelist.add("ì˜ì—…ë¹„ìš©");
-		namelist.add("ê¸°íƒ€ë¹„ìš©");
-		namelist.add("ê¸ˆìœµë¹„ìš©");
-		namelist.add("ìœ í˜•ìì‚° ì·¨ë“");
-		namelist.add("ìœ í˜•ìì‚° ì²˜ë¶„");
-		namelist.add("ë¶€ì±„ìƒí™˜");
+		valist = s;
+		namelist.add("¶óÁöÄÚµå");
+		namelist.add("½º¸ôÄÚµå");		
+		namelist.add("Çö±İ¼ºÀÚ»ê");
+		namelist.add("À¯ÇüÀÚ»ê");
+		namelist.add("±âÅ¸±İÀ¶ÀÚ»ê");
+		namelist.add("¸ÅÀÔÃ¤¹«");
+		namelist.add("Â÷ÀÔ±İ");
+		namelist.add("¿µ¾÷¼öÀÍ");
+		namelist.add("±İÀ¶¼öÀÍ");
+		namelist.add("¿µ¾÷ºñ¿ë");
+		namelist.add("±âÅ¸ºñ¿ë");
+		namelist.add("±İÀ¶ºñ¿ë");
+		namelist.add("À¯ÇüÀÚ»êÃëµæ");
+		namelist.add("À¯ÇüÀÚ»êÃ³ºĞ");
+		namelist.add("ºÎÃ¤»óÈ¯");
 	}
 	
 	public ArrayList <Integer> getInfo() {
-		System.out.println("ì–´ë–¤ valueì„ ì…ë ¥í• ì§€ ìˆ«ìë¡œ ì…ë ¥í•´ì£¼ì„¸ìš”");
+		System.out.println("¾î¶² valueÀ» ÀÔ·ÂÇÒÁö ¼ıÀÚ·Î ÀÔ·ÂÇØÁÖ¼¼¿ä");
 		for (int i=2; i<namelist.size();i++) {
 			System.out.println(i-2+". "+namelist.get(i));
 		}
 		int input = sc.nextInt();
-		System.out.println("ì…ë ¥í•  ê°’ì„ ì •ìˆ˜ë¡œ ì…ë ¥í•˜ì„¸ìš”");
+		System.out.println("ÀÔ·ÂÇÒ °ªÀ» Á¤¼ö·Î ÀÔ·ÂÇÏ¼¼¿ä");
 		int input2 = sc.nextInt();
 		
 		switch(input){
-		case 1: // í˜„ê¸ˆì„±ìì‚°
+		case 1: // Çö±İ¼ºÀÚ»ê
 			valist.set(2, valist.get(2)+input2);
-			System.out.println("ì…ë ¥í•œ í˜„ê¸ˆì„±ìì‚° "+input2+"ì´ í˜„ê¸ˆì„±ìì‚°ì— ì¶”ê°€ ë˜ì—ˆìŠµë‹ˆë‹¤");
+			System.out.println("ÀÔ·ÂÇÑ Çö±İ¼ºÀÚ»ê "+input2+"ÀÌ Çö±İ¼ºÀÚ»ê¿¡ Ãß°¡ µÇ¾ú½À´Ï´Ù");
 			break;
 		case 2: break;
-		case 3: // ìœ í˜•ìì‚°
+		case 3: // À¯ÇüÀÚ»ê
 		valist.set(3, valist.get(3)+input2);
 		valist.set(2, valist.get(2)-input2);
-		System.out.println("ì…ë ¥í•œ ìœ í˜•ìì‚° "+input2+"ì´ ë“±ë¡ë˜ê³  í˜„ê¸ˆì„±ìì‚°ì— ê°ì‚° ë˜ì—ˆìŠµë‹ˆë‹¤");
+		System.out.println("ÀÔ·ÂÇÑ À¯ÇüÀÚ»ê "+input2+"ÀÌ µî·ÏµÇ°í Çö±İ¼ºÀÚ»ê¿¡ °¨»ê µÇ¾ú½À´Ï´Ù");
 			break; 
-		case 4: // ê¸°íƒ€ê¸ˆìœµìì‚°
+		case 4: // ±âÅ¸±İÀ¶ÀÚ»ê
 			valist.set(4, valist.get(4)+input2);
 			valist.set(2, valist.get(2)-input2);
-			System.out.println("ì…ë ¥í•œ ê¸°íƒ€ê¸ˆìœµìì‚° "+input2+"ì´ ë“±ë¡ë˜ê³  í˜„ê¸ˆì„±ìì‚°ì— ê°ì‚° ë˜ì—ˆìŠµë‹ˆë‹¤");
+			System.out.println("ÀÔ·ÂÇÑ ±âÅ¸±İÀ¶ÀÚ»ê "+input2+"ÀÌ µî·ÏµÇ°í Çö±İ¼ºÀÚ»ê¿¡ °¨»ê µÇ¾ú½À´Ï´Ù");
 			break;
-		case 5: // ë§¤ì…ì±„ë¬´
+		case 5: // ¸ÅÀÔÃ¤¹«
 			valist.set(5, valist.get(5)+input2);
 			valist.set(3, valist.get(3)+input2);
-			System.out.println("ì…ë ¥í•œ ë§¤ì…ì±„ë¬´ "+input2+"ì´ ë“±ë¡ë˜ê³  ìœ í˜•ìì‚°ì— ì¶”ê°€ ë˜ì—ˆìŠµë‹ˆë‹¤");
+			System.out.println("ÀÔ·ÂÇÑ ¸ÅÀÔÃ¤¹« "+input2+"ÀÌ µî·ÏµÇ°í À¯ÇüÀÚ»ê¿¡ Ãß°¡ µÇ¾ú½À´Ï´Ù");
 			break;
-		case 6: // ì°¨ì…ê¸ˆ
+		case 6: // Â÷ÀÔ±İ
 			valist.set(6, valist.get(6)+input2);
 			valist.set(2, valist.get(2)+input2);
-			System.out.println("ì…ë ¥í•œ ì°¨ì…ê¸ˆ "+input2+"ì´ ë“±ë¡ë˜ê³  í˜„ê¸ˆì„±ìì‚°ì— ì¶”ê°€ ë˜ì—ˆìŠµë‹ˆë‹¤");
+			System.out.println("ÀÔ·ÂÇÑ Â÷ÀÔ±İ "+input2+"ÀÌ µî·ÏµÇ°í Çö±İ¼ºÀÚ»ê¿¡ Ãß°¡ µÇ¾ú½À´Ï´Ù");
 			break;
-		case 7: // ì˜ì—…ìˆ˜ìµ
+		case 7: // ¿µ¾÷¼öÀÍ
 			valist.set(2, valist.get(2)+input2);
-			System.out.println("ì…ë ¥í•œ ì˜ì—…ìˆ˜ìµ "+input2+"ì´ í˜„ê¸ˆì„±ìì‚°ì— ì¶”ê°€ ë˜ì—ˆìŠµë‹ˆë‹¤");
+			System.out.println("ÀÔ·ÂÇÑ ¿µ¾÷¼öÀÍ "+input2+"ÀÌ Çö±İ¼ºÀÚ»ê¿¡ Ãß°¡ µÇ¾ú½À´Ï´Ù");
 			break;
-		case 8: // ê¸ˆìœµìˆ˜ìµ
+		case 8: // ±İÀ¶¼öÀÍ
 			valist.set(4, valist.get(4)+input2);
-			System.out.println("ì…ë ¥í•œ ê¸ˆìœµìˆ˜ìµ "+input2+"ì´ ê¸°íƒ€ê¸ˆìœµìì‚°ì— ì¶”ê°€ ë˜ì—ˆìŠµë‹ˆë‹¤");
+			System.out.println("ÀÔ·ÂÇÑ ±İÀ¶¼öÀÍ "+input2+"ÀÌ ±âÅ¸±İÀ¶ÀÚ»ê¿¡ Ãß°¡ µÇ¾ú½À´Ï´Ù");
 			break;
-		case 9: // ì˜ì—…ìˆ˜ìµ
+		case 9: // ¿µ¾÷¼öÀÍ
 			valist.set(2, valist.get(2)-input2);
-			System.out.println("ì…ë ¥í•œ ì˜ì—…ìˆ˜ìµ "+input2+"ì´ í˜„ê¸ˆì„±ìì‚°ì— ê°ì‚° ë˜ì—ˆìŠµë‹ˆë‹¤");
+			System.out.println("ÀÔ·ÂÇÑ ¿µ¾÷¼öÀÍ "+input2+"ÀÌ Çö±İ¼ºÀÚ»ê¿¡ °¨»ê µÇ¾ú½À´Ï´Ù");
 			break;
-		case 10: // ìœ í˜•ìì‚°ì·¨ë“
+		case 10: // À¯ÇüÀÚ»êÃëµæ
 			valist.set(2, valist.get(2)-input2);
 			valist.set(3, valist.get(3)+input2);
-			System.out.println("ì…ë ¥í•œ ìœ í˜•ìì‚° ì·¨ë“ "+input2+"ì´ ìœ í˜•ìì‚°ì— ì¶”ê°€ ë˜ê³  í˜„ê¸ˆì„±ìì‚°ì— ê°ì‚° ë˜ì—ˆìŠµë‹ˆë‹¤");
+			System.out.println("ÀÔ·ÂÇÑ À¯ÇüÀÚ»ê Ãëµæ "+input2+"ÀÌ À¯ÇüÀÚ»ê¿¡ Ãß°¡ µÇ°í Çö±İ¼ºÀÚ»ê¿¡ °¨»ê µÇ¾ú½À´Ï´Ù");
 			break;
-		case 11: // ìœ í˜•ìì‚°ì²˜ë¶„
+		case 11: // À¯ÇüÀÚ»êÃ³ºĞ
 			valist.set(2, valist.get(2)+input2);
 			valist.set(3, valist.get(3)-input2);
-			System.out.println("ì…ë ¥í•œ ìœ í˜•ìì‚° ì²˜ë¶„ "+input2+"ì´ í˜„ê¸ˆì„±ìì‚°ì— ì¶”ê°€ ë˜ê³  ìœ í˜•ìì‚°ì— ê°ì‚° ë˜ì—ˆìŠµë‹ˆë‹¤");
+			System.out.println("ÀÔ·ÂÇÑ À¯ÇüÀÚ»ê Ã³ºĞ "+input2+"ÀÌ Çö±İ¼ºÀÚ»ê¿¡ Ãß°¡ µÇ°í À¯ÇüÀÚ»ê¿¡ °¨»ê µÇ¾ú½À´Ï´Ù");
 			break;
-		case 12: // ë¶€ì±„ìƒí™˜
+		case 12: // ºÎÃ¤»óÈ¯
 			valist.set(2, valist.get(2)-input2);
 			valist.set(6, valist.get(6)-input2);
-			System.out.println("ì…ë ¥í•œ ë¶€ì±„ìƒí™˜ "+input2+"ì´ ì°¨ì…ê¸ˆì— ê°ì‚° ë˜ê³  í˜„ê¸ˆì„±ìì‚°ì— ê°ì‚° ë˜ì—ˆìŠµë‹ˆë‹¤");
+			System.out.println("ÀÔ·ÂÇÑ ºÎÃ¤»óÈ¯ "+input2+"ÀÌ Â÷ÀÔ±İ¿¡ °¨»ê µÇ°í Çö±İ¼ºÀÚ»ê¿¡ °¨»ê µÇ¾ú½À´Ï´Ù");
 			break;
-		default: System.out.println("ì˜ëª»ëœ ê°’ ì…ë ¥ì— ë”°ë¥¸ ë©”ì†Œë“œ ì¢…ë£Œ");
+		default: System.out.println("Àß¸øµÈ °ª ÀÔ·Â¿¡ µû¸¥ ¸Ş¼Òµå Á¾·á");
 		}
 		
 		return valist;
 	}
 	
-}
-
-public class FinanceCalculate {
-
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		ArrayList <Integer> valist = null;
-		FCalculate fc = new FCalculate(valist);
-
-		// ê³„ì •ê³¼ëª© í…Œì´ë¸”ì—ì„œ 13ê°œì˜ ì¹¼ëŸ¼ì— ëŒ€í•œ ë¦¬ìŠ¤íŠ¸ ì¸ìë¡œ ì „ë‹¬ ë°›ëŠ”ë‹¤
-	}
-
 }
