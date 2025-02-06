@@ -3,14 +3,14 @@ package finance_management;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class SelectStatements extends Finance_Class implements Finance_Interface {
+public class SelectFin_st extends Finance_Class implements Finance_Interface {
 	
-	public SelectStatements() throws SQLException {
+	public SelectFin_st() throws SQLException {
 		super();
 	}
 	
 	@Override
-	public ResultSet getInfo() throws SQLException {
+	public ResultSet getSelection() throws SQLException {
 		sql = "select * from fin_st";
 		pstmt = conn.prepareStatement(sql);
 		rs = pstmt.executeQuery();
