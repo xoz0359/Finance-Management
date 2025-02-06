@@ -4,16 +4,9 @@ import java.sql.*;
 import java.util.*;
 
 public class Finance_Class {
-	
-<<<<<<< HEAD
-	String url;
-	String user;
-	String pwd;
-=======
 	String url ;
 	String user ;
 	String pwd ;
->>>>>>> refs/remotes/origin/feature_민석
 	String sql;
 	Connection conn;
 	PreparedStatement pstmt;
