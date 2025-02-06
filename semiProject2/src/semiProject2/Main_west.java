@@ -8,14 +8,17 @@ public class Main_west extends JFrame{
 	
 	Container cont1;
 	JPanel p_main_west,p_main_center;
-	JLabel title,l_menu1,l_menu2,l_menu3,l_menu4;
+	JLabel title,l_menu1,l_menu2,l_menu3,l_menu4,l_menu5;
 	JMenuBar jmb;
-	JButton jb_stateInput,jb_stateSelect,jb_teamInput,jb_teamSelect,jb_incomeSelect,jb_incomeAnalysis,jb_fin_st;
+	JButton jb_stateInput,
+			jb_stateSelect,jb_teamInput,jb_teamSelect,
+			jb_incomeSelect,jb_incomeAnalysis,jb_fin_st,
+			jb_userRegiser,jb_codeRegiser;
 	
 	
 	public Main_west() {
 		//센터판넬과 서쪽판넬 생성
-		p_main_west = new JPanel(new GridLayout(10,1));
+		p_main_west = new JPanel(new GridLayout(13,1));
 		p_main_center = new JPanel(new GridLayout(1,1));
 		
 		//메인 화면에 센터판넬에 들어갈 라벨 생성
@@ -35,22 +38,28 @@ public class Main_west extends JFrame{
 		p_main_west.setBackground(Color.black);
 
 		//큰 메뉴 객체 생성 & 디자인 메서드 사용
-		l_menu1 = new JLabel("회계 관리");this.l_menu_design(l_menu1);
-		l_menu2 = new JLabel("부서 관리");this.l_menu_design(l_menu2);
-		l_menu3 = new JLabel("매출 정보");this.l_menu_design(l_menu3);
+		l_menu1 = new JLabel("회계관리");this.l_menu_design(l_menu1);
+		l_menu2 = new JLabel("부서관리");this.l_menu_design(l_menu2);
+		l_menu3 = new JLabel("매출정보");this.l_menu_design(l_menu3);
 //		l_menu4 = new JLabel("재무제표");this.l_menu_design(l_menu4);
+		l_menu5 = new JLabel("*환경설정");this.l_menu_design(l_menu5);
 		
 		//회계 관련 작은메뉴버튼 생성 & 디자인
-		jb_stateInput=new JButton("회계 정보 입력");jb_stateSelect=new JButton("회계 정보 조회");
+		jb_stateInput=new JButton("회계정보 입력");jb_stateSelect=new JButton("회계정보 조회");
 		this.jb_color_change(jb_stateInput);this.jb_color_change(jb_stateSelect);
 		
 		//부서 관련 작은메뉴버튼 생성 & 디자인
-		jb_teamInput = new JButton("부서 정보 입력"); jb_teamSelect=new JButton("부서 정보 조회");
+		jb_teamInput = new JButton("부서정보 입력"); jb_teamSelect=new JButton("부서정보 조회");
 		this.jb_color_change(jb_teamInput);this.jb_color_change(jb_teamSelect);
 		
 		//매출 관련 작은메뉴버튼 생성 & 디자인
-		jb_incomeSelect = new JButton("매출 정보 입력"); jb_incomeAnalysis=new JButton("매출 분석");
+		jb_incomeSelect = new JButton("매출정보 입력"); jb_incomeAnalysis=new JButton("매출 분석");
 		this.jb_color_change(jb_incomeSelect);this.jb_color_change(jb_incomeAnalysis);
+		
+		//환경설정 관련 메뉴버튼 생성 & 디자인
+		jb_codeRegiser=new JButton("계정코드 등록");jb_userRegiser = new JButton("사용자 등록");
+		this.jb_color_change(jb_codeRegiser);this.jb_color_change(jb_userRegiser);
+		
 		
 		//재무제표 버튼 생성
 		jb_fin_st = new JButton("재무제표");
@@ -60,13 +69,18 @@ public class Main_west extends JFrame{
 		//큰 메뉴와 작은메뉴버튼 서쪽판넬에 추가
 		p_main_west.add(l_menu1);//회계관리 메뉴 + 버튼
 		p_main_west.add(jb_stateInput);p_main_west.add(jb_stateSelect);
+		
 		p_main_west.add(l_menu2);//부서관리 메뉴 + 버튼
 		p_main_west.add(jb_teamInput); p_main_west.add(jb_teamSelect);
+		
 		p_main_west.add(l_menu3);//매출정보 메뉴 + 버튼
 		p_main_west.add(jb_incomeSelect); p_main_west.add(jb_incomeAnalysis);
+		
 		//p_main_west.add(l_menu4);//재무제표 메뉴 라벨 추가
 		p_main_west.add(jb_fin_st); //재무제표 메뉴 버튼 추가
 		
+		p_main_west.add(l_menu5);//환경설정 메뉴 라벨+관련 버튼 추가
+		p_main_west.add(jb_codeRegiser);p_main_west.add(jb_userRegiser);
 		
 		
 		//라벨 클릭 시 이벤트 발생
