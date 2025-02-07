@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-public class LoginForm extends JFrame {
+public class LoginForm extends JPanel {
    String dbid = "scott";
    String dbpw = "1234";
    JPanel j_window;
@@ -20,9 +20,8 @@ public class LoginForm extends JFrame {
    JButton login_btt;
 
    public LoginForm() {
-      setTitle("Login");
-
       j_window = new JPanel(new BorderLayout());
+      
       j_top = new JPanel(new BorderLayout());
       titlelb = new JLabel("재무제표", JLabel.CENTER);
       j_top.add(titlelb);
@@ -47,13 +46,7 @@ public class LoginForm extends JFrame {
       login_btt = new JButton("Login");
       j_middle.add(login_btt, BorderLayout.SOUTH);
       j_window.add(j_middle, BorderLayout.SOUTH);
+      
       this.add(j_window);
-   }
-
-   public static void main(String[] args) {
-      LoginForm login = new LoginForm();
-      login.setSize(400, 300);
-      login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      login.setVisible(true);
    }
 }
