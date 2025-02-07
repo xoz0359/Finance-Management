@@ -6,6 +6,7 @@ import javax.swing.*;
 
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 public class State_select extends JFrame{
 
@@ -17,6 +18,7 @@ public class State_select extends JFrame{
 	JTable jt_s;
 	DefaultTableModel dtm;
 	JButton jb_save,jb_update,jb_select;
+	JScrollPane jsp_jt;
 	
 	public State_select() {
 		//gui 서쪽에 들어갈 서쪽판넬 및 센터에 들어갈 입력판넬 생성
@@ -111,16 +113,37 @@ public class State_select extends JFrame{
 		p_save.add(jb_save);
 		
 		//jt_s테이블에 스크롤을 추가하고 그 스크롤을 전표입력판넬에 추가 + jt_s 테이블을 입력판넬에 추가
-		p_stateInput.add(new JScrollPane(jt_s));
+		jsp_jt=new JScrollPane(jt_s);
+		//배경 색 설정
+		jsp_jt.setOpaque(true);
+		jsp_jt.getViewport().setOpaque(true);
+		jsp_jt.setBackground(Color.white);
+		jsp_jt.getViewport().setBackground(Color.white);
+		jt_s.setOpaque(true);
+		jt_s.setBackground(Color.white);
+		
+		p_stateInput.add(jsp_jt,"Center");
 		//입력판넬에 날짜입력판넬 추가
 		p_stateInput.add(p_siNorth,"North");
 		p_siNorth.add(p_dateInput);
 		p_siNorth.add(p_save);
 		
+		// p_siNorth 패널 배경색 적용
+		p_siNorth.setOpaque(true);
+		p_siNorth.setBackground(Color.decode("#FFFFFF"));
+
+		// 내부 패널들도 배경색 적용
+		p_dateInput.setOpaque(true);
+		p_dateInput.setBackground(Color.decode("#FFFFFF"));
+
+		p_save.setOpaque(true);
+		p_save.setBackground(Color.decode("#FFFFFF"));
+		
 		
 		
 		
 		//JFrame가장 바깥 pane인 컨텐트페인을 담을 객체 선언하고 대입
+
 		cont =getContentPane();
 		
 		//위에서 생성했던 컨텐트페인 담긴 객체 cont에 서쪽판넬이랑 입력판넬 추가
@@ -139,8 +162,6 @@ public class State_select extends JFrame{
 		//서쪽판넬에 라벨 추가
 		p_main_west.add(l_menu1);
 		
-//		p_stateInput.setBackground(Color.white);
-		
 	}
 	//콤보박스 화살표 디자인
 	public void jcb_design(JComboBox jcb) {
@@ -155,9 +176,6 @@ public class State_select extends JFrame{
 			}
 		});
 	}
-	
-	
-
 	
 	public static void main(String[] args) {
 		State_select ss=new State_select();

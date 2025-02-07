@@ -16,6 +16,7 @@ public class State_Input extends JFrame{
 	JTable jt_s;
 	DefaultTableModel dtm;
 	JButton jb_save;
+	JScrollPane jsp_jt;
 	
 	
 	
@@ -23,6 +24,7 @@ public class State_Input extends JFrame{
 		//gui 서쪽에 들어갈 서쪽판넬 및 센터에 들어갈 입력판넬 생성
 		p_main_west = new JPanel(new GridLayout(10,1));
 		p_stateInput = new JPanel(new BorderLayout());
+		
 		//전표입력판넬 위쪽에 들어갈 판넬 생성
 		p_siNorth = new JPanel(new GridLayout(1,2));
 		//입력판넬 맨 위에 들어갈 날짜입력판넬 생성
@@ -90,7 +92,15 @@ public class State_Input extends JFrame{
 		p_save.add(jb_save);
 		
 		//jt_s테이블에 스크롤을 추가하고 그 스크롤을 전표입력판넬에 추가 + jt_s 테이블을 입력판넬에 추가
-		p_stateInput.add(new JScrollPane(jt_s));
+		jsp_jt =new JScrollPane(jt_s);
+		jsp_jt.setOpaque(true);
+		jsp_jt.getViewport().setOpaque(true);
+		jsp_jt.setBackground(Color.white);
+		jsp_jt.getViewport().setBackground(Color.white);
+		jt_s.setOpaque(true);
+		jt_s.setBackground(Color.white);
+		
+		p_stateInput.add(jsp_jt);
 		//입력판넬에 날짜입력판넬 추가
 		p_stateInput.add(p_siNorth,"North");
 		p_siNorth.add(p_dateInput);
@@ -104,7 +114,10 @@ public class State_Input extends JFrame{
 		cont.add(p_stateInput,"Center");
 		
 		//서쪽판넬 배경 검은색
-		p_main_west.setBackground(Color.black);
+		p_main_west.setBackground(Color.decode("#262627"));
+//		p_stateInput.setBackground(Color.decode("#CCCCCC"));
+		p_stateInput.setOpaque(true);
+		p_siNorth.setOpaque(true);
 		
 		//서쪽판넬 크기 맞추기 위해 추가할 임의의 라벨 생성 
 		l_menu1 = new JLabel("회계관리");
@@ -114,8 +127,19 @@ public class State_Input extends JFrame{
 		
 		//서쪽판넬에 라벨 추가
 		p_main_west.add(l_menu1);
+
 		
-//		p_stateInput.setBackground(Color.white);
+		// p_siNorth 패널 배경색 적용
+		p_siNorth.setOpaque(true);
+		p_siNorth.setBackground(Color.decode("#FFFFFF"));
+
+		// 내부 패널들도 배경색 적용
+		p_dateInput.setOpaque(true);
+		p_dateInput.setBackground(Color.decode("#FFFFFF"));
+
+		p_save.setOpaque(true);
+		p_save.setBackground(Color.decode("#FFFFFF"));
+		
 		
 	}
 	//콤보박스 화살표 디자인
