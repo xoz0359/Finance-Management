@@ -12,7 +12,11 @@ public interface Finance_Interface {
 		return null;
 	}
 	
-	default Integer getDML(HashMap <String, Integer> m) throws SQLException {
+	default Integer getDML(HashMap <Integer, String> m) throws SQLException {
+		return null;
+	}
+	
+	default Integer getDML(ArrayList <String> l) throws SQLException {
 		return null;
 	}
 }

@@ -10,7 +10,7 @@ public class UpdateInCome extends Finance_Class implements Finance_Interface{
 	}
 	
 	@Override
-	public Integer getDML(HashMap<String, Integer> m) throws SQLException {
+	public Integer getDML(HashMap<Integer, String> m) throws SQLException {
 		HashMap input = m;
 		sql = "update income set ";
 		StringBuilder sb = new StringBuilder(sql);
