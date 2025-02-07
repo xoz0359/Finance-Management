@@ -6,29 +6,31 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import javax.swing.plaf.basic.BasicComboBoxUI; //콤보박스 화살표 디자인위해 임포트
 
-public class Income_infoShow extends JFrame{
+public class IncomeAnalysis extends JFrame{
 	
-	JPanel p_main_west,p_main_center,p_incomeInfo,p_iiNorth,p_search,p_save;
+	JPanel p_main_west,p_main_center,p_incomeAnalysis,p_iaNorth,p_eiInput,p_infoShow;
 	Container cont;
 	JLabel l_menu1,l_y,l_m,l_d,jl_dname,jl_period;
-	JComboBox jcb_period; //기간
+	JComboBox jcb_order; //기간
 	JTextField jtf_d,jtf_dname;
 	JTable jt_s;
 	DefaultTableModel dtm;
 	JScrollPane jsp_jt;
-	JButton jb_infoShow;
+	JButton jb_eiInput,jb_infoShow;
 	
 	
 	
-	public Income_infoShow() {
+	
+	public IncomeAnalysis() {
 		//gui 서쪽에 들어갈 서쪽판넬 및 센터에 들어갈 입력판넬 생성
 		p_main_west = new JPanel(new GridLayout(10,1));
-		p_incomeInfo = new JPanel(new BorderLayout());
+		p_incomeAnalysis = new JPanel(new BorderLayout());
 		
 		//전표입력판넬 위쪽에 들어갈 판넬 생성
-		p_iiNorth = new JPanel(new GridLayout(1,2));
+		p_iaNorth = new JPanel(new BorderLayout());
 		//입력판넬 맨 위에 들어갈 날짜입력판넬 생성
-		p_search = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		p_infoShow = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		p_eiInput = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
 
 		
@@ -36,9 +38,9 @@ public class Income_infoShow extends JFrame{
 
 		//날짜입력판넬에 들어갈 연도,월 콤보박스 생성 + 일 텍스트 필드
 //		String[] y={"2020", "2021", "2022", "2023","2024"};
-		String[] m= {"전체","1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"};
-		String[] columnName = {"부서번호","1월","2월","3월","4월","5월","6월","7월","8월","9월",
-				"10월","11월","12월","예상 매출액"};
+//		String[] m= {"전체","1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"};
+		String[] columnName = {"부서이름","예상 매출액","누적매출액","달성률"};
+		String[] order = {"내림차순","오름차순"};
 		
 		//테이블모델 객체 생성 & 설정(컬럼명들, 행 숫자)
 		dtm = new DefaultTableModel(columnName,30) {
@@ -53,26 +55,23 @@ public class Income_infoShow extends JFrame{
 		jt_s = new JTable(dtm);
 		
 		
-		//기간 입력하는 콤보박스랑 텍스트필드(길이:3) 생성 + 콤보박스 디자인
-		jtf_d = new JTextField(3);
-		jtf_dname = new JTextField(3);
-		jcb_period = new JComboBox(m);this.jcb_design(jcb_period);
+		//예상매출액 입력 다이얼로그 버튼 생성
+		jb_eiInput=new JButton("예상매출액 입력");jb_eiInput.setBackground(Color.white);
 		jb_infoShow = new JButton("조회");jb_infoShow.setBackground(Color.white);
+		jcb_order = new JComboBox(order);this.jcb_design(jcb_order);
 		
-		//날짜 관련 라벨 생성
-		jl_dname = new JLabel("부서 이름:");
-		jl_period = new JLabel("기간:");
 		
-		//날짜입력판넬에 콤보박스&라벨 추가
+		p_iaNorth.add(p_eiInput,"West");
+		p_iaNorth.add(p_infoShow,"East");
+	
 		
-
-		p_search.add(jl_dname);
-		p_search.add(jtf_dname);
+		//예상 매출액 입력판넬에 다이얼로그 버튼 추가
+		p_eiInput.add(jb_eiInput);
+		p_infoShow.add(jcb_order);
+		p_infoShow.add(jb_infoShow);
 		
-		p_search.add(jl_period);
-		p_search.add(jcb_period);
 		
-		p_search.add(jb_infoShow);
+	
 		
 		
 
@@ -86,10 +85,10 @@ public class Income_infoShow extends JFrame{
 		jt_s.setOpaque(true);
 		jt_s.setBackground(Color.white);
 		
-		p_incomeInfo.add(jsp_jt);
+		p_incomeAnalysis.add(jsp_jt);
 		//입력판넬에 날짜입력판넬 추가
-		p_incomeInfo.add(p_iiNorth,"North");
-		p_iiNorth.add(p_search);
+		p_incomeAnalysis.add(p_iaNorth,"North");
+		p_iaNorth.add(p_eiInput);
 
 		
 		//JFrame가장 바깥 pane인 컨텐트페인을 담을 객체 선언하고 대입
@@ -97,12 +96,12 @@ public class Income_infoShow extends JFrame{
 		
 		//위에서 생성했던 컨텐트페인 담긴 객체 cont에 서쪽판넬이랑 입력판넬 추가
 		cont.add(p_main_west,"West");
-		cont.add(p_incomeInfo,"Center");
+		cont.add(p_incomeAnalysis,"Center");
 		
 		//서쪽판넬 배경 검은색
 		p_main_west.setBackground(Color.decode("#262627"));
-		p_incomeInfo.setOpaque(true);
-		p_iiNorth.setOpaque(true);
+		p_incomeAnalysis.setOpaque(true);
+		p_iaNorth.setOpaque(true);
 		
 		//서쪽판넬 크기 맞추기 위해 추가할 임의의 라벨 생성 
 		l_menu1 = new JLabel("회계관리");
@@ -115,12 +114,16 @@ public class Income_infoShow extends JFrame{
 
 		
 		// p_siNorth 패널 배경색 적용
-		p_iiNorth.setOpaque(true);
-		p_iiNorth.setBackground(Color.decode("#FFFFFF"));
+		p_iaNorth.setOpaque(true);
+		p_iaNorth.setBackground(Color.decode("#FFFFFF"));
 
 		// 내부 패널들도 배경색 적용
-		p_search.setOpaque(true);
-		p_search.setBackground(Color.decode("#FFFFFF"));
+		p_eiInput.setOpaque(true);
+		p_eiInput.setBackground(Color.decode("#FFFFFF"));
+		
+		p_infoShow.setOpaque(true);
+		p_infoShow.setBackground(Color.WHITE);
+
 		
 		
 	}
@@ -141,10 +144,10 @@ public class Income_infoShow extends JFrame{
 
 	
 	public static void main(String[] args) {
-		Income_infoShow iis=new Income_infoShow();
-		iis.setSize(900,600);
-		iis.setVisible(true);
-		iis.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		IncomeAnalysis ia=new IncomeAnalysis();
+		ia.setSize(900,600);
+		ia.setVisible(true);
+		ia.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 	}
 
