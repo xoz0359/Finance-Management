@@ -174,32 +174,38 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				int cnt = is.getDML(isplist);
 				is.pstmt.close();
 				is.conn.close();
-				System.out.println(cnt+"행 등록 완료!");
+				System.out.println(cnt+"행 state에 insert 성공!");
 				
-				map = new HashMap<Integer, String>();
-				uilist = new ArrayList<String>();
-				int mon = Integer.parseInt(isplist.get(0).substring(5, 7));
-				switch (mon) {
-				case 1 : map.put(0, "JAN"); break;
-				case 2 : map.put(0, "FEB"); break;
-				case 3 : map.put(0, "MAR"); break;
-				case 4 : map.put(0, "APR"); break;
-				case 5 : map.put(0, "MAY"); break;
-				case 6 : map.put(0, "JUN"); break;
-				case 7 : map.put(0, "JUL"); break;
-				case 8 : map.put(0, "AUG"); break;
-				case 9 : map.put(0, "SEP"); break;
-				case 10 : map.put(0, "OCT"); break;
-				case 11 : map.put(0, "NOV"); break;
-				case 12 : map.put(0, "DEC"); break;
-				default :
-				}
-				uilist.add(isplist.getLast());
-				
+				// 주비교자는 map에 보조 비교자는 list에 담아서 전달
+				// 주비교자는 ?를 통해서 세팅할 수 없기 때문
 				if(isplist.get(0).equals("6")) {
+					map = new HashMap<Integer, String>();
+					uilist = new ArrayList<String>();
+					
+					//int mon = Integer.parseInt(isplist.get(0).substring(5, 7));
+					//switch (mon) {
+					//case 1 : map.put(0, "JAN"); break;
+					//case 2 : map.put(0, "FEB"); break;
+					//case 3 : map.put(0, "MAR"); break;
+					//case 4 : map.put(0, "APR"); break;
+					//case 5 : map.put(0, "MAY"); break;
+					//case 6 : map.put(0, "JUN"); break;
+					//case 7 : map.put(0, "JUL"); break;
+					//case 8 : map.put(0, "AUG"); break;
+					//case 9 : map.put(0, "SEP"); break;
+					//case 10 : map.put(0, "OCT"); break;
+					//case 11 : map.put(0, "NOV"); break;
+					//case 12 : map.put(0, "DEC"); break;
+					//default :
+					//}
+					map.put(0, "JAN");
+					uilist.add(isplist.get(3-1));
+					uilist.add(isplist.get(2-1));
 					UpdateIncome ui = new UpdateIncome();
-					ui.getDML(map, uilist);
-				};
+					cnt = ui.getDML(map, uilist);
+					System.out.println(cnt+"income에 update 완료!");
+				}
+				isplist.clear();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
