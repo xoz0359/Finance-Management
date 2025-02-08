@@ -7,6 +7,8 @@ import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -22,22 +24,31 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
-public class Finance_Management extends Frame implements ActionListener, MouseListener, MouseMotionListener{
-
+public class Finance_Management extends Frame implements ActionListener, MouseListener, MouseMotionListener, KeyListener{
+	
 	HashMap <Integer, String> map;
-	ArrayList <String> list;
-	JButton jb_save, login_btt, jb_stateInput, jb_incomeSelect;
+	ArrayList <String> isplist, siplist, uilist;
+	ResultSet sirs;
+	JButton isp_save, sip_show, login_btt, jb_stateInput, jb_incomeSelect;
 	CardLayout incard, outcard;
-	JPanel cardpanel, spanel1, spanel2, spanel3, westbar;
-	DefaultTableModel ispdmt, sipdmt;
+	JPanel cardpanel, totalpanel, spanel1, spanel2, spanel3, westbar, northbar;
+	DefaultTableModel ispdtm, sipdtm;
+	
 	
 	
 	public Finance_Management() {
 				// 화면 전환용 카드 레이아웃 생성
-				incard = new CardLayout();
-				this.setLayout(incard);
 				outcard = new CardLayout();
-				cardpanel = new JPanel(outcard);
+				this.setLayout(outcard);
+				
+				// 가장 바깥에 위치한 패널
+				totalpanel = new JPanel(new BorderLayout());
+				
+				// 전체화면에서 화면 전환을 담당하는 패널
+				incard = new CardLayout();
+				cardpanel = new JPanel(incard);
+				
+				// cardpanel에서 전환될 패널들
 				spanel1 = new JPanel(new BorderLayout());
 				spanel2 = new JPanel(new BorderLayout());
 				spanel3 = new JPanel(new BorderLayout());
@@ -45,16 +56,19 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				// 로그인 패널 생성
 				LoginForm tp = new LoginForm();
 				
-				// 메뉴바 생성
+				// westbar 생성
 				Main_west mp = new Main_west();
 				westbar = mp.p_main_west;
+				
+				// northbar 생성
+				northbar = new NorthMenuBar();
+				
 				// 장부 입력 메뉴화면 호출
 				State_Input isp = new State_Input();
-				//isp.add(mp.p_main_west, "West");
 				
-				// J테이블의 칼럼이 변경될 때 감지하는 이벤트 리스너
-				list = new ArrayList<String>();
-				DefaultTableModel ispdtm = isp.dtm;
+				// 장부 입력화면 테이블에 대한 이벤트 리스너
+				isplist = new ArrayList<String>();
+				ispdtm = isp.dtm;
 				ispdtm.addTableModelListener(new TableModelListener() {
 		            @Override
 		            public void tableChanged(TableModelEvent e) {
@@ -62,7 +76,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 		                int column = e.getColumn();
 		                
 		                if (column >= 0) { // 컬럼이 -1이면 구조 변경이므로 무시
-		                	list.add(isp.jt_s.getValueAt(row, column).toString());
+		                	isplist.add(isp.jt_s.getValueAt(row, column).toString());
 		                }
 		            }
 		        });
@@ -70,13 +84,30 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				// 매출 조회 메뉴화면 호출
 				IncomeSP sip = new IncomeSP();
 				
+				// 매출 조회화면 테이블에 대한 이벤트 리스너
+				siplist = new ArrayList<String>();
+				sipdtm = sip.dtm;
+				sipdtm.addTableModelListener(new TableModelListener() {
+					@Override
+					public void tableChanged(TableModelEvent e) {
+						int row = e.getFirstRow();
+						int column = e.getColumn();
+
+						if (column >= 0) { // 컬럼이 음수면 구조변경이므로 무시
+							siplist.add(sip.jt_s.getValueAt(row, column).toString());
+						}
+					}
+				});
+				
 				// 패널 조립
 				this.add(tp, "TitlePanel");
-				this.add(cardpanel, "menu");
+				this.add(totalpanel, "menu");
+				totalpanel.add(cardpanel, "Center");
+				totalpanel.add(westbar, "West");
+				totalpanel.add(northbar, "North");
 				cardpanel.add(spanel1, "MainPanel");
 				cardpanel.add(spanel2, "InsertStatePanel");
 				cardpanel.add(spanel3, "SelectIncomPanel");
-				
 				spanel1.add(mp, "Center");
 				spanel2.add(isp, "Center");
 				spanel3.add(sip, "Center");
@@ -84,18 +115,20 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				
 				
 				// 자녀 클래스와 인스턴스 주소 연결
-				jb_save = isp.jb_save;
+				isp_save = isp.jb_save;
+				sip_show = sip.jb_infoShow;
 				login_btt = tp.login_btt;
 				jb_stateInput = mp.jb_stateInput;
 				jb_incomeSelect = mp.jb_incomeSelect;
 				
 				
 				// 화면 전환과 이벤트 핸들러 연결
-				incard.show(this, "TitlePanel");
-				tp.login_btt.addMouseListener(this);
-				mp.jb_stateInput.addMouseListener(this);
-				mp.jb_incomeSelect.addMouseListener(this);
-				isp.jb_save.addMouseListener(this);
+				outcard.show(this, "TitlePanel");
+				login_btt.addMouseListener(this);
+				jb_stateInput.addMouseListener(this);
+				jb_incomeSelect.addMouseListener(this);
+				isp_save.addMouseListener(this);
+				sip_show.addMouseListener(this);
 				
 				
 				
@@ -135,24 +168,78 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (e.getSource() == jb_save) {
+		if (e.getSource() == isp_save) {
 			try {
 				InsertState is = new InsertState();
-				int cnt = is.getDML(list);
+				int cnt = is.getDML(isplist);
+				is.pstmt.close();
+				is.conn.close();
 				System.out.println(cnt+"행 등록 완료!");
+				
+				map = new HashMap<Integer, String>();
+				uilist = new ArrayList<String>();
+				int mon = Integer.parseInt(isplist.get(0).substring(5, 7));
+				switch (mon) {
+				case 1 : map.put(0, "JAN"); break;
+				case 2 : map.put(0, "FEB"); break;
+				case 3 : map.put(0, "MAR"); break;
+				case 4 : map.put(0, "APR"); break;
+				case 5 : map.put(0, "MAY"); break;
+				case 6 : map.put(0, "JUN"); break;
+				case 7 : map.put(0, "JUL"); break;
+				case 8 : map.put(0, "AUG"); break;
+				case 9 : map.put(0, "SEP"); break;
+				case 10 : map.put(0, "OCT"); break;
+				case 11 : map.put(0, "NOV"); break;
+				case 12 : map.put(0, "DEC"); break;
+				default :
+				}
+				uilist.add(isplist.getLast());
+				
+				if(isplist.get(0).equals("6")) {
+					UpdateIncome ui = new UpdateIncome();
+					ui.getDML(map, uilist);
+				};
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} else if (e.getSource() == sip_show) {
+			try {
+				SelectIncome si = new SelectIncome();
+				System.out.println("조회 이벤트 발생!");
+				sirs = si.getSelection();
+				if (!sirs.next()) {
+					System.out.println("가져올 row가 없자너 ㅠㅠ");
+					si.rs.close();
+					si.pstmt.close();
+					si.conn.close();
+				}else {
+					do {
+						// 기존의 row를 삭제 후 새 row 삽입
+						int rowcnt = 0;
+						sipdtm.removeRow(rowcnt);
+						sipdtm.insertRow(rowcnt, new Object[] {sirs.getString("DEPT"), sirs.getString("JAN"), sirs.getString("FEB"),
+								sirs.getString("MAR"), sirs.getString("APR"), sirs.getString("MAY"), sirs.getString("JUN"),
+								sirs.getString("JUL"), sirs.getString("AUG"), sirs.getString("SEP"), sirs.getString("OCT"),
+								sirs.getString("NOV"), sirs.getString("DEC"), sirs.getString("EXPECTINCOME")});
+					}while(sirs.next());
+					si.rs.close();
+					si.pstmt.close();
+					si.conn.close();
+					System.out.println("아마 출력 잘 된 것 같지롱~");
+				}
+				
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		} else if (e.getSource() == login_btt) {
-			spanel1.add(westbar, "West");
-			incard.show(this, "menu");
+			outcard.show(this, "menu");
 		} else if (e.getSource() == jb_stateInput) {
-			spanel2.add(westbar, "West");
-			outcard.show(cardpanel, "InsertStatePanel");
+			incard.show(cardpanel, "InsertStatePanel");
 		} else if (e.getSource() == jb_incomeSelect) {
-			spanel3.add(westbar, "West");
-			outcard.show(cardpanel, "SelectIncomPanel");
+			incard.show(cardpanel, "SelectIncomPanel");
 		} else {
 			
 		}
@@ -182,6 +269,23 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 		
 	}
 	
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 	public static void main(String[] args) {

@@ -2,9 +2,9 @@ package finance_Management;
 
 import java.sql.*;
 
-public class SelectInCome extends Finance_Class implements Finance_Interface{
+public class SelectIncome extends Finance_Class implements Finance_Interface{
 
-	public SelectInCome() throws SQLException {
+	public SelectIncome() throws SQLException {
 		super();
 	}
 	

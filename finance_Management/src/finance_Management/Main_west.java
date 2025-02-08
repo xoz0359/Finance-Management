@@ -50,7 +50,7 @@ public class Main_west extends JPanel{
 		this.jb_color_change(jb_teamInput);this.jb_color_change(jb_teamSelect);
 		
 		//매출 관련 작은메뉴버튼 생성 & 디자인
-		jb_incomeSelect = new JButton("매출정보 입력"); jb_incomeAnalysis=new JButton("매출 분석");
+		jb_incomeSelect = new JButton("매출정보 조회"); jb_incomeAnalysis=new JButton("매출 분석");
 		this.jb_color_change(jb_incomeSelect);this.jb_color_change(jb_incomeAnalysis);
 		
 		//환경설정 관련 메뉴버튼 생성 & 디자인
@@ -100,16 +100,4 @@ public class Main_west extends JPanel{
 		jl.setFont(new Font("맑은 고딕",Font.BOLD,20));
 		jl.setHorizontalAlignment(JLabel.CENTER);
 	}
-	
-
-	public static void main(String[] args) {
-		Main_west mw =new Main_west();
-		mw.setSize(500,600);
-		mw.setVisible(true);
-		//mw.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-//		mw.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-
-	}
-
 }
