@@ -34,6 +34,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, westbar, northbar;
 	DefaultTableModel ispdtm, sipdtm, aipdtm;
 	Integer backcnt, forcnt;
+	JTable ispjt;
 	
 	// 할일 명사 동사 순서로 객체 명명규칙 바꾸기...
 	
@@ -110,7 +111,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				// 매출 분석 메뉴화면 호출
 				IncomeAnalysis aip = new IncomeAnalysis(); 
 				
-				// 매출 조회화면 테이블에 대한 이벤트 리스너
+				// 매출 분석 화면 테이블에 대한 이벤트 리스너
 				aiplist = new ArrayList<String>();
 				aipdtm = aip.dtm;
 				aipdtm.addTableModelListener(new TableModelListener() {
@@ -142,7 +143,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				
 				
 				
-				// 자녀 클래스와 인스턴스 주소 연결
+				// 객체와 인스턴스 주소 연결
 				login_btt = tp.login_btt;
 				sip_show = sip.jb_infoShow;
 				isp_save = isp.jb_save;
@@ -152,34 +153,19 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				jb_incomeanalysis = mp.jb_incomeAnalysis;
 				jb_backward = nb.b_backward;
 				jb_forward = nb.b_forward;
+				ispjt = isp.jt_s;
 				
 				// 화면 전환과 이벤트 핸들러 연결
 				outcard.show(this, "TitlePanel");
-				login_btt.addMouseListener(this);
-				jb_stateInput.addMouseListener(this);
-				jb_incomeSelect.addMouseListener(this);
-				jb_incomeanalysis.addMouseListener(this);
+				login_btt.addActionListener(this);
+				jb_stateInput.addActionListener(this);
+				jb_incomeSelect.addActionListener(this);
+				jb_incomeanalysis.addActionListener(this);
 				isp_save.addMouseListener(this);
 				sip_show.addMouseListener(this);
 				aip_show.addMouseListener(this);
-				jb_backward.addMouseListener(this);
-				jb_forward.addMouseListener(this);
-				
-				
-				
-				this.addWindowListener(new WindowAdapter() {
-		            public void windowClosing(WindowEvent we) {
-		                System.exit(0);
-		            }
-		        });
-
-		 
-		        	
-		 
-		        
-				
-				//si.jt_s.addAncestorListener(e -> );
-				//InsertState is = new InsertState();
+				jb_backward.addActionListener(this);
+				jb_forward.addActionListener(this);
 				
 				// 자주 쓰는 정보 db에서 받아와서 저장해두기
 				try {
@@ -202,30 +188,84 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
+				this.addWindowListener(new WindowAdapter() {
+		            public void windowClosing(WindowEvent we) {
+		                System.exit(0);
+		            }
+		        });
+
+		 
 
 	}
 	
 	
 	@Override // 이벤트 처리를 위한 기본적인 엑션 핸들러
 	public void actionPerformed(ActionEvent e) {
-		
+		 if (e.getSource() == login_btt) {
+			if (p_forwardlog.size() > 0) {
+				p_forwardlog.clear();
+			}
+			p_backwardlog.add("MainPanel");
+			outcard.show(this, "menu");
+			incard.show(cardpanel, "MainPanel");
+		} else if (e.getSource() == jb_stateInput) {
+			if (p_forwardlog.size() > 0) {
+				p_forwardlog.clear();
+			}
+			p_backwardlog.add("InsertStatePanel");
+			incard.show(cardpanel, "InsertStatePanel");
+		} else if (e.getSource() == jb_incomeSelect) {
+			if (p_forwardlog.size() > 0) {
+				p_forwardlog.clear();
+			}
+			p_backwardlog.add("SelectIncomPanel");
+			incard.show(cardpanel, "SelectIncomPanel");
+		} else if (e.getSource() == jb_incomeanalysis) {
+			if (p_forwardlog.size() > 0) {
+				p_forwardlog.clear();
+			}
+			p_backwardlog.add("AnalysisIncomPanel");
+			incard.show(cardpanel, "AnalysisIncomPanel");
+		} else if (e.getSource() == jb_backward) {
+			if(p_backwardlog.size() > 1) {
+			p_forwardlog.add(p_backwardlog.getLast());
+			incard.show(cardpanel, p_backwardlog.get(p_backwardlog.size()-2));
+			p_backwardlog.removeLast();
+			}else {// 뒤로가거나 앞으로 갈 페이지 없으면 버튼 비활성화
+				
+			}
+		} else if (e.getSource() == jb_forward) {
+			if(p_forwardlog.size() > 0) {
+			p_backwardlog.add(p_forwardlog.getLast());
+			incard.show(cardpanel, p_forwardlog.getLast());
+			p_forwardlog.removeLast();
+			}else {
+				
+			}
+		} else{
+			
+		}
 	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-	}
-	
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getSource() == isp_save) {
 			try {
+				// 사용자가 수정을 완료하지 않고 저장 버튼을 누르면 수정하던 내용을 포함시켜서 처리하는 부분
+				int row = ispjt.getEditingRow();
+				int col = ispjt.getEditingColumn();
+				if (row != -1 && col != -1) {
+				    // getEditingRow와 getEditingColumn은 api에서 찾았는데 
+					// 수정중인 텍스트를 불러오는 방법은 검색만으로 도저히 알아낼 수 없어서 ai의 힘을 빌렸습니다 ㅜㅜ
+				    Component editorComponent = ispjt.getEditorComponent();
+				    if (editorComponent instanceof JTextField) {
+				        JTextField textField = (JTextField) editorComponent;
+				        String editingdata = textField.getText();
+				        isplist.add(editingdata);
+				    }
+				}
+				
 				InsertState is = new InsertState();
 				int cnt = is.getDML(isplist);
 				is.pstmt.close();
@@ -303,11 +343,11 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			// team, income table에서 각각 select 받은 정보로 테이블 구성해서 보여주기
 			try {
 				SelectIncome ai = new SelectIncome();
-				System.out.println("조회 이벤트 발생!");
+				//System.out.println("조회 이벤트 발생!");
 				rs = ai.getSelection();
 				int rowcnt = 0;
 				if (!rs.next()) {
-					System.out.println("가져올 row가 없자너 ㅠㅠ");
+					//System.out.println("가져올 row가 없자너 ㅠㅠ");
 					ai.rs.close();
 					ai.pstmt.close();
 					ai.conn.close();
@@ -325,56 +365,24 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 					ai.pstmt.close();
 					ai.conn.close();
 					aipdtm.fireTableDataChanged();
-					System.out.println("아마 출력 잘 된 것 같지롱~");
+					//System.out.println("아마 출력 잘 된 것 같지롱~");
 					}
 				} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		} else if (e.getSource() == login_btt) {
-			if (p_forwardlog.size() > 0 && !p_forwardlog.getLast().equals("MainPanel") ) {
-				p_forwardlog.clear();
-			}
-			p_backwardlog.add("MainPanel");
-			outcard.show(this, "menu");
-			incard.show(cardpanel, "MainPanel");
-		} else if (e.getSource() == jb_stateInput) {
-			if (p_forwardlog.size() > 0) {
-				p_forwardlog.clear();
-			}
-			p_backwardlog.add("InsertStatePanel");
-			incard.show(cardpanel, "InsertStatePanel");
-		} else if (e.getSource() == jb_incomeSelect) {
-			if (p_forwardlog.size() > 0) {
-				p_forwardlog.clear();
-			}
-			p_backwardlog.add("SelectIncomPanel");
-			incard.show(cardpanel, "SelectIncomPanel");
-		} else if (e.getSource() == jb_incomeanalysis) {
-			if (p_forwardlog.size() > 0) {
-				p_forwardlog.clear();
-			}
-			p_backwardlog.add("AnalysisIncomPanel");
-			incard.show(cardpanel, "AnalysisIncomPanel");
-		} else if (e.getSource() == jb_backward) {
-			if(p_backwardlog.size() > 1) {
-			p_forwardlog.add(p_backwardlog.getLast());
-			incard.show(cardpanel, p_backwardlog.get(p_backwardlog.size()-2));
-			p_backwardlog.removeLast();
-			}else {// 뒤로가거나 앞으로 갈 페이지 없으면 버튼 비활성화
-				
-			}
-		} else if (e.getSource() == jb_forward) {
-			if(p_forwardlog.size() > 1) {
-			p_backwardlog.add(p_forwardlog.getLast());
-			incard.show(cardpanel, p_forwardlog.get(p_forwardlog.size()-2));
-			p_forwardlog.removeLast();
-			}else {
-				
-			}
-		} else{
-			
-		}
+		} 
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
 	}
 	
 	@Override

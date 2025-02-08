@@ -24,10 +24,11 @@ public class InsertState extends Finance_Class implements Finance_Interface {
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	String nowstr = sdf.format(now);
 	inlist = l;
-	String sql = "insert into state values(sq_state_lecno.nextval, "+nowstr+", ?, ?, ?)";
+	sql = "insert into state values(sq_state_lecno.nextval, "+nowstr+", ?, ?, ?)";
+	//System.out.println(sql);
 	pstmt = conn.prepareStatement(sql);
 	for (int i = 0; i < inlist.size(); i++) {
-		System.out.println("inlist:"+inlist.get(i));
+		//System.out.println("inlist:"+inlist.get(i));
 		pstmt.setString(i+1, inlist.get(i));
 	}
 	int cnt = pstmt.executeUpdate();
