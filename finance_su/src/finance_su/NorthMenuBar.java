@@ -3,12 +3,12 @@ package finance_su;
 import java.awt.*;
 import javax.swing.*;
 
-public class northMenuBar extends JFrame {
+public class NorthMenuBar extends JFrame {
 
 	JPanel northFirstP;
 	JButton b_menusave, b_menufavorites, b_menuclose;
 
-	public northMenuBar() {
+	public NorthMenuBar() {
 		super();
 
 		BorderLayout mainLayout = new BorderLayout(10, 10);
@@ -55,7 +55,7 @@ public class northMenuBar extends JFrame {
 
 	public static void main(String[] args) {
 
-		new northMenuBar();
+		new NorthMenuBar();
 
 	}
 
