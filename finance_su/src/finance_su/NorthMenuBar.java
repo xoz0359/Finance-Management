@@ -6,7 +6,7 @@ import javax.swing.*;
 public class NorthMenuBar extends JFrame {
 
 	JPanel northFirstP;
-	JButton b_menusave, b_menufavorites, b_menuclose;
+	JButton b_menufavorites, b_forward, b_backward, b_menuclose;
 
 	public NorthMenuBar() {
 		super();
@@ -19,11 +19,15 @@ public class NorthMenuBar extends JFrame {
 		northFirstP.setLayout(northLayout);
 		northFirstP.setBackground(Color.black);
 
-		b_menusave = new JButton("Áñ°ÜÃ£±â");
-		this.l_menu_design(b_menusave);
-		this.jb_color_change(b_menusave);
-
-		b_menufavorites = new JButton("µÚ·Î°¡±â");
+		b_backward = new JButton("¡ç");
+		this.l_menu_design(b_backward);
+		this.jb_color_change(b_backward);
+		
+		b_forward = new JButton("¡æ");
+		this.l_menu_design(b_forward);
+		this.jb_color_change(b_forward);
+		
+		b_menufavorites = new JButton("Áñ°ÜÃ£±â");
 		this.l_menu_design(b_menufavorites);
 		this.jb_color_change(b_menufavorites);
 
@@ -31,15 +35,12 @@ public class NorthMenuBar extends JFrame {
 		this.l_menu_design(b_menuclose);
 		this.jb_color_change(b_menuclose);
 
-		northFirstP.add(b_menusave);
+		northFirstP.add(b_backward);
+		northFirstP.add(b_forward);
 		northFirstP.add(b_menufavorites);
 		northFirstP.add(b_menuclose);
 
 		this.add(northFirstP, "North");
-
-		this.setSize(500, 600);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
 
 	}
 
@@ -53,10 +54,5 @@ public class NorthMenuBar extends JFrame {
 		jl.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 20));
 	}
 
-	public static void main(String[] args) {
-
-		new NorthMenuBar();
-
-	}
 
 }
