@@ -13,7 +13,7 @@ public class InsertDept extends JPanel {
 
     public InsertDept() {
     	gridbag = new GridBagLayout();
-
+	setLayout(gridbag);
     	
     	constraint = new GridBagConstraints();
     	constraint.fill = GridBagConstraints.BOTH;
@@ -21,7 +21,7 @@ public class InsertDept extends JPanel {
 
     	constraint.gridx = 0;
         constraint.gridy = 0;
-        deptCode = new JLabel("°èÁ¤ÄÚµå¸í  :", JLabel.RIGHT);
+        deptCode = new JLabel("Â°Ã¨ÃÂ¤Ã„ÃšÂµÃ¥Â¸Ã­  :", JLabel.RIGHT);
         gridbag.setConstraints(deptCode, constraint);
         add(deptCode);
         
@@ -47,14 +47,14 @@ public class InsertDept extends JPanel {
         constraint.anchor = GridBagConstraints.EAST;
         constraint.gridx = 1;
         constraint.gridy = 1;
-        jbttnSave = new JButton("ÀúÀå");
+        jbttnSave = new JButton("Ã€ÃºÃ€Ã¥");
         jbttnSave.setPreferredSize(new Dimension(60, 23));
         gridbag.setConstraints(jbttnSave, constraint);
         add(jbttnSave);
         
         constraint.gridx = 2;
         constraint.gridy = 1;
-        jbttnClose = new JButton("´İ±â");
+        jbttnClose = new JButton("Â´ÃÂ±Ã¢");
         jbttnClose.setPreferredSize(new Dimension(60, 23));
         gridbag.setConstraints(jbttnClose, constraint);
         add(jbttnClose);
