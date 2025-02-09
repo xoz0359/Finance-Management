@@ -29,15 +29,15 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	HashMap <Integer, String> isp_map, sfp_map, ssp_map;
 	ArrayList <String> isplist, siplist, uilist, aiplist, sfp_list, tnamelist, sfplist, ssplist, p_backwardlog, p_forwardlog;
 	ResultSet rs, sirs;
-	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, sfp_show, ssp_show, jb_stateinput, jb_stateselect, jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_backward, jb_forward;
+	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, sfp_show, ssp_show, stp_show, jb_stateinput, jb_stateselect, jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_teamselect, jb_backward, jb_forward;
 	CardLayout incard, outcard;
-	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, spanel5, spanel6, westbar, northbar;
-	DefaultTableModel ispdtm, sipdtm, aipdtm, sfpdtm, sspdtm;
+	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, spanel5, spanel6, spanel7, westbar, northbar;
+	DefaultTableModel ispdtm, sipdtm, aipdtm, sfpdtm, sspdtm, stpdtm;
 	Integer backcnt, forcnt;
 	JTable ispjt;
 	JComboBox jc_date;
 	
-	// 할일 명사 동사 순서로 객체 명명규칙 바꾸기...
+	// 할일 동사 명사 순서로 객체 명명규칙 바꾸기...
 	
 	public Finance_Management() {
 				// backward, forward 정보 저장용 리스트 생성
@@ -63,6 +63,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				spanel4 = new JPanel(new BorderLayout());
 				spanel5 = new JPanel(new BorderLayout());
 				spanel6 = new JPanel(new BorderLayout());
+				spanel7 = new JPanel(new BorderLayout());
 				
 				// 로그인 패널 생성
 				LoginForm tp = new LoginForm();
@@ -94,8 +95,12 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 		        });
 				
 				// 장부 조회 화면 호출
-				StateShow ssp = new StateShow();
+				ShowState ssp = new ShowState();
 				sspdtm = ssp.dtm;
+				
+				// 부서 조회 화면 호출
+				ShowTeam stp = new ShowTeam();
+				stpdtm = stp.fs_tableModel;
 				
 				// 매출 조회 메뉴화면 호출
 				IncomeSP sip = new IncomeSP();
@@ -147,16 +152,21 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				totalpanel.add(northbar, "North");
 				cardpanel.add(spanel1, "MainPanel");
 				cardpanel.add(spanel2, "InsertStatePanel");
-				cardpanel.add(spanel6, "SelectStatePanel");
-				cardpanel.add(spanel3, "SelectIncomPanel");
-				cardpanel.add(spanel4, "AnalysisIncomPanel");
-				cardpanel.add(spanel5, "SelectFin_stPanel");
+				cardpanel.add(spanel3, "SelectStatePanel");
+				cardpanel.add(spanel4, "SelectTeamPanel");
+				cardpanel.add(spanel5, "SelectIncomPanel");
+				cardpanel.add(spanel6, "AnalysisIncomPanel");
+				cardpanel.add(spanel7, "SelectFin_stPanel");
+				
 				spanel1.add(mp, "Center");
 				spanel2.add(isp, "Center");
-				spanel3.add(sip, "Center");
-				spanel4.add(aip, "Center");
-				spanel5.add(sfp, "Center");
-				spanel6.add(ssp, "Center");
+				spanel3.add(ssp, "Center");
+				spanel4.add(stp, "Center");
+				spanel5.add(sip, "Center");
+				spanel6.add(aip, "Center");
+				spanel7.add(sfp, "Center");
+				
+				
 				
 				
 				
@@ -164,6 +174,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				// 호출된 인스턴스의 주소 연결
 				login_btt = tp.check;
 				sip_show = sip.jb_infoShow;
+				jc_date = isp.jc_date;
+				stp_show = stp.b_check;
 				isp_save = isp.jb_save;
 				aip_show = aip.jb_infoShow;
 				sfp_show = sfp.b_check;
@@ -173,11 +185,12 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				jb_incomeselect = mp.jb_incomeSelect;
 				jb_incomeanalysis = mp.jb_incomeAnalysis;
 				jb_fin_stselect = mp.jb_fin_st;
+				jb_teamselect = mp.jb_teamSelect;
 				jb_backward = nb.b_backward;
 				jb_forward = nb.b_forward;
 				ispjt = isp.jt_s;
 				isp_dateinsert = isp.jb_dateinsert;
-				jc_date = isp.jc_date;
+				
 				
 				
 				// 호출한 인스턴스와 이벤트 핸들러 연결
@@ -185,12 +198,14 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				login_btt.addActionListener(this);
 				jb_stateinput.addActionListener(this);
 				jb_stateselect.addActionListener(this);
+				jb_teamselect.addActionListener(this);
 				jb_incomeselect.addActionListener(this);
 				jb_incomeanalysis.addActionListener(this);
 				jb_fin_stselect.addActionListener(this);
 				jb_backward.addActionListener(this);
 				jb_forward.addActionListener(this);
 				isp_save.addMouseListener(this);
+				stp_show.addMouseListener(this);
 				ssp_show.addMouseListener(this);
 				sip_show.addMouseListener(this);
 				aip_show.addMouseListener(this);
@@ -269,6 +284,12 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			}
 			p_backwardlog.add("SelectStatePanel");
 			incard.show(cardpanel, "SelectStatePanel");
+		}else if (e.getSource() == jb_teamselect) {
+			if (p_forwardlog.size() > 0) {
+				p_forwardlog.clear();
+			}
+			p_backwardlog.add("SelectTeamPanel");
+			incard.show(cardpanel, "SelectTeamPanel");
 		}else if (e.getSource() == jb_backward) {
 			if(p_backwardlog.size() > 1) {
 			p_forwardlog.add(p_backwardlog.getLast());
@@ -351,8 +372,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			try {
 				SelectIncome si = new SelectIncome();
 				//System.out.println("조회 이벤트 발생!");
-				sirs = si.getSelection();
-				if (!sirs.next()) {
+				rs = si.getSelection();
+				if (!rs.next()) {
 					//System.out.println("가져올 row가 없자너 ㅠㅠ");
 					si.rs.close();
 					si.pstmt.close();
@@ -362,15 +383,15 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 						// 기존의 row를 삭제 후 새 row 삽입
 						int rowcnt = 0;
 						sipdtm.removeRow(rowcnt);
-						sipdtm.insertRow(rowcnt, new Object[] {sirs.getString("DEPT"), sirs.getString("JAN"), sirs.getString("FEB"),
-								sirs.getString("MAR"), sirs.getString("APR"), sirs.getString("MAY"), sirs.getString("JUN"),
-								sirs.getString("JUL"), sirs.getString("AUG"), sirs.getString("SEP"), sirs.getString("OCT"),
-								sirs.getString("NOV"), sirs.getString("DEC"), sirs.getString("EXPECTINCOME")});
-					}while(sirs.next());
+						sipdtm.insertRow(rowcnt, new Object[] {rs.getString("DEPT"), rs.getString("JAN"), rs.getString("FEB"),
+								rs.getString("MAR"), rs.getString("APR"), rs.getString("MAY"), rs.getString("JUN"),
+								rs.getString("JUL"), rs.getString("AUG"), rs.getString("SEP"), rs.getString("OCT"),
+								rs.getString("NOV"), rs.getString("DEC"), rs.getString("EXPECTINCOME")});
+					}while(rs.next());
 					si.rs.close();
 					si.pstmt.close();
 					si.conn.close();
-					sipdtm.fireTableDataChanged();
+					sipdtm.fireTableDataChanged(); // 패널 안 바뀔 때 새로고침
 					//System.out.println("아마 출력 잘 된 것 같지롱~");
 				}
 				
@@ -378,7 +399,31 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		} else if (e.getSource() == aip_show) {
+		} else if(e.getSource() == stp_show) {
+			try {
+				SelectTeam st = new SelectTeam();
+				rs = st.getSelection();
+				if (!rs.next()) {
+					//System.out.println("가져올 row가 없자너 ㅠㅠ");
+					st.rs.close();
+					st.pstmt.close();
+					st.conn.close();
+				}else {
+					do {
+						// 기존의 row를 삭제 후 새 row 삽입
+						int rowcnt = 0;
+						stpdtm.removeRow(rowcnt);
+						stpdtm.insertRow(rowcnt, new Object[] {rs.getString("DEPT"), rs.getString("Teamname")});
+					}while(rs.next());
+					st.rs.close();
+					st.pstmt.close();
+					st.conn.close();
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}else if (e.getSource() == aip_show) {
 			// 필요한 정보들 부서이름, 예상매출액, 누적매출액, 달성률
 			// team, income table에서 각각 select 받은 정보로 테이블 구성해서 보여주기
 			try {
