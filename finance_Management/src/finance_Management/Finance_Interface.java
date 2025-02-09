@@ -8,6 +8,10 @@ public interface Finance_Interface {
 		return null;
 	}
 	
+	default ResultSet getSelection(ArrayList <String> l) throws SQLException {
+		return null;
+	}
+	
 	default ResultSet getSelection(HashMap <Integer, String> m, ArrayList <String> l) throws SQLException {
 		return null;
 	}
@@ -16,11 +20,12 @@ public interface Finance_Interface {
 		return null;
 	}
 	
+	default Integer getDML(ArrayList <String> l) throws SQLException {
+		return null;
+	}
+	
 	default Integer getDML(HashMap <Integer, String> m, ArrayList <String> l) throws SQLException {
 		return null;
 	}
 	
-	default Integer getDML(ArrayList <String> l) throws SQLException {
-		return null;
-	}
 }
