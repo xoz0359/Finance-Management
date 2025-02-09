@@ -26,13 +26,13 @@ import javax.swing.table.DefaultTableModel;
 
 public class Finance_Management extends Frame implements ActionListener, MouseListener, MouseMotionListener, KeyListener{
 	
-	HashMap <Integer, String> isp_map;
-	ArrayList <String> isplist, siplist, uilist, aiplist, tnamelist, sfplist, p_backwardlog, p_forwardlog;
+	HashMap <Integer, String> isp_map, sfp_map, ssp_map;
+	ArrayList <String> isplist, siplist, uilist, aiplist, sfp_list, tnamelist, sfplist, ssplist, p_backwardlog, p_forwardlog;
 	ResultSet rs, sirs;
-	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, jb_stateInput, jb_incomeSelect, jb_incomeanalysis, jb_backward, jb_forward;
+	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, sfp_show, ssp_show, jb_stateinput, jb_stateselect, jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_backward, jb_forward;
 	CardLayout incard, outcard;
-	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, westbar, northbar;
-	DefaultTableModel ispdtm, sipdtm, aipdtm;
+	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, spanel5, spanel6, westbar, northbar;
+	DefaultTableModel ispdtm, sipdtm, aipdtm, sfpdtm, sspdtm;
 	Integer backcnt, forcnt;
 	JTable ispjt;
 	JComboBox jc_date;
@@ -61,6 +61,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				spanel2 = new JPanel(new BorderLayout());
 				spanel3 = new JPanel(new BorderLayout());
 				spanel4 = new JPanel(new BorderLayout());
+				spanel5 = new JPanel(new BorderLayout());
+				spanel6 = new JPanel(new BorderLayout());
 				
 				// 로그인 패널 생성
 				LoginForm tp = new LoginForm();
@@ -90,6 +92,10 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 		                }
 		            }
 		        });
+				
+				// 장부 조회 화면 호출
+				StateShow ssp = new StateShow();
+				sspdtm = ssp.dtm;
 				
 				// 매출 조회 메뉴화면 호출
 				IncomeSP sip = new IncomeSP();
@@ -127,7 +133,9 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 					}
 				});
 				
+				// 재무제표 조회 화면 호출
 				FinancialStatements sfp = new FinancialStatements();
+				sfpdtm = sfp.fs_tableModel;
 				
 				
 				
@@ -139,41 +147,55 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				totalpanel.add(northbar, "North");
 				cardpanel.add(spanel1, "MainPanel");
 				cardpanel.add(spanel2, "InsertStatePanel");
+				cardpanel.add(spanel6, "SelectStatePanel");
 				cardpanel.add(spanel3, "SelectIncomPanel");
 				cardpanel.add(spanel4, "AnalysisIncomPanel");
+				cardpanel.add(spanel5, "SelectFin_stPanel");
 				spanel1.add(mp, "Center");
 				spanel2.add(isp, "Center");
 				spanel3.add(sip, "Center");
 				spanel4.add(aip, "Center");
+				spanel5.add(sfp, "Center");
+				spanel6.add(ssp, "Center");
 				
 				
 				
-				// 객체와 인스턴스 주소 연결
+				
+				// 호출된 인스턴스의 주소 연결
 				login_btt = tp.check;
 				sip_show = sip.jb_infoShow;
 				isp_save = isp.jb_save;
 				aip_show = aip.jb_infoShow;
-				jb_stateInput = mp.jb_stateInput;
-				jb_incomeSelect = mp.jb_incomeSelect;
+				sfp_show = sfp.b_check;
+				ssp_show = ssp.jb_save;
+				jb_stateinput = mp.jb_stateInput;
+				jb_stateselect = mp.jb_stateSelect;
+				jb_incomeselect = mp.jb_incomeSelect;
 				jb_incomeanalysis = mp.jb_incomeAnalysis;
+				jb_fin_stselect = mp.jb_fin_st;
 				jb_backward = nb.b_backward;
 				jb_forward = nb.b_forward;
 				ispjt = isp.jt_s;
 				isp_dateinsert = isp.jb_dateinsert;
 				jc_date = isp.jc_date;
 				
-				// 화면 전환과 이벤트 핸들러 연결
+				
+				// 호출한 인스턴스와 이벤트 핸들러 연결
 				outcard.show(this, "TitlePanel");
 				login_btt.addActionListener(this);
-				jb_stateInput.addActionListener(this);
-				jb_incomeSelect.addActionListener(this);
+				jb_stateinput.addActionListener(this);
+				jb_stateselect.addActionListener(this);
+				jb_incomeselect.addActionListener(this);
 				jb_incomeanalysis.addActionListener(this);
-				isp_save.addMouseListener(this);
-				sip_show.addMouseListener(this);
-				aip_show.addMouseListener(this);
+				jb_fin_stselect.addActionListener(this);
 				jb_backward.addActionListener(this);
 				jb_forward.addActionListener(this);
+				isp_save.addMouseListener(this);
+				ssp_show.addMouseListener(this);
+				sip_show.addMouseListener(this);
+				aip_show.addMouseListener(this);
 				isp_dateinsert.addMouseListener(this);
+				sfp_show.addMouseListener(this);
 				
 				// 자주 쓰는 정보 db에서 받아와서 저장해두기
 				try {
@@ -217,13 +239,13 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			p_backwardlog.add("MainPanel");
 			outcard.show(this, "menu");
 			incard.show(cardpanel, "MainPanel");
-		} else if (e.getSource() == jb_stateInput) {
+		} else if (e.getSource() == jb_stateinput) {
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
 			}
 			p_backwardlog.add("InsertStatePanel");
 			incard.show(cardpanel, "InsertStatePanel");
-		} else if (e.getSource() == jb_incomeSelect) {
+		} else if (e.getSource() == jb_incomeselect) {
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
 			}
@@ -235,7 +257,19 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			}
 			p_backwardlog.add("AnalysisIncomPanel");
 			incard.show(cardpanel, "AnalysisIncomPanel");
-		} else if (e.getSource() == jb_backward) {
+		} else if (e.getSource() == jb_fin_stselect) {
+			if (p_forwardlog.size() > 0) {
+				p_forwardlog.clear();
+			}
+			p_backwardlog.add("SelectFin_stPanel");
+			incard.show(cardpanel, "SelectFin_stPanel");
+		} else if (e.getSource() == jb_stateselect) {
+			if (p_forwardlog.size() > 0) {
+				p_forwardlog.clear();
+			}
+			p_backwardlog.add("SelectStatePanel");
+			incard.show(cardpanel, "SelectStatePanel");
+		}else if (e.getSource() == jb_backward) {
 			if(p_backwardlog.size() > 1) {
 			p_forwardlog.add(p_backwardlog.getLast());
 			incard.show(cardpanel, p_backwardlog.get(p_backwardlog.size()-2));
@@ -251,9 +285,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			}else {
 				
 			}
-		} else{
-			
-		}
+		} 
 	}
 	
 	@Override
@@ -382,6 +414,45 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 		} else if (e.getSource() == isp_dateinsert) {
 			int rowcnt = 0;
 			ispdtm.insertRow(rowcnt, new Object[] {"", jc_date.getSelectedItem().toString(), "", "", ""});
+		} else if (e.getSource() == sfp_show) {
+			try {
+				SelectFin_st sf = new SelectFin_st();
+				rs = sf.getSelection();
+				int rowcnt = 0;
+				if(!rs.next()) {
+					System.out.println("가져올 데이터가 없어요");
+					rs.close();
+					sf.pstmt.close();
+					sf.conn.close();
+				}do {
+					sfpdtm.removeRow(rowcnt);
+					sfpdtm.insertRow(rowcnt, new Object[] {tnamelist.get(rowcnt), rs.getString("amount")});
+					rowcnt++;
+				}while(rs.next());
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} else if (e.getSource() == ssp_show) {
+			try {
+				SelectState ss = new SelectState();
+				rs = ss.getSelection();
+				int rowcnt = 0;
+				if(!rs.next()) {
+					System.out.println("가져올 데이터가 없어요");
+					rs.close();
+					ss.pstmt.close();
+					ss.conn.close();
+				}do {
+					sspdtm.removeRow(rowcnt);
+					sspdtm.insertRow(rowcnt, new Object[] {rs.getString("LECNO"), rs.getString("LECDATE"), rs.getString("SMCODE"), rs.getString("DEPT"), rs.getString("AMOUNT")});
+					rowcnt++;
+				}while(rs.next());
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		}
 	}
 	
