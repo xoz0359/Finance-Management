@@ -3,7 +3,7 @@ package inserrDept;
 import javax.swing.*;
 import java.awt.*;
 
-public class ErrorDialog extends JPanel {
+public class ErrorDialog extends JDialog {
     JLabel jlAlarm;
     JButton jbClose;
     JPanel jpCenter, jpSouth;
@@ -11,12 +11,6 @@ public class ErrorDialog extends JPanel {
     public ErrorDialog(JFrame parent, String message) {
         super(parent, "Error", true); 
         setLayout(new BorderLayout(0, 0));
-
-        try {
-            message = new String(message.getBytes("UTF-8"), "MS949");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         jlAlarm = new JLabel(message, SwingConstants.CENTER);
         jlAlarm.setHorizontalAlignment(SwingConstants.CENTER);
