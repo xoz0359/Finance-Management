@@ -2,51 +2,83 @@ package finance_Management;
 
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.*;
+import javax.swing.border.LineBorder;
 
 public class LoginForm extends JPanel {
-   String dbid = "scott";
-   String dbpw = "1234";
-   JPanel j_window;
+    GridBagLayout gbl = new GridBagLayout();
+    GridBagConstraints gbc = new GridBagConstraints();
+    JPanel pWindow;
+    JPanel jp1;
+    JPanel jp2;
+    JPanel jp3;
+    JPanel jp4;
+    JPanel jp5;
+    JPanel jp6;
+    JLabel jlId;
+    JTextField jtId;
+    JLabel jlPw;
+    JPasswordField jtPw;
+    JLabel jlAut;
+    String[] authority = {"관리자", "사용자"};
+    JButton cancle;
+    JButton check;
+    JComboBox<String> jcAut;
 
-   JLabel titlelb;
-   JPanel j_top;
-   JPanel j_middle;
-   JPanel p_log;
-   JLabel j_id;
-   JLabel j_pw;
-   JTextField idfield;	
-   JPasswordField pwfield;
-   JButton login_btt;
+    public LoginForm() {
 
-   public LoginForm() {
-      j_window = new JPanel(new BorderLayout());
-      
-      j_top = new JPanel(new BorderLayout());
-      titlelb = new JLabel("재무제표", JLabel.CENTER);
-      j_top.add(titlelb);
-      j_window.add(j_top, BorderLayout.CENTER);
+        pWindow = new JPanel(new GridBagLayout());
 
-      j_middle = new JPanel(new BorderLayout());
-      p_log = new JPanel(new GridLayout(2, 2, 0, 0));
-      j_id = new JLabel("ID");
-      j_pw = new JLabel("PW");
-      idfield = new JTextField();
-      pwfield = new JPasswordField();
-      j_id.setHorizontalAlignment(JLabel.CENTER);
-      j_pw.setHorizontalAlignment(JLabel.CENTER);
+        jp1 = new JPanel(new BorderLayout());
+        jlId = new JLabel("ID : ", JLabel.RIGHT);
+        gbadd(jp1, 0, 0, 1, 1, pWindow);
 
-      p_log.add(j_id);
-      p_log.add(idfield);
-      p_log.add(j_pw);
-      p_log.add(pwfield);
+        jp2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        jtId = new JTextField(12);
+        gbadd(jp2, 1, 0, 2, 2, pWindow);
 
-      j_middle.add(p_log);
+        jp3 = new JPanel(new BorderLayout());
+        jlPw = new JLabel("PASSWORD : ", JLabel.RIGHT);
+        gbadd(jp3, 0, 1, 1, 1, pWindow);
 
-      login_btt = new JButton("Login");
-      j_middle.add(login_btt, BorderLayout.SOUTH);
-      j_window.add(j_middle, BorderLayout.SOUTH);
-      
-      this.add(j_window);
-   }
+        jp4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        jtPw = new JPasswordField(12);
+        gbadd(jp4, 1, 1, 2, 1, pWindow);
+
+        jp5 = new JPanel(new BorderLayout());
+        jlAut = new JLabel("권한 : ", JLabel.RIGHT);
+        gbadd(jp5, 0, 2, 1, 1, pWindow);
+
+        jp6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        jcAut = new JComboBox<String>(authority);
+        jcAut.setPreferredSize(new Dimension(135, 25));
+        gbadd(jp6, 1, 2, 2, 1, pWindow);
+
+        
+        cancle = new JButton("취소");
+        check = new JButton("저장");
+
+        cancle.setBounds(235, 185, 70, 25);
+        check.setBounds(320, 185, 70, 25);
+        
+
+        jp1.add(jlId);
+        jp2.add(jtId);
+        jp3.add(jlPw);
+        jp4.add(jtPw);
+        jp5.add(jlAut);
+        jp6.add(jcAut);
+        this.add(cancle);
+        this.add(check);
+        this.add(pWindow);
+    }
+
+    public void gbadd(Component c, int x, int y, int tx, int w, JPanel p_window) {
+        gbc.gridx = x;
+        gbc.gridy = y;
+        gbc.weightx = tx;
+        gbc.gridwidth = w;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        p_window.add(c, gbc);
+    }
 }

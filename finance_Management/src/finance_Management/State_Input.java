@@ -4,9 +4,13 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.swing.plaf.basic.BasicComboBoxUI; //콤보박스 화살표 디자인위해 임포트
@@ -15,12 +19,12 @@ public class State_Input extends JPanel{
 	
 	JPanel p_main_center,p_stateInput,p_siNorth,p_dateInput,p_save;
 	Container cont;
-	JLabel l_menu1,l_y,l_m,l_d;
-	JComboBox jc_y,jc_m,jc_cn,jc_tc;
+	JLabel l_menu1,l_date;
+	JComboBox jc_date,jc_cn,jc_tc;
 	JTextField jtf_d;
 	JTable jt_s;
 	DefaultTableModel dtm;
-	JButton jb_save;
+	JButton jb_save, jb_dateinsert;
 	ArrayList<String> list;
 	
 	
@@ -35,12 +39,25 @@ public class State_Input extends JPanel{
 		//저장 판넬 & 버튼 생성
 		p_save = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		jb_save = new JButton("저장"); 
+		jb_dateinsert = new JButton("선택");
 		//저장 버튼 디자인
 //		jb_save.setBackground(Color.black);
 		jb_save.setBackground(Color.white);
-		//날짜입력판넬에 들어갈 연도,월 콤보박스 생성 + 일 텍스트 필드
-		String[] y={"2020", "2021", "2022", "2023","2024"};
-		String[] m= {"1","2","3","4","5","6","7","8","9","10","11","12"};
+		jb_dateinsert.setBackground(Color.white);
+		
+		// 날짜입력판넬에 들어갈 String 배열 생성
+		String[] date = new String [31];
+		
+		for (int i = 0; i < 31; i++) {
+		Calendar cal1 = Calendar.getInstance();
+		cal1.add(Calendar.DATE, (i-(i*2))); // 빼고 싶다면 음수 입력
+		Date now = new Date(cal1.getTimeInMillis());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		date [i] = sdf.format(now);
+		}
+		
+		
+		// 날짜입력판넬에 들어갈 연도,월 콤보박스 생성 + 일 텍스트 필드
 		String[] columnName = {"","전표일자", "계정과목", "부서번호", "금액"};
 		String[] cn_array = {"","영업수익(매출)","금융수익","영업비용","기타비용","금융비용",
 				"유형자산 취득","유형자산 처분","부채상환"};
@@ -51,16 +68,43 @@ public class State_Input extends JPanel{
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				// TODO Auto-generated method stub
-				return column!=0 ;
+				return column < 0 || column > 1;
 			}
 		};
 		
 		//테이블 객체를 생성해 놓은 테이블 모델을 이용해 생성
 		jt_s = new JTable(dtm);
 		
+
+        // jt_s의 셀 렌더러 설정 (편집 불가능한 행을 회색으로 표시)
+        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable jt_s, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                Component cell = super.getTableCellRendererComponent(jt_s, value, isSelected, hasFocus, row, column);
+                
+                // 편집 불가능한 행을 회색으로 설정
+                if (!jt_s.isCellEditable(row, column)) {
+                    cell.setBackground(Color.LIGHT_GRAY); // 편집할 수 없는 컬럼의 색상
+                } else {
+                    cell.setBackground(Color.WHITE); // 기본 색상
+                }
+
+                return cell;
+            }
+        };
+
+        // 모든 열에 대해 렌더러 적용
+        for (int i = 0; i < jt_s.getColumnCount(); i++) {
+            jt_s.getColumnModel().getColumn(i).setCellRenderer(renderer);
+        }
+
+		
+		
 		//부서 번호랑 계정과목 배열로 콤보박스 객체 생성 + 디자인
-		jc_cn = new JComboBox(cn_array);this.jcb_design(jc_cn);
-		jc_tc = new JComboBox(tc_array);this.jcb_design(jc_tc);
+		//jc_cn = new JComboBox(cn_array);this.jcb_design(jc_cn);
+		//jc_tc = new JComboBox(tc_array);this.jcb_design(jc_tc);
 		
 		//테이블의 모든 열을 선택 -> 하나의 열을 선택 -> 수정하는 메서드 실행 -> 콤보박스로 수정
 		//jt_s.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(jc_cn));
@@ -76,22 +120,16 @@ public class State_Input extends JPanel{
 		
 		
 		//날짜 입력하는 콤보박스랑 텍스트필드(길이:3) 생성 + 콤보박스 디자인
-		jc_y = new JComboBox(y);this.jcb_design(jc_y);
-		jc_m = new JComboBox(m);this.jcb_design(jc_m);
-		jtf_d = new JTextField(3);
+		jc_date = new JComboBox(date);this.jcb_design(jc_date);
 		
 		//날짜 관련 라벨 생성
-		l_y = new JLabel("년");
-		l_m = new JLabel("월");
-		l_d = new JLabel("일");
-		
+		l_date = new JLabel("일자: ");
+
 		//날짜입력판넬에 콤보박스&라벨 추가
-		p_dateInput.add(jc_y);
-		p_dateInput.add(l_y);
-		p_dateInput.add(jc_m);
-		p_dateInput.add(l_m);
-		p_dateInput.add(jtf_d);
-		p_dateInput.add(l_d);
+		
+		p_dateInput.add(l_date);
+		p_dateInput.add(jc_date);
+		p_dateInput.add(jb_dateinsert);
 		
 		//저장버튼을 저장 판넬에 추가
 		p_save.add(jb_save);
