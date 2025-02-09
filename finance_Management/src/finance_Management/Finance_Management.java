@@ -27,13 +27,14 @@ import javax.swing.table.DefaultTableModel;
 public class Finance_Management extends Frame implements ActionListener, MouseListener, MouseMotionListener, KeyListener{
 	
 	HashMap <Integer, String> isp_map, sfp_map, ssp_map;
-	ArrayList <String> isplist, siplist, uilist, aiplist, sfp_list, tnamelist, sfplist, ssplist, p_backwardlog, p_forwardlog;
+	ArrayList <String> uiflist, isplist, siplist, uilist, aiplist, sfp_list, tnamelist, sfplist, ssplist, p_backwardlog, p_forwardlog;
 	ResultSet rs, sirs;
 	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, sfp_show, ssp_show, stp_show, jb_stateinput, jb_stateselect, jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_teamselect, jb_backward, jb_forward;
+	JTextField id_jtext, pwd_jtext;
 	CardLayout incard, outcard;
 	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, spanel5, spanel6, spanel7, westbar, northbar;
 	DefaultTableModel ispdtm, sipdtm, aipdtm, sfpdtm, sspdtm, stpdtm;
-	Integer backcnt, forcnt;
+	Integer backcnt, forcnt, accesslv;
 	JTable ispjt;
 	JComboBox jc_date;
 	
@@ -173,6 +174,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				
 				// 호출된 인스턴스의 주소 연결
 				login_btt = tp.check;
+				id_jtext = tp.jtId;
+				pwd_jtext = tp.jtPw;
 				sip_show = sip.jb_infoShow;
 				jc_date = isp.jc_date;
 				stp_show = stp.b_check;
@@ -248,12 +251,45 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	@Override // 이벤트 처리를 위한 기본적인 엑션 핸들러
 	public void actionPerformed(ActionEvent e) {
 		 if (e.getSource() == login_btt) {
+			 boolean grant = false;
+			 uiflist = new ArrayList<String>();
+			 uiflist.add(id_jtext.getText());
+			 uiflist.add(pwd_jtext.getText());
+			 try {
+				SelectUser_Info su = new SelectUser_Info();
+				rs = su.getSelection(uiflist);
+				if (!rs.next()) {
+					System.out.println("잘못된 ID입니다");
+					su.rs.close();
+					su.pstmt.close();
+					su.conn.close();
+				}else {
+					do {
+						// db에 저장된 id와 pwd 모두 매치하지 않으면 grant는 false
+						grant = uiflist.get(1).equals(rs.getString("pwd"));
+						accesslv = rs.getInt("accesslv");
+					}while(rs.next());
+					su.rs.close();
+					su.pstmt.close();
+					su.conn.close();
+				}
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			 
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
 			}
-			p_backwardlog.add("MainPanel");
-			outcard.show(this, "menu");
-			incard.show(cardpanel, "MainPanel");
+			if (grant) {
+				p_backwardlog.add("MainPanel");
+				outcard.show(this, "menu");
+				incard.show(cardpanel, "MainPanel");
+			}else {
+				System.out.println("잘못된 비밀번호입니다");
+				
+			}
+			uiflist.clear();
 		} else if (e.getSource() == jb_stateinput) {
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
