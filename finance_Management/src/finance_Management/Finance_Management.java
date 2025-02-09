@@ -27,14 +27,15 @@ import javax.swing.table.DefaultTableModel;
 public class Finance_Management extends Frame implements ActionListener, MouseListener, MouseMotionListener, KeyListener{
 	
 	HashMap <Integer, String> isp_map;
-	ArrayList <String> isplist, siplist, uilist, aiplist, tnamelist, p_backwardlog, p_forwardlog;
+	ArrayList <String> isplist, siplist, uilist, aiplist, tnamelist, sfplist, p_backwardlog, p_forwardlog;
 	ResultSet rs, sirs;
-	JButton login_btt, isp_save, sip_show, aip_show, jb_stateInput, jb_incomeSelect, jb_incomeanalysis, jb_backward, jb_forward;
+	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, jb_stateInput, jb_incomeSelect, jb_incomeanalysis, jb_backward, jb_forward;
 	CardLayout incard, outcard;
 	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, westbar, northbar;
 	DefaultTableModel ispdtm, sipdtm, aipdtm;
 	Integer backcnt, forcnt;
 	JTable ispjt;
+	JComboBox jc_date;
 	
 	// 할일 명사 동사 순서로 객체 명명규칙 바꾸기...
 	
@@ -126,6 +127,10 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 					}
 				});
 				
+				FinancialStatements sfp = new FinancialStatements();
+				
+				
+				
 				// 패널 조립
 				this.add(tp, "TitlePanel");
 				this.add(totalpanel, "menu");
@@ -144,7 +149,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				
 				
 				// 객체와 인스턴스 주소 연결
-				login_btt = tp.login_btt;
+				login_btt = tp.check;
 				sip_show = sip.jb_infoShow;
 				isp_save = isp.jb_save;
 				aip_show = aip.jb_infoShow;
@@ -154,6 +159,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				jb_backward = nb.b_backward;
 				jb_forward = nb.b_forward;
 				ispjt = isp.jt_s;
+				isp_dateinsert = isp.jb_dateinsert;
+				jc_date = isp.jc_date;
 				
 				// 화면 전환과 이벤트 핸들러 연결
 				outcard.show(this, "TitlePanel");
@@ -166,6 +173,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				aip_show.addMouseListener(this);
 				jb_backward.addActionListener(this);
 				jb_forward.addActionListener(this);
+				isp_dateinsert.addMouseListener(this);
 				
 				// 자주 쓰는 정보 db에서 받아와서 저장해두기
 				try {
@@ -371,7 +379,10 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-		} 
+		} else if (e.getSource() == isp_dateinsert) {
+			int rowcnt = 0;
+			ispdtm.insertRow(rowcnt, new Object[] {"", jc_date.getSelectedItem().toString(), "", "", ""});
+		}
 	}
 	
 	@Override
