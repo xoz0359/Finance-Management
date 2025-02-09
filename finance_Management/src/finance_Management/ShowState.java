@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 import javax.swing.plaf.basic.BasicComboBoxUI; //콤보박스 화살표 디자인위해 임포트
 
-public class StateShow extends JPanel{
+public class ShowState extends JPanel{
 	
 	JPanel p_main_center,p_stateInput,p_siNorth,p_dateInput,p_save;
 	Container cont;
@@ -29,7 +29,7 @@ public class StateShow extends JPanel{
 	
 	
 	
-	public StateShow() {
+	public ShowState() {
 		//gui 서쪽에 들어갈 서쪽판넬 및 센터에 들어갈 입력판넬 생성
 		p_stateInput = new JPanel(new BorderLayout());
 		//전표입력판넬 위쪽에 들어갈 판넬 생성
