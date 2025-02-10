@@ -281,7 +281,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
 			}
-			if (grant) {
+			if (true) {
 				p_backwardlog.add("MainPanel");
 				outcard.show(this, "menu");
 				incard.show(cardpanel, "MainPanel");
