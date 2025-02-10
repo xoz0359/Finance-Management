@@ -30,7 +30,8 @@ public class State_Input extends JPanel{
 	
 	
 	public State_Input() {
-		//gui 서쪽에 들어갈 서쪽판넬 및 센터에 들어갈 입력판넬 생성
+		this.setLayout(new BorderLayout());
+		
 		p_stateInput = new JPanel(new BorderLayout());
 		//전표입력판넬 위쪽에 들어갈 판넬 생성
 		p_siNorth = new JPanel(new GridLayout(1,2));
@@ -144,8 +145,10 @@ public class State_Input extends JPanel{
 		//JFrame가장 바깥 pane인 컨텐트페인을 담을 객체 선언하고 대입
 		
 		
-		//위에서 생성했던 컨텐트페인 담긴 객체 cont에 서쪽판넬이랑 입력판넬 추가
+		//판넬에 센터에 입력판넬, 그리고 위쪽에 제목판넬 추가
 		this.add(p_stateInput,"Center");
+		TitleSet ts = new TitleSet("전표 입력");
+		this.add(ts.jp_title,"North");
 		
 		//서쪽판넬 크기 맞추기 위해 추가할 임의의 라벨 생성 
 		l_menu1 = new JLabel("회계관리");
