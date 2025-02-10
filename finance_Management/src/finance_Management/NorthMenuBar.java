@@ -40,7 +40,7 @@ public class NorthMenuBar extends JPanel {
 		northFirstP.add(b_menufavorites);
 		northFirstP.add(b_menuclose);
 
-		this.add(northFirstP, "North");
+		this.add(northFirstP, "Center");
 
 	}
 
