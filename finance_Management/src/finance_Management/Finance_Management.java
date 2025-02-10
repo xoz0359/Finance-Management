@@ -38,7 +38,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	DefaultTableModel ispdtm, sipdtm, aipdtm, sfpdtm, sspdtm, stpdtm;
 	Integer backcnt, forcnt, accesslv;
 	JTable ispjt, aipjt;
-	JComboBox is_date, ai_sort, si_tname, si_date, sfp_statetype;
+	JComboBox is_date, ai_sort, si_tname, si_date, sfp_statetype, ssp_date1, ssp_date2;
 	
 	// 할일 동사 명사 순서로 객체 명명규칙 바꾸기...
 	
@@ -137,7 +137,9 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				
 				// 매출 조회 메뉴화면 호출
 				IncomeSP sip = new IncomeSP();
+				sip.jcb_dname.addItem("전체");
 				sip.jcb_dname.addItem(tnamelist);
+				
 				// 매출 조회화면 테이블에 대한 이벤트 리스너
 				siplist = new ArrayList<String>();
 				sipdtm = sip.dtm;
@@ -223,6 +225,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				sfp_show = sfp.b_check;
 				sfp_statetype = sfp.cb_stateType;
 				ssp_show = ssp.jb_save;
+				ssp_date1 = ssp.jc_date1;
+				ssp_date2 = ssp.jc_date1;
 				jb_stateinput = mp.jb_stateInput;
 				jb_stateselect = mp.jb_stateSelect;
 				jb_teaminput = mp.jb_teamInput;
@@ -447,6 +451,9 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			}
 		} else if (e.getSource() == sip_show) {
 			try {
+				String tname = si_tname.getSelectedItem().toString();
+				System.out.println(tname);
+				boolean a = true;
 				SelectIncome si = new SelectIncome();
 				//System.out.println("조회 이벤트 발생!");
 				rs = si.getSelection();
@@ -455,21 +462,30 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 					si.rs.close();
 					si.pstmt.close();
 					si.conn.close();
-				}else {
+				} else {
 					do {
+						for (int i = 0; i < tnamelist.size(); i++) {
+							if (tname.equals(tnamelist.get(i))) {
+								a = false;
+							}
+						}
 						// 기존의 row를 삭제 후 새 row 삽입
 						int rowcnt = 0;
-						sipdtm.removeRow(rowcnt);
-						sipdtm.insertRow(rowcnt, new Object[] {rs.getString("DEPT"), rs.getString("JAN"), rs.getString("FEB"),
-								rs.getString("MAR"), rs.getString("APR"), rs.getString("MAY"), rs.getString("JUN"),
-								rs.getString("JUL"), rs.getString("AUG"), rs.getString("SEP"), rs.getString("OCT"),
-								rs.getString("NOV"), rs.getString("DEC"), rs.getString("EXPECTINCOME")});
-					}while(rs.next());
+						if (a) {
+							sipdtm.removeRow(rowcnt);
+							sipdtm.insertRow(rowcnt,
+									new Object[] { rs.getString("DEPT"), rs.getString("JAN"), rs.getString("FEB"),
+											rs.getString("MAR"), rs.getString("APR"), rs.getString("MAY"),
+											rs.getString("JUN"), rs.getString("JUL"), rs.getString("AUG"),
+											rs.getString("SEP"), rs.getString("OCT"), rs.getString("NOV"),
+											rs.getString("DEC"), rs.getString("EXPECTINCOME") });
+						}
+					} while (rs.next());
 					si.rs.close();
 					si.pstmt.close();
 					si.conn.close();
 					sipdtm.fireTableDataChanged(); // 패널 안 바뀔 때 새로고침
-					//System.out.println("아마 출력 잘 된 것 같지롱~");
+					// System.out.println("아마 출력 잘 된 것 같지롱~");
 				}
 				
 			} catch (SQLException e1) {
@@ -488,9 +504,10 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 					st.conn.close();
 				}else {
 					do {
-						// 기존의 row를 삭제 후 새 row 삽입
 						stpdtm.removeRow(rowcnt);
 						stpdtm.insertRow(rowcnt, new Object[] {rs.getString("DEPT"), rs.getString("Teamname")});
+						// 기존의 row를 삭제 후 새 row 삽입
+						
 						rowcnt++;
 					}while(rs.next());
 					st.rs.close();
