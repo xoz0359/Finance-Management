@@ -11,14 +11,14 @@ public class Main_west extends JPanel{
 	JLabel title,l_menu1,l_menu2,l_menu3,l_menu4,l_menu5;
 	JMenuBar jmb;
 	JButton jb_stateInput,
-			jb_stateSelect,jb_teamInput,jb_teamSelect,
+			jb_stateSelect,jb_teamInput,jb_teamSelect,jb_teamExpectIncomeSet,
 			jb_incomeSelect,jb_incomeAnalysis,jb_fin_st,
 			jb_userRegiser,jb_codeRegiser;
 	
 	
 	public Main_west() {
 		//센터판넬과 서쪽판넬 생성
-		p_main_west = new JPanel(new GridLayout(13,1));
+		p_main_west = new JPanel(new GridLayout(14,1));
 		p_main_center = new JPanel(new GridLayout(1,1));
 		
 		//메인 화면에 센터판넬에 들어갈 라벨 생성
@@ -32,7 +32,7 @@ public class Main_west extends JPanel{
 		this.add(p_main_center,"Center");
 		
 		//서쪽판넬 배경 검은색
-		p_main_west.setBackground(Color.black);
+		p_main_west.setBackground(Color.decode("#3F91D5"));
 
 		//큰 메뉴 객체 생성 & 디자인 메서드 사용
 		l_menu1 = new JLabel("회계관리");this.l_menu_design(l_menu1);
@@ -47,7 +47,9 @@ public class Main_west extends JPanel{
 		
 		//부서 관련 작은메뉴버튼 생성 & 디자인
 		jb_teamInput = new JButton("부서정보 입력"); jb_teamSelect=new JButton("부서정보 조회");
+		jb_teamExpectIncomeSet = new JButton("예상매출 설정");
 		this.jb_color_change(jb_teamInput);this.jb_color_change(jb_teamSelect);
+		this.jb_color_change(jb_teamExpectIncomeSet);
 		
 		//매출 관련 작은메뉴버튼 생성 & 디자인
 		jb_incomeSelect = new JButton("매출정보 조회"); jb_incomeAnalysis=new JButton("매출 분석");
@@ -68,7 +70,7 @@ public class Main_west extends JPanel{
 		p_main_west.add(jb_stateInput);p_main_west.add(jb_stateSelect);
 		
 		p_main_west.add(l_menu2);//부서관리 메뉴 + 버튼
-		p_main_west.add(jb_teamInput); p_main_west.add(jb_teamSelect);
+		p_main_west.add(jb_teamInput); p_main_west.add(jb_teamSelect);p_main_west.add(jb_teamExpectIncomeSet);
 		
 		p_main_west.add(l_menu3);//매출정보 메뉴 + 버튼
 		p_main_west.add(jb_incomeSelect); p_main_west.add(jb_incomeAnalysis);
@@ -92,7 +94,7 @@ public class Main_west extends JPanel{
 	
 	//버튼 색 바꾸기
 	public void jb_color_change(JButton jb) {
-		jb.setBackground(Color.black);jb.setForeground(Color.white);
+		jb.setBackground(Color.decode("#3F91D5"));jb.setForeground(Color.white);
 	}
 	//큰 메뉴 폰트 바꾸기
 	public void l_menu_design(JLabel jl) {
