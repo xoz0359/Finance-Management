@@ -38,7 +38,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	DefaultTableModel ispdtm, sipdtm, aipdtm, sfpdtm, sspdtm, stpdtm;
 	Integer backcnt, forcnt, accesslv;
 	JTable ispjt, aipjt;
-	JComboBox is_date, ai_sort, si_tname, si_date;
+	JComboBox is_date, ai_sort, si_tname, si_date, sfp_statetype;
 	
 	// 할일 동사 명사 순서로 객체 명명규칙 바꾸기...
 	
@@ -221,6 +221,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				aip_show = aip.jb_infoShow;
 				ai_sort = aip.jcb_order;
 				sfp_show = sfp.b_check;
+				sfp_statetype = sfp.cb_stateType;
 				ssp_show = ssp.jb_save;
 				jb_stateinput = mp.jb_stateInput;
 				jb_stateselect = mp.jb_stateSelect;
@@ -537,24 +538,47 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			int rowcnt = 0;
 			ispdtm.insertRow(rowcnt, new Object[] {"", is_date.getSelectedItem().toString(), "", "", ""});
 		} else if (e.getSource() == sfp_show) {
+			SelectFin_st sf;
+			String stype = sfp_statetype.getSelectedItem().toString();
+			for (int i = 0; i < sfpdtm.getRowCount(); i++) {// 테이블의 내용만 초기화
+				for (int j = 0; j < sfpdtm.getColumnCount(); j++) {
+					sfpdtm.setValueAt("", i, j);
+				}
+			}
+			
 			try {
-				SelectFin_st sf = new SelectFin_st();
+				sf = new SelectFin_st();
 				rs = sf.getSelection();
 				int rowcnt = 0;
-				if(!rs.next()) {
+				if (!rs.next()) {
 					System.out.println("가져올 데이터가 없어요");
 					rs.close();
 					sf.pstmt.close();
 					sf.conn.close();
-				}do {
-					sfpdtm.removeRow(rowcnt);
-					sfpdtm.insertRow(rowcnt, new Object[] {tnamelist.get(rowcnt), rs.getString("amount")});
+				}
+				do {
+					if (stype.equals("재무상태표")) {
+						if (rs.getInt("smcode") < 7) {
+							sfpdtm.removeRow(rowcnt);
+							sfpdtm.insertRow(rowcnt, new Object[] { rs.getString("smcode"), rs.getString("AMOUNT") });
+						} else {
+							if (rs.getInt("smcode") >= 7 && rs.getInt("smcode") < 10) {
+								sfpdtm.removeRow(rowcnt);
+								sfpdtm.insertRow(rowcnt,
+										new Object[] { rs.getString("smcode"), "("+rs.getString("AMOUNT")+")" });
+							}
+						}
+					}
 					rowcnt++;
-				}while(rs.next());
-			} catch (SQLException e1) {
+			}while(rs.next());
+				rs.close();
+				sf.pstmt.close();
+				sf.conn.close();
+				} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			
 		} else if (e.getSource() == ssp_show) {
 			try {
 				SelectState ss = new SelectState();
@@ -570,6 +594,9 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 					sspdtm.insertRow(rowcnt, new Object[] {rs.getString("LECNO"), rs.getString("LECDATE"), rs.getString("SMCODE"), rs.getString("DEPT"), rs.getString("AMOUNT")});
 					rowcnt++;
 				}while(rs.next());
+				rs.close();
+				ss.pstmt.close();
+				ss.conn.close();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
