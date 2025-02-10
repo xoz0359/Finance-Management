@@ -48,7 +48,7 @@ public class State_Input extends JPanel{
 		// 날짜입력판넬에 들어갈 String 배열 생성
 		String[] date = new String [31];
 		
-		for (int i = 0; i < 31; i++) {
+		for (int i = 0; i < date.length; i++) {
 		Calendar cal1 = Calendar.getInstance();
 		cal1.add(Calendar.DATE, (i-(i*2))); // 빼고 싶다면 음수 입력
 		Date now = new Date(cal1.getTimeInMillis());

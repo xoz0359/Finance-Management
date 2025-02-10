@@ -23,24 +23,50 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class Finance_Management extends Frame implements ActionListener, MouseListener, MouseMotionListener, KeyListener{
 	
 	HashMap <Integer, String> isp_map, sfp_map, ssp_map;
-	ArrayList <String> uiflist, isplist, siplist, uilist, aiplist, sfp_list, tnamelist, sfplist, ssplist, p_backwardlog, p_forwardlog;
+	ArrayList <String> uiflist, isplist, siplist, uilist, aiplist, sfp_list, tnamelist, sfplist, ssplist, tiplist, p_backwardlog, p_forwardlog;
 	ResultSet rs, sirs;
-	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, sfp_show, ssp_show, stp_show, jb_stateinput, jb_stateselect, jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_teamselect, jb_backward, jb_forward;
-	JTextField id_jtext, pwd_jtext;
+	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, ti_input, sfp_show, ssp_show, stp_show, jb_teaminput, jb_stateinput, jb_stateselect, jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_teamselect, jb_backward, jb_forward;
+	JTextField id_jtext, pwd_jtext, ti_jtext, si_jtext;
 	CardLayout incard, outcard;
-	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, spanel5, spanel6, spanel7, westbar, northbar;
+	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, spanel5, spanel6, spanel7, spanel8, westbar, northbar;
 	DefaultTableModel ispdtm, sipdtm, aipdtm, sfpdtm, sspdtm, stpdtm;
 	Integer backcnt, forcnt, accesslv;
-	JTable ispjt;
-	JComboBox jc_date;
+	JTable ispjt, aipjt;
+	JComboBox is_date, ai_sort, si_tname, si_date;
 	
 	// 할일 동사 명사 순서로 객체 명명규칙 바꾸기...
 	
 	public Finance_Management() {
+		
+		
+		// 자주 쓰는 정보 db에서 받아와서 저장해두기
+		try {
+			SelectTeam at = new SelectTeam();
+			tnamelist = new ArrayList<String>();
+			rs = at.getSelection();
+			if (!rs.next()) {
+				System.out.println("가져올 row가 없자너 ㅠㅠ");
+				at.rs.close();
+				at.pstmt.close();
+				at.conn.close();
+			} else {
+				tnamelist.add(rs.getString("teamname"));
+			}
+			while (rs.next());
+			at.rs.close();
+			at.pstmt.close();
+			at.conn.close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 				// backward, forward 정보 저장용 리스트 생성
 				p_backwardlog = new ArrayList <String>();
 				p_forwardlog = new ArrayList <String>();
@@ -65,6 +91,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				spanel5 = new JPanel(new BorderLayout());
 				spanel6 = new JPanel(new BorderLayout());
 				spanel7 = new JPanel(new BorderLayout());
+				spanel8 = new JPanel(new BorderLayout());
+				
 				
 				// 로그인 패널 생성
 				LoginForm tp = new LoginForm();
@@ -99,13 +127,17 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				ShowState ssp = new ShowState();
 				sspdtm = ssp.dtm;
 				
+				// 부서 입력 화면 호출
+				TeamInsert tip = new TeamInsert();
+				
+				
 				// 부서 조회 화면 호출
 				ShowTeam stp = new ShowTeam();
 				stpdtm = stp.fs_tableModel;
 				
 				// 매출 조회 메뉴화면 호출
 				IncomeSP sip = new IncomeSP();
-				
+				sip.jcb_dname.addItem(tnamelist);
 				// 매출 조회화면 테이블에 대한 이벤트 리스너
 				siplist = new ArrayList<String>();
 				sipdtm = sip.dtm;
@@ -122,10 +154,11 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				});
 				
 				// 매출 분석 메뉴화면 호출
-				IncomeAnalysis aip = new IncomeAnalysis(); 
+				IncomeAnalysis aip = new IncomeAnalysis();
 				
 				// 매출 분석 화면 테이블에 대한 이벤트 리스너
 				aiplist = new ArrayList<String>();
+				aipjt = aip.jt_s; 
 				aipdtm = aip.dtm;
 				aipdtm.addTableModelListener(new TableModelListener() {
 					@Override
@@ -158,6 +191,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				cardpanel.add(spanel5, "SelectIncomPanel");
 				cardpanel.add(spanel6, "AnalysisIncomPanel");
 				cardpanel.add(spanel7, "SelectFin_stPanel");
+				cardpanel.add(spanel8, "InsertTeamPanel");
+				
 				
 				spanel1.add(mp, "Center");
 				spanel2.add(isp, "Center");
@@ -166,6 +201,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				spanel5.add(sip, "Center");
 				spanel6.add(aip, "Center");
 				spanel7.add(sfp, "Center");
+				spanel8.add(tip, "Center");
 				
 				
 				
@@ -177,18 +213,22 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				id_jtext = tp.jtId;
 				pwd_jtext = tp.jtPw;
 				sip_show = sip.jb_infoShow;
-				jc_date = isp.jc_date;
+				si_date = sip.jcb_period;
+				si_tname = sip.jcb_dname;
+				is_date = isp.jc_date;
 				stp_show = stp.b_check;
 				isp_save = isp.jb_save;
 				aip_show = aip.jb_infoShow;
+				ai_sort = aip.jcb_order;
 				sfp_show = sfp.b_check;
 				ssp_show = ssp.jb_save;
 				jb_stateinput = mp.jb_stateInput;
 				jb_stateselect = mp.jb_stateSelect;
+				jb_teaminput = mp.jb_teamInput;
+				jb_teamselect = mp.jb_teamSelect;
 				jb_incomeselect = mp.jb_incomeSelect;
 				jb_incomeanalysis = mp.jb_incomeAnalysis;
 				jb_fin_stselect = mp.jb_fin_st;
-				jb_teamselect = mp.jb_teamSelect;
 				jb_backward = nb.b_backward;
 				jb_forward = nb.b_forward;
 				ispjt = isp.jt_s;
@@ -201,6 +241,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				login_btt.addActionListener(this);
 				jb_stateinput.addActionListener(this);
 				jb_stateselect.addActionListener(this);
+				jb_teaminput.addActionListener(this);
 				jb_teamselect.addActionListener(this);
 				jb_incomeselect.addActionListener(this);
 				jb_incomeanalysis.addActionListener(this);
@@ -212,30 +253,13 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				ssp_show.addMouseListener(this);
 				sip_show.addMouseListener(this);
 				aip_show.addMouseListener(this);
+				ai_sort.addActionListener(this);
+				si_date.addActionListener(this);
+				si_tname.addActionListener(this);
 				isp_dateinsert.addMouseListener(this);
 				sfp_show.addMouseListener(this);
 				
-				// 자주 쓰는 정보 db에서 받아와서 저장해두기
-				try {
-					SelectTeam at = new SelectTeam();
-					tnamelist = new ArrayList<String>();
-					rs = at.getSelection();
-					if (!rs.next()) {
-						System.out.println("가져올 row가 없자너 ㅠㅠ");
-						at.rs.close();
-						at.pstmt.close();
-						at.conn.close();
-					} else {
-						tnamelist.add(rs.getString("teamname"));
-					}
-					while (rs.next());
-					at.rs.close();
-					at.pstmt.close();
-					at.conn.close();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				
 				
 				this.addWindowListener(new WindowAdapter() {
 		            public void windowClosing(WindowEvent we) {
@@ -281,13 +305,12 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
 			}
-			if (grant) {
+			if (true) {
 				p_backwardlog.add("MainPanel");
 				outcard.show(this, "menu");
 				incard.show(cardpanel, "MainPanel");
 			}else {
 				System.out.println("잘못된 비밀번호입니다");
-				
 			}
 			uiflist.clear();
 		} else if (e.getSource() == jb_stateinput) {
@@ -296,7 +319,25 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			}
 			p_backwardlog.add("InsertStatePanel");
 			incard.show(cardpanel, "InsertStatePanel");
-		} else if (e.getSource() == jb_incomeselect) {
+		} else if (e.getSource() == jb_stateselect) {
+			if (p_forwardlog.size() > 0) {
+				p_forwardlog.clear();
+			}
+			p_backwardlog.add("SelectStatePanel");
+			incard.show(cardpanel, "SelectStatePanel");
+		}else if (e.getSource() == jb_teaminput) { // 패널 아직 비어있음
+			if (p_forwardlog.size() > 0) {
+				p_forwardlog.clear();
+			}
+			p_backwardlog.add("InsertTeamPanel");
+			incard.show(cardpanel, "InsertTeamPanel");
+		} else if (e.getSource() == jb_teamselect) {
+			if (p_forwardlog.size() > 0) {
+				p_forwardlog.clear();
+			}
+			p_backwardlog.add("SelectTeamPanel");
+			incard.show(cardpanel, "SelectTeamPanel");
+		}else if (e.getSource() == jb_incomeselect) {
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
 			}
@@ -314,19 +355,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			}
 			p_backwardlog.add("SelectFin_stPanel");
 			incard.show(cardpanel, "SelectFin_stPanel");
-		} else if (e.getSource() == jb_stateselect) {
-			if (p_forwardlog.size() > 0) {
-				p_forwardlog.clear();
-			}
-			p_backwardlog.add("SelectStatePanel");
-			incard.show(cardpanel, "SelectStatePanel");
-		}else if (e.getSource() == jb_teamselect) {
-			if (p_forwardlog.size() > 0) {
-				p_forwardlog.clear();
-			}
-			p_backwardlog.add("SelectTeamPanel");
-			incard.show(cardpanel, "SelectTeamPanel");
-		}else if (e.getSource() == jb_backward) {
+		} else if (e.getSource() == jb_backward) {
 			if(p_backwardlog.size() > 1) {
 			p_forwardlog.add(p_backwardlog.getLast());
 			incard.show(cardpanel, p_backwardlog.get(p_backwardlog.size()-2));
@@ -342,7 +371,18 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			}else {
 				
 			}
-		} 
+		} // 여기까지 메뉴버튼
+		else if (e.getSource() == ai_sort) {
+			aipjt.setAutoCreateRowSorter(true);
+			TableRowSorter sorter = new TableRowSorter<TableModel>(aipjt.getModel());
+			if (ai_sort.getSelectedItem().toString().equals("내림차순")) {
+				System.out.println("내림차순이지롱");
+				sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
+			}else {
+				System.out.println("오름차순이지롱");
+				sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
+			}
+		}
 	}
 	
 	@Override
@@ -439,6 +479,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			try {
 				SelectTeam st = new SelectTeam();
 				rs = st.getSelection();
+				int rowcnt = 0;
 				if (!rs.next()) {
 					//System.out.println("가져올 row가 없자너 ㅠㅠ");
 					st.rs.close();
@@ -447,9 +488,9 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				}else {
 					do {
 						// 기존의 row를 삭제 후 새 row 삽입
-						int rowcnt = 0;
 						stpdtm.removeRow(rowcnt);
 						stpdtm.insertRow(rowcnt, new Object[] {rs.getString("DEPT"), rs.getString("Teamname")});
+						rowcnt++;
 					}while(rs.next());
 					st.rs.close();
 					st.pstmt.close();
@@ -494,7 +535,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			}
 		} else if (e.getSource() == isp_dateinsert) {
 			int rowcnt = 0;
-			ispdtm.insertRow(rowcnt, new Object[] {"", jc_date.getSelectedItem().toString(), "", "", ""});
+			ispdtm.insertRow(rowcnt, new Object[] {"", is_date.getSelectedItem().toString(), "", "", ""});
 		} else if (e.getSource() == sfp_show) {
 			try {
 				SelectFin_st sf = new SelectFin_st();
