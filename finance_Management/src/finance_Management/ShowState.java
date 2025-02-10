@@ -20,7 +20,7 @@ public class ShowState extends JPanel{
 	JPanel p_main_center,p_stateInput,p_siNorth,p_dateInput,p_save;
 	Container cont;
 	JLabel l_menu1,l_date;
-	JComboBox jc_date,jc_cn,jc_tc;
+	JComboBox jc_date1,jc_date2,jc_cn,jc_tc;
 	JTextField jtf_d;
 	JTable jt_s;
 	DefaultTableModel dtm;
@@ -121,7 +121,8 @@ public class ShowState extends JPanel{
 		
 		
 		//날짜 입력하는 콤보박스랑 텍스트필드(길이:3) 생성 + 콤보박스 디자인
-		jc_date = new JComboBox(date);this.jcb_design(jc_date);
+		jc_date1 = new JComboBox(date);this.jcb_design(jc_date1);
+		jc_date2 = new JComboBox(date);this.jcb_design(jc_date2);
 		
 		//날짜 관련 라벨 생성
 		l_date = new JLabel("일자: ");
@@ -129,7 +130,9 @@ public class ShowState extends JPanel{
 		//날짜입력판넬에 콤보박스&라벨 추가
 		
 		p_dateInput.add(l_date);
-		p_dateInput.add(jc_date);
+		p_dateInput.add(jc_date1);
+		p_dateInput.add(new JLabel("~"));
+		p_dateInput.add(jc_date2);
 		p_dateInput.add(jb_dateinsert);
 		
 		//저장버튼을 저장 판넬에 추가
@@ -149,12 +152,6 @@ public class ShowState extends JPanel{
 		this.add(p_stateInput,"Center");
 		TitleSet ts = new TitleSet("전표 조회");
 		this.add(ts.jp_title,"North");
-		
-		//서쪽판넬 크기 맞추기 위해 추가할 임의의 라벨 생성 
-		l_menu1 = new JLabel("회계관리");
-		l_menu1.setForeground(Color.white);
-		l_menu1.setFont(new Font("맑은 고딕",Font.BOLD,20));
-		l_menu1.setHorizontalAlignment(JLabel.CENTER);
 		
 //		p_stateInput.setBackground(Color.white);
 		
