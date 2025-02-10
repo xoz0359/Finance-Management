@@ -18,6 +18,7 @@ public class IncomeSP extends JPanel {
 	JButton jb_infoShow;
 
 	public IncomeSP() {
+		this.setLayout(new BorderLayout());
 		// gui 서쪽에 들어갈 서쪽판넬 및 센터에 들어갈 입력판넬 생성
 		p_stateInput = new JPanel(new BorderLayout());
 
@@ -84,16 +85,12 @@ public class IncomeSP extends JPanel {
 
 		// 위에서 생성했던 컨텐트페인 담긴 객체 cont에 서쪽판넬이랑 입력판넬 추가
 		this.add(p_stateInput, "Center");
+		TitleSet ts = new TitleSet("매출정보 조회");
+		this.add(ts.jp_title,"North");
 
 		// 서쪽판넬 배경 검은색
 		p_stateInput.setOpaque(true);
 		p_siNorth.setOpaque(true);
-
-		// 서쪽판넬 크기 맞추기 위해 추가할 임의의 라벨 생성
-		l_menu1 = new JLabel("회계관리");
-		l_menu1.setForeground(Color.white);
-		l_menu1.setFont(new Font("맑은 고딕", Font.BOLD, 20));
-		l_menu1.setHorizontalAlignment(JLabel.CENTER);
 
 		// p_siNorth 패널 배경색 적용
 		p_siNorth.setOpaque(true);
