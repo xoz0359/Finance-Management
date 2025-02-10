@@ -22,6 +22,7 @@ public class IncomeAnalysis extends JPanel{
 	
 	
 	public IncomeAnalysis() {
+		this.setLayout(new BorderLayout());
 		//gui 서쪽에 들어갈 서쪽판넬 및 센터에 들어갈 입력판넬 생성
 		p_incomeAnalysis = new JPanel(new BorderLayout());
 		
@@ -91,6 +92,8 @@ public class IncomeAnalysis extends JPanel{
 		
 		//위에서 생성했던 컨텐트페인 담긴 객체 cont에 서쪽판넬이랑 입력판넬 추가
 		this.add(p_incomeAnalysis,"Center");
+		TitleSet ts = new TitleSet("매출 분석");
+		this.add(ts.jp_title,"North");
 		
 		//서쪽판넬 배경 검은색
 		p_incomeAnalysis.setOpaque(true);
