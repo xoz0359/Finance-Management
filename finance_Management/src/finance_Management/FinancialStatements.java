@@ -12,6 +12,7 @@ public class FinancialStatements extends JPanel {
 	JTableHeader tableHeader;
 	JScrollPane t_scrollPane;
 	DefaultTableModel fs_tableModel;
+	JComboBox<String> cb_stateType;
 	JButton b_check;
 	JLabel l_titlename, l_positionname, l_smcode, l_cumamount;
 	
@@ -47,9 +48,11 @@ public class FinancialStatements extends JPanel {
         p_subtitlerow.setLayout(new BorderLayout());
         p_subtitlerow.setBackground(Color.WHITE);
 
-        l_positionname = new JLabel("재무상태표", SwingConstants.LEFT);
-        l_positionname.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-        p_subtitlerow.add(l_positionname, BorderLayout.WEST);
+        cb_stateType = new JComboBox<>(new String[] {"재무상태표","손익계산서"});
+        cb_stateType.setSelectedIndex(0);
+        cb_stateType.setFont(new Font("맑은 고딕", Font.BOLD, 15));
+        
+        p_subtitlerow.add(cb_stateType, BorderLayout.WEST);
 
         b_check = new JButton("조회");
         b_check.setFont(new Font("맑은 고딕", Font.BOLD, 12));
