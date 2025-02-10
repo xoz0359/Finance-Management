@@ -31,10 +31,11 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	HashMap <Integer, String> isp_map, sfp_map, ssp_map;
 	ArrayList <String> uiflist, isplist, siplist, uilist, aiplist, sfp_list, tnamelist, sfplist, ssplist, tiplist, p_backwardlog, p_forwardlog;
 	ResultSet rs, sirs;
-	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, ti_input, sfp_show, ssp_show, stp_show, jb_teaminput, jb_stateinput, jb_stateselect, jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_teamselect, jb_backward, jb_forward;
+	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, ti_input, sfp_show, ssp_show, stp_show, jb_teaminput, jb_stateinput, jb_stateselect, 
+	jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_teamselect, jb_backward, jb_forward, jb_userregist;
 	JTextField id_jtext, pwd_jtext, ti_jtext, si_jtext;
 	CardLayout incard, outcard;
-	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, spanel5, spanel6, spanel7, spanel8, westbar, northbar;
+	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, spanel5, spanel6, spanel7, spanel8, spanel9, westbar, northbar;
 	DefaultTableModel ispdtm, sipdtm, aipdtm, sfpdtm, sspdtm, stpdtm;
 	Integer backcnt, forcnt, accesslv;
 	JTable ispjt, aipjt;
@@ -92,6 +93,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				spanel6 = new JPanel(new BorderLayout());
 				spanel7 = new JPanel(new BorderLayout());
 				spanel8 = new JPanel(new BorderLayout());
+				spanel9 = new JPanel(new BorderLayout());
 				
 				
 				// 로그인 패널 생성
@@ -179,6 +181,9 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				sfpdtm = sfp.fs_tableModel;
 				
 				
+				CodeUserRegistration urp = new CodeUserRegistration();
+				
+				
 				
 				// 패널 조립
 				this.add(tp, "TitlePanel");
@@ -194,6 +199,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				cardpanel.add(spanel6, "AnalysisIncomPanel");
 				cardpanel.add(spanel7, "SelectFin_stPanel");
 				cardpanel.add(spanel8, "InsertTeamPanel");
+				cardpanel.add(spanel9, "RegistUserPanel");
 				
 				
 				spanel1.add(mp, "Center");
@@ -204,6 +210,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				spanel6.add(aip, "Center");
 				spanel7.add(sfp, "Center");
 				spanel8.add(tip, "Center");
+				spanel9.add(urp, "Center");
 				
 				
 				
@@ -234,6 +241,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				jb_incomeselect = mp.jb_incomeSelect;
 				jb_incomeanalysis = mp.jb_incomeAnalysis;
 				jb_fin_stselect = mp.jb_fin_st;
+				jb_userregist = mp.jb_userRegiser;
 				jb_backward = nb.b_backward;
 				jb_forward = nb.b_forward;
 				ispjt = isp.jt_s;
@@ -251,6 +259,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				jb_incomeselect.addActionListener(this);
 				jb_incomeanalysis.addActionListener(this);
 				jb_fin_stselect.addActionListener(this);
+				jb_userregist.addActionListener(this);
 				jb_backward.addActionListener(this);
 				jb_forward.addActionListener(this);
 				isp_save.addMouseListener(this);
@@ -360,6 +369,12 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			}
 			p_backwardlog.add("SelectFin_stPanel");
 			incard.show(cardpanel, "SelectFin_stPanel");
+		} else if (e.getSource() == jb_userregist) {
+			if (p_forwardlog.size() > 0) {
+				p_forwardlog.clear();
+			}
+			p_backwardlog.add("RegistUserPanel");
+			incard.show(cardpanel, "RegistUserPanel");
 		} else if (e.getSource() == jb_backward) {
 			if(p_backwardlog.size() > 1) {
 			p_forwardlog.add(p_backwardlog.getLast());
