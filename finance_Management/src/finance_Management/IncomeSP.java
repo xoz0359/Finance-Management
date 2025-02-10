@@ -5,13 +5,16 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import javax.swing.plaf.basic.BasicComboBoxUI; //콤보박스 화살표 디자인위해 임포트
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class IncomeSP extends JPanel {
 
 	JPanel p_main_center, p_stateInput, p_siNorth, p_search, p_save;
 	JLabel l_menu1, l_y, l_m, l_d, jl_dname, jl_period;
-	JComboBox jcb_period; // 기간
-	JTextField jtf_d, jtf_dname;
+	JComboBox jcb_period, jcb_dname; // 기간
+	JTextField jtf_d;
 	JTable jt_s;
 	DefaultTableModel dtm;
 	JScrollPane jsp_jt;
@@ -26,9 +29,15 @@ public class IncomeSP extends JPanel {
 		p_siNorth = new JPanel(new GridLayout(1, 2));
 		// 입력판넬 맨 위에 들어갈 날짜입력판넬 생성
 		p_search = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
-		// 날짜입력판넬에 들어갈 연도,월 콤보박스 생성 + 일 텍스트 필드
-//			String[] y={"2020", "2021", "2022", "2023","2024"};
+		String[] date = new String [11];
+		for (int i = 0; i < date.length; i++) {
+			Calendar cal1 = Calendar.getInstance();
+			cal1.add(Calendar.YEAR, (i-(i*2))); // 빼고 싶다면 음수 입력
+			Date now = new Date(cal1.getTimeInMillis());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+			date [i] = sdf.format(now);
+			}
+			
 		String[] m = { "전체", "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월" };
 		String[] columnName = { "부서번호", "1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월",
 				"예상 매출액" };
@@ -47,8 +56,8 @@ public class IncomeSP extends JPanel {
 
 		// 기간 입력하는 콤보박스랑 텍스트필드(길이:3) 생성 + 콤보박스 디자인
 		jtf_d = new JTextField(3);
-		jtf_dname = new JTextField(3);
-		jcb_period = new JComboBox(m);
+		jcb_dname = new JComboBox<String>();
+		jcb_period = new JComboBox(date);
 		this.jcb_design(jcb_period);
 		jb_infoShow = new JButton("조회");
 		jb_infoShow.setBackground(Color.white);
@@ -60,7 +69,7 @@ public class IncomeSP extends JPanel {
 		// 날짜입력판넬에 콤보박스&라벨 추가
 
 		p_search.add(jl_dname);
-		p_search.add(jtf_dname);
+		p_search.add(jcb_dname);
 
 		p_search.add(jl_period);
 		p_search.add(jcb_period);

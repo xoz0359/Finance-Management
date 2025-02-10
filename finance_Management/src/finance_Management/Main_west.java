@@ -17,89 +17,89 @@ public class Main_west extends JPanel{
 	
 	
 	public Main_west() {
-		//ì„¼í„°íŒë„¬ê³¼ ì„œìª½íŒë„¬ ìƒì„±
+		//¼¾ÅÍÆÇ³Ú°ú ¼­ÂÊÆÇ³Ú »ı¼º
 		p_main_west = new JPanel(new GridLayout(14,1));
 		p_main_center = new JPanel(new GridLayout(1,1));
 		
-		//ë©”ì¸ í™”ë©´ì— ì„¼í„°íŒë„¬ì— ë“¤ì–´ê°ˆ ë¼ë²¨ ìƒì„±
-		title = new JLabel("ì¬ë¬´ ê´€ë¦¬ í”„ë¡œê·¸ë¨v1.0",JLabel.CENTER);
+		//¸ŞÀÎ È­¸é¿¡ ¼¾ÅÍÆÇ³Ú¿¡ µé¾î°¥ ¶óº§ »ı¼º
+		title = new JLabel("Àç¹« °ü¸® ÇÁ·Î±×·¥v1.0",JLabel.CENTER);
 		
-		//ì„¼í„°íŒë„¬ì— ë¼ë²¨ ì¶”ê°€
+		//¼¾ÅÍÆÇ³Ú¿¡ ¶óº§ Ãß°¡
 		p_main_center.add(title);
 		
-		//ìœ„ì—ì„œ ìƒì„±í–ˆë˜ ì»¨í…íŠ¸í˜ì¸ ë‹´ê¸´ ê°ì²´ contì— ì„œìª½íŒë„¬ì´ë‘ ì¤‘ì‹¬íŒë„¬ ì¶”ê°€
+		//À§¿¡¼­ »ı¼ºÇß´ø ÄÁÅÙÆ®ÆäÀÎ ´ã±ä °´Ã¼ cont¿¡ ¼­ÂÊÆÇ³ÚÀÌ¶û Áß½ÉÆÇ³Ú Ãß°¡
 		//this.add(p_main_west,"West");
 		this.add(p_main_center,"Center");
 		
-		//ì„œìª½íŒë„¬ ë°°ê²½ ê²€ì€ìƒ‰
+		//¼­ÂÊÆÇ³Ú ¹è°æ °ËÀº»ö
 		p_main_west.setBackground(Color.decode("#3F91D5"));
 
-		//í° ë©”ë‰´ ê°ì²´ ìƒì„± & ë””ìì¸ ë©”ì„œë“œ ì‚¬ìš©
-		l_menu1 = new JLabel("íšŒê³„ê´€ë¦¬");this.l_menu_design(l_menu1);
-		l_menu2 = new JLabel("ë¶€ì„œê´€ë¦¬");this.l_menu_design(l_menu2);
-		l_menu3 = new JLabel("ë§¤ì¶œì •ë³´");this.l_menu_design(l_menu3);
-//		l_menu4 = new JLabel("ì¬ë¬´ì œí‘œ");this.l_menu_design(l_menu4);
-		l_menu5 = new JLabel("*í™˜ê²½ì„¤ì •");this.l_menu_design(l_menu5);
+		//Å« ¸Ş´º °´Ã¼ »ı¼º & µğÀÚÀÎ ¸Ş¼­µå »ç¿ë
+		l_menu1 = new JLabel("È¸°è°ü¸®");this.l_menu_design(l_menu1);
+		l_menu2 = new JLabel("ºÎ¼­°ü¸®");this.l_menu_design(l_menu2);
+		l_menu3 = new JLabel("¸ÅÃâÁ¤º¸");this.l_menu_design(l_menu3);
+//		l_menu4 = new JLabel("Àç¹«Á¦Ç¥");this.l_menu_design(l_menu4);
+		l_menu5 = new JLabel("*È¯°æ¼³Á¤");this.l_menu_design(l_menu5);
 		
-		//íšŒê³„ ê´€ë ¨ ì‘ì€ë©”ë‰´ë²„íŠ¼ ìƒì„± & ë””ìì¸
-		jb_stateInput=new JButton("íšŒê³„ì •ë³´ ì…ë ¥");jb_stateSelect=new JButton("íšŒê³„ì •ë³´ ì¡°íšŒ");
+		//È¸°è °ü·Ã ÀÛÀº¸Ş´º¹öÆ° »ı¼º & µğÀÚÀÎ
+		jb_stateInput=new JButton("È¸°èÁ¤º¸ ÀÔ·Â");jb_stateSelect=new JButton("È¸°èÁ¤º¸ Á¶È¸");
 		this.jb_color_change(jb_stateInput);this.jb_color_change(jb_stateSelect);
 		
-		//ë¶€ì„œ ê´€ë ¨ ì‘ì€ë©”ë‰´ë²„íŠ¼ ìƒì„± & ë””ìì¸
-		jb_teamInput = new JButton("ë¶€ì„œì •ë³´ ì…ë ¥"); jb_teamSelect=new JButton("ë¶€ì„œì •ë³´ ì¡°íšŒ");
-		jb_teamExpectIncomeSet = new JButton("ì˜ˆìƒë§¤ì¶œ ì„¤ì •");
+		//ºÎ¼­ °ü·Ã ÀÛÀº¸Ş´º¹öÆ° »ı¼º & µğÀÚÀÎ
+		jb_teamInput = new JButton("ºÎ¼­Á¤º¸ ÀÔ·Â"); jb_teamSelect=new JButton("ºÎ¼­Á¤º¸ Á¶È¸");
+		jb_teamExpectIncomeSet = new JButton("¿¹»ó¸ÅÃâ ¼³Á¤");
 		this.jb_color_change(jb_teamInput);this.jb_color_change(jb_teamSelect);
 		this.jb_color_change(jb_teamExpectIncomeSet);
 		
-		//ë§¤ì¶œ ê´€ë ¨ ì‘ì€ë©”ë‰´ë²„íŠ¼ ìƒì„± & ë””ìì¸
-		jb_incomeSelect = new JButton("ë§¤ì¶œì •ë³´ ì¡°íšŒ"); jb_incomeAnalysis=new JButton("ë§¤ì¶œ ë¶„ì„");
+		//¸ÅÃâ °ü·Ã ÀÛÀº¸Ş´º¹öÆ° »ı¼º & µğÀÚÀÎ
+		jb_incomeSelect = new JButton("¸ÅÃâÁ¤º¸ Á¶È¸"); jb_incomeAnalysis=new JButton("¸ÅÃâ ºĞ¼®");
 		this.jb_color_change(jb_incomeSelect);this.jb_color_change(jb_incomeAnalysis);
 		
-		//í™˜ê²½ì„¤ì • ê´€ë ¨ ë©”ë‰´ë²„íŠ¼ ìƒì„± & ë””ìì¸
-		jb_codeRegiser=new JButton("ê³„ì •ì½”ë“œ ë“±ë¡");jb_userRegiser = new JButton("ì‚¬ìš©ì ë“±ë¡");
+		//È¯°æ¼³Á¤ °ü·Ã ¸Ş´º¹öÆ° »ı¼º & µğÀÚÀÎ
+		jb_codeRegiser=new JButton("°èÁ¤ÄÚµå µî·Ï");jb_userRegiser = new JButton("»ç¿ëÀÚ µî·Ï");
 		this.jb_color_change(jb_codeRegiser);this.jb_color_change(jb_userRegiser);
 		
 		
-		//ì¬ë¬´ì œí‘œ ë²„íŠ¼ ìƒì„±
-		jb_fin_st = new JButton("ì¬ë¬´ì œí‘œ");
-		jb_fin_st.setFont(new Font("ë§‘ì€ ê³ ë”•",Font.BOLD,20));
+		//Àç¹«Á¦Ç¥ ¹öÆ° »ı¼º
+		jb_fin_st = new JButton("Àç¹«Á¦Ç¥");
+		jb_fin_st.setFont(new Font("¸¼Àº °íµñ",Font.BOLD,20));
 		this.jb_color_change(jb_fin_st);
 		
-		//í° ë©”ë‰´ì™€ ì‘ì€ë©”ë‰´ë²„íŠ¼ ì„œìª½íŒë„¬ì— ì¶”ê°€
-		p_main_west.add(l_menu1);//íšŒê³„ê´€ë¦¬ ë©”ë‰´ + ë²„íŠ¼
+		//Å« ¸Ş´º¿Í ÀÛÀº¸Ş´º¹öÆ° ¼­ÂÊÆÇ³Ú¿¡ Ãß°¡
+		p_main_west.add(l_menu1);//È¸°è°ü¸® ¸Ş´º + ¹öÆ°
 		p_main_west.add(jb_stateInput);p_main_west.add(jb_stateSelect);
 		
-		p_main_west.add(l_menu2);//ë¶€ì„œê´€ë¦¬ ë©”ë‰´ + ë²„íŠ¼
+		p_main_west.add(l_menu2);//ºÎ¼­°ü¸® ¸Ş´º + ¹öÆ°
 		p_main_west.add(jb_teamInput); p_main_west.add(jb_teamSelect);p_main_west.add(jb_teamExpectIncomeSet);
 		
-		p_main_west.add(l_menu3);//ë§¤ì¶œì •ë³´ ë©”ë‰´ + ë²„íŠ¼
+		p_main_west.add(l_menu3);//¸ÅÃâÁ¤º¸ ¸Ş´º + ¹öÆ°
 		p_main_west.add(jb_incomeSelect); p_main_west.add(jb_incomeAnalysis);
 		
-		//p_main_west.add(l_menu4);//ì¬ë¬´ì œí‘œ ë©”ë‰´ ë¼ë²¨ ì¶”ê°€
-		p_main_west.add(jb_fin_st); //ì¬ë¬´ì œí‘œ ë©”ë‰´ ë²„íŠ¼ ì¶”ê°€
+		//p_main_west.add(l_menu4);//Àç¹«Á¦Ç¥ ¸Ş´º ¶óº§ Ãß°¡
+		p_main_west.add(jb_fin_st); //Àç¹«Á¦Ç¥ ¸Ş´º ¹öÆ° Ãß°¡
 		
-		p_main_west.add(l_menu5);//í™˜ê²½ì„¤ì • ë©”ë‰´ ë¼ë²¨+ê´€ë ¨ ë²„íŠ¼ ì¶”ê°€
+		p_main_west.add(l_menu5);//È¯°æ¼³Á¤ ¸Ş´º ¶óº§+°ü·Ã ¹öÆ° Ãß°¡
 		p_main_west.add(jb_codeRegiser);p_main_west.add(jb_userRegiser);
 		
 		
-		//ë¼ë²¨ í´ë¦­ ì‹œ ì´ë²¤íŠ¸ ë°œìƒ
+		//¶óº§ Å¬¸¯ ½Ã ÀÌº¥Æ® ¹ß»ı
 //		l_menu4.addMouseListener(new MouseAdapter() {
 //			public void mouseClicked(MouseEvent e) {
-//				JFrame newWindow = new JFrame("ìƒˆ ì°½");
+//				JFrame newWindow = new JFrame("»õ Ã¢");
 //                newWindow.setSize(200, 150);
 //                newWindow.setVisible(true);
 //			}
 //		});
 	}
 	
-	//ë²„íŠ¼ ìƒ‰ ë°”ê¾¸ê¸°
+	//¹öÆ° »ö ¹Ù²Ù±â
 	public void jb_color_change(JButton jb) {
 		jb.setBackground(Color.decode("#3F91D5"));jb.setForeground(Color.white);
 	}
-	//í° ë©”ë‰´ í°íŠ¸ ë°”ê¾¸ê¸°
+	//Å« ¸Ş´º ÆùÆ® ¹Ù²Ù±â
 	public void l_menu_design(JLabel jl) {
 		jl.setForeground(Color.white);
-		jl.setFont(new Font("ë§‘ì€ ê³ ë”•",Font.BOLD,20));
+		jl.setFont(new Font("¸¼Àº °íµñ",Font.BOLD,20));
 		jl.setHorizontalAlignment(JLabel.CENTER);
 	}
 }
