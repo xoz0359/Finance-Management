@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-import javax.swing.plaf.basic.BasicComboBoxUI; //ì½¤ë³´ë°•ìŠ¤ í™”ì‚´í‘œ ë””ìì¸ìœ„í•´ ì„í¬íŠ¸
+import javax.swing.plaf.basic.BasicComboBoxUI; //ÄŞº¸¹Ú½º È­»ìÇ¥ µğÀÚÀÎÀ§ÇØ ÀÓÆ÷Æ®
 
 public class State_Input extends JPanel{
 	
@@ -30,40 +30,40 @@ public class State_Input extends JPanel{
 	
 	
 	public State_Input() {
-		//gui ì„œìª½ì— ë“¤ì–´ê°ˆ ì„œìª½íŒë„¬ ë° ì„¼í„°ì— ë“¤ì–´ê°ˆ ì…ë ¥íŒë„¬ ìƒì„±
+		//gui ¼­ÂÊ¿¡ µé¾î°¥ ¼­ÂÊÆÇ³Ú ¹× ¼¾ÅÍ¿¡ µé¾î°¥ ÀÔ·ÂÆÇ³Ú »ı¼º
 		p_stateInput = new JPanel(new BorderLayout());
-		//ì „í‘œì…ë ¥íŒë„¬ ìœ„ìª½ì— ë“¤ì–´ê°ˆ íŒë„¬ ìƒì„±
+		//ÀüÇ¥ÀÔ·ÂÆÇ³Ú À§ÂÊ¿¡ µé¾î°¥ ÆÇ³Ú »ı¼º
 		p_siNorth = new JPanel(new GridLayout(1,2));
-		//ì…ë ¥íŒë„¬ ë§¨ ìœ„ì— ë“¤ì–´ê°ˆ ë‚ ì§œì…ë ¥íŒë„¬ ìƒì„±
+		//ÀÔ·ÂÆÇ³Ú ¸Ç À§¿¡ µé¾î°¥ ³¯Â¥ÀÔ·ÂÆÇ³Ú »ı¼º
 		p_dateInput = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		//ì €ì¥ íŒë„¬ & ë²„íŠ¼ ìƒì„±
+		//ÀúÀå ÆÇ³Ú & ¹öÆ° »ı¼º
 		p_save = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		jb_save = new JButton("ì €ì¥"); 
-		jb_dateinsert = new JButton("ì„ íƒ");
-		//ì €ì¥ ë²„íŠ¼ ë””ìì¸
+		jb_save = new JButton("ÀúÀå"); 
+		jb_dateinsert = new JButton("¼±ÅÃ");
+		//ÀúÀå ¹öÆ° µğÀÚÀÎ
 //		jb_save.setBackground(Color.black);
 		jb_save.setBackground(Color.white);
 		jb_dateinsert.setBackground(Color.white);
 		
-		// ë‚ ì§œì…ë ¥íŒë„¬ì— ë“¤ì–´ê°ˆ String ë°°ì—´ ìƒì„±
+		// ³¯Â¥ÀÔ·ÂÆÇ³Ú¿¡ µé¾î°¥ String ¹è¿­ »ı¼º
 		String[] date = new String [31];
 		
 		for (int i = 0; i < 31; i++) {
 		Calendar cal1 = Calendar.getInstance();
-		cal1.add(Calendar.DATE, (i-(i*2))); // ë¹¼ê³  ì‹¶ë‹¤ë©´ ìŒìˆ˜ ì…ë ¥
+		cal1.add(Calendar.DATE, (i-(i*2))); // »©°í ½Í´Ù¸é À½¼ö ÀÔ·Â
 		Date now = new Date(cal1.getTimeInMillis());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		date [i] = sdf.format(now);
 		}
 		
 		
-		// ë‚ ì§œì…ë ¥íŒë„¬ì— ë“¤ì–´ê°ˆ ì—°ë„,ì›” ì½¤ë³´ë°•ìŠ¤ ìƒì„± + ì¼ í…ìŠ¤íŠ¸ í•„ë“œ
-		String[] columnName = {"","ì „í‘œì¼ì", "ê³„ì •ê³¼ëª©", "ë¶€ì„œë²ˆí˜¸", "ê¸ˆì•¡"};
-		String[] cn_array = {"","ì˜ì—…ìˆ˜ìµ(ë§¤ì¶œ)","ê¸ˆìœµìˆ˜ìµ","ì˜ì—…ë¹„ìš©","ê¸°íƒ€ë¹„ìš©","ê¸ˆìœµë¹„ìš©",
-				"ìœ í˜•ìì‚° ì·¨ë“","ìœ í˜•ìì‚° ì²˜ë¶„","ë¶€ì±„ìƒí™˜"};
+		// ³¯Â¥ÀÔ·ÂÆÇ³Ú¿¡ µé¾î°¥ ¿¬µµ,¿ù ÄŞº¸¹Ú½º »ı¼º + ÀÏ ÅØ½ºÆ® ÇÊµå
+		String[] columnName = {"","ÀüÇ¥ÀÏÀÚ", "°èÁ¤°ú¸ñ", "ºÎ¼­¹øÈ£", "±İ¾×"};
+		String[] cn_array = {"","¿µ¾÷¼öÀÍ(¸ÅÃâ)","±İÀ¶¼öÀÍ","¿µ¾÷ºñ¿ë","±âÅ¸ºñ¿ë","±İÀ¶ºñ¿ë",
+				"À¯ÇüÀÚ»ê Ãëµæ","À¯ÇüÀÚ»ê Ã³ºĞ","ºÎÃ¤»óÈ¯"};
 		String[] tc_array = {"","10","20","30","40"};
 		
-		//í…Œì´ë¸”ëª¨ë¸ ê°ì²´ ìƒì„± & ì„¤ì •(ì»¬ëŸ¼ëª…ë“¤, í–‰ ìˆ«ì)
+		//Å×ÀÌºí¸ğµ¨ °´Ã¼ »ı¼º & ¼³Á¤(ÄÃ·³¸íµé, Çà ¼ıÀÚ)
 		dtm = new DefaultTableModel(columnName,30) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -72,11 +72,11 @@ public class State_Input extends JPanel{
 			}
 		};
 		
-		//í…Œì´ë¸” ê°ì²´ë¥¼ ìƒì„±í•´ ë†“ì€ í…Œì´ë¸” ëª¨ë¸ì„ ì´ìš©í•´ ìƒì„±
+		//Å×ÀÌºí °´Ã¼¸¦ »ı¼ºÇØ ³õÀº Å×ÀÌºí ¸ğµ¨À» ÀÌ¿ëÇØ »ı¼º
 		jt_s = new JTable(dtm);
 		
 
-        // jt_sì˜ ì…€ ë Œë”ëŸ¬ ì„¤ì • (í¸ì§‘ ë¶ˆê°€ëŠ¥í•œ í–‰ì„ íšŒìƒ‰ìœ¼ë¡œ í‘œì‹œ)
+        // jt_sÀÇ ¼¿ ·»´õ·¯ ¼³Á¤ (ÆíÁı ºÒ°¡´ÉÇÑ ÇàÀ» È¸»öÀ¸·Î Ç¥½Ã)
         DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable jt_s, Object value,
@@ -84,73 +84,73 @@ public class State_Input extends JPanel{
                                                            int row, int column) {
                 Component cell = super.getTableCellRendererComponent(jt_s, value, isSelected, hasFocus, row, column);
                 
-                // í¸ì§‘ ë¶ˆê°€ëŠ¥í•œ í–‰ì„ íšŒìƒ‰ìœ¼ë¡œ ì„¤ì •
+                // ÆíÁı ºÒ°¡´ÉÇÑ ÇàÀ» È¸»öÀ¸·Î ¼³Á¤
                 if (!jt_s.isCellEditable(row, column)) {
-                    cell.setBackground(Color.LIGHT_GRAY); // í¸ì§‘í•  ìˆ˜ ì—†ëŠ” ì»¬ëŸ¼ì˜ ìƒ‰ìƒ
+                    cell.setBackground(Color.LIGHT_GRAY); // ÆíÁıÇÒ ¼ö ¾ø´Â ÄÃ·³ÀÇ »ö»ó
                 } else {
-                    cell.setBackground(Color.WHITE); // ê¸°ë³¸ ìƒ‰ìƒ
+                    cell.setBackground(Color.WHITE); // ±âº» »ö»ó
                 }
 
                 return cell;
             }
         };
 
-        // ëª¨ë“  ì—´ì— ëŒ€í•´ ë Œë”ëŸ¬ ì ìš©
+        // ¸ğµç ¿­¿¡ ´ëÇØ ·»´õ·¯ Àû¿ë
         for (int i = 0; i < jt_s.getColumnCount(); i++) {
             jt_s.getColumnModel().getColumn(i).setCellRenderer(renderer);
         }
 
 		
 		
-		//ë¶€ì„œ ë²ˆí˜¸ë‘ ê³„ì •ê³¼ëª© ë°°ì—´ë¡œ ì½¤ë³´ë°•ìŠ¤ ê°ì²´ ìƒì„± + ë””ìì¸
+		//ºÎ¼­ ¹øÈ£¶û °èÁ¤°ú¸ñ ¹è¿­·Î ÄŞº¸¹Ú½º °´Ã¼ »ı¼º + µğÀÚÀÎ
 		//jc_cn = new JComboBox(cn_array);this.jcb_design(jc_cn);
 		//jc_tc = new JComboBox(tc_array);this.jcb_design(jc_tc);
 		
-		//í…Œì´ë¸”ì˜ ëª¨ë“  ì—´ì„ ì„ íƒ -> í•˜ë‚˜ì˜ ì—´ì„ ì„ íƒ -> ìˆ˜ì •í•˜ëŠ” ë©”ì„œë“œ ì‹¤í–‰ -> ì½¤ë³´ë°•ìŠ¤ë¡œ ìˆ˜ì •
+		//Å×ÀÌºíÀÇ ¸ğµç ¿­À» ¼±ÅÃ -> ÇÏ³ªÀÇ ¿­À» ¼±ÅÃ -> ¼öÁ¤ÇÏ´Â ¸Ş¼­µå ½ÇÇà -> ÄŞº¸¹Ú½º·Î ¼öÁ¤
 		//jt_s.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(jc_cn));
 		//jt_s.getColumnModel().getColumn(2).setCellEditor(new DefaultCellEditor(jc_tc));
 		
 		
-		//jtableì˜ getColumnModelë©”ì„œë“œ:ì´ í…Œì´ë¸”ì˜ <<ëª¨ë“  ì—´ì •ë³´>>ë¥¼ ë³´ê´€ ìœ ì§€í•˜ëŠ” TableColumnModel ë¥¼ ëŒë ¤ì¤ë‹ˆë‹¤
-		//ë°˜í™˜ëœ TableColumnModelì˜ getColumnë©”ì„œë“œ:<<ì—´ì˜ ì¸ë±ìŠ¤(1)>>ì— í•´ë‹¹í•˜ëŠ” TableColumnê°ì²´ë¥¼ ëŒë ¤ì¤Œ 
-		//ë°˜í™˜ëœ TableColumnê°ì²´ì˜ setCellEditor ë©”ì„œë“œ:í•´ë‹¹ <<ì—´ì˜ ì…€ì„ í¸ì§‘í• ìˆ˜ ìˆë„ë¡ ì—ë””í„°>>ë¥¼ ì„¤ì •
+		//jtableÀÇ getColumnModel¸Ş¼­µå:ÀÌ Å×ÀÌºíÀÇ <<¸ğµç ¿­Á¤º¸>>¸¦ º¸°ü À¯ÁöÇÏ´Â TableColumnModel ¸¦ µ¹·ÁÁİ´Ï´Ù
+		//¹İÈ¯µÈ TableColumnModelÀÇ getColumn¸Ş¼­µå:<<¿­ÀÇ ÀÎµ¦½º(1)>>¿¡ ÇØ´çÇÏ´Â TableColumn°´Ã¼¸¦ µ¹·ÁÁÜ 
+		//¹İÈ¯µÈ TableColumn°´Ã¼ÀÇ setCellEditor ¸Ş¼­µå:ÇØ´ç <<¿­ÀÇ ¼¿À» ÆíÁıÇÒ¼ö ÀÖµµ·Ï ¿¡µğÅÍ>>¸¦ ¼³Á¤
 		//setCellEditor (TableCellEditor  cellEditor)
-		//TableCellEditor: ì´ ì¸í„°í˜ì´ìŠ¤ëŠ” JListBox,JComboBox,JTree, ë˜ëŠ” JTable ë“±ì˜ <<ì»´í¼ë„ŒíŠ¸ì˜ ê°’ì˜ ì—ë””í„°ê°€ ë  ìˆ˜ ìˆëŠ” ê°ì²´ê°€ êµ¬í˜„í•  í•„ìš”ê°€ ìˆëŠ” ë©”ì†Œë“œ>>ë¥¼ ì •ì˜
-		//DefaultCellEditor (JComboBox  comboBox): comboboxë¥¼ ì‚¬ìš©í•˜ëŠ” DefaultCellEditor ê°ì²´ë¥¼ êµ¬ì¶•
+		//TableCellEditor: ÀÌ ÀÎÅÍÆäÀÌ½º´Â JListBox,JComboBox,JTree, ¶Ç´Â JTable µîÀÇ <<ÄÄÆÛ³ÍÆ®ÀÇ °ªÀÇ ¿¡µğÅÍ°¡ µÉ ¼ö ÀÖ´Â °´Ã¼°¡ ±¸ÇöÇÒ ÇÊ¿ä°¡ ÀÖ´Â ¸Ş¼Òµå>>¸¦ Á¤ÀÇ
+		//DefaultCellEditor (JComboBox  comboBox): combobox¸¦ »ç¿ëÇÏ´Â DefaultCellEditor °´Ã¼¸¦ ±¸Ãà
 		
 		
-		//ë‚ ì§œ ì…ë ¥í•˜ëŠ” ì½¤ë³´ë°•ìŠ¤ë‘ í…ìŠ¤íŠ¸í•„ë“œ(ê¸¸ì´:3) ìƒì„± + ì½¤ë³´ë°•ìŠ¤ ë””ìì¸
+		//³¯Â¥ ÀÔ·ÂÇÏ´Â ÄŞº¸¹Ú½º¶û ÅØ½ºÆ®ÇÊµå(±æÀÌ:3) »ı¼º + ÄŞº¸¹Ú½º µğÀÚÀÎ
 		jc_date = new JComboBox(date);this.jcb_design(jc_date);
 		
-		//ë‚ ì§œ ê´€ë ¨ ë¼ë²¨ ìƒì„±
-		l_date = new JLabel("ì¼ì: ");
+		//³¯Â¥ °ü·Ã ¶óº§ »ı¼º
+		l_date = new JLabel("ÀÏÀÚ: ");
 
-		//ë‚ ì§œì…ë ¥íŒë„¬ì— ì½¤ë³´ë°•ìŠ¤&ë¼ë²¨ ì¶”ê°€
+		//³¯Â¥ÀÔ·ÂÆÇ³Ú¿¡ ÄŞº¸¹Ú½º&¶óº§ Ãß°¡
 		
 		p_dateInput.add(l_date);
 		p_dateInput.add(jc_date);
 		p_dateInput.add(jb_dateinsert);
 		
-		//ì €ì¥ë²„íŠ¼ì„ ì €ì¥ íŒë„¬ì— ì¶”ê°€
+		//ÀúÀå¹öÆ°À» ÀúÀå ÆÇ³Ú¿¡ Ãß°¡
 		p_save.add(jb_save);
 		
-		//jt_sí…Œì´ë¸”ì— ìŠ¤í¬ë¡¤ì„ ì¶”ê°€í•˜ê³  ê·¸ ìŠ¤í¬ë¡¤ì„ ì „í‘œì…ë ¥íŒë„¬ì— ì¶”ê°€ + jt_s í…Œì´ë¸”ì„ ì…ë ¥íŒë„¬ì— ì¶”ê°€
+		//jt_sÅ×ÀÌºí¿¡ ½ºÅ©·ÑÀ» Ãß°¡ÇÏ°í ±× ½ºÅ©·ÑÀ» ÀüÇ¥ÀÔ·ÂÆÇ³Ú¿¡ Ãß°¡ + jt_s Å×ÀÌºíÀ» ÀÔ·ÂÆÇ³Ú¿¡ Ãß°¡
 		p_stateInput.add(new JScrollPane(jt_s));
-		//ì…ë ¥íŒë„¬ì— ë‚ ì§œì…ë ¥íŒë„¬ ì¶”ê°€
+		//ÀÔ·ÂÆÇ³Ú¿¡ ³¯Â¥ÀÔ·ÂÆÇ³Ú Ãß°¡
 		p_stateInput.add(p_siNorth,"North");
 		p_siNorth.add(p_dateInput);
 		p_siNorth.add(p_save);
 		
-		//JFrameê°€ì¥ ë°”ê¹¥ paneì¸ ì»¨í…íŠ¸í˜ì¸ì„ ë‹´ì„ ê°ì²´ ì„ ì–¸í•˜ê³  ëŒ€ì…
+		//JFrame°¡Àå ¹Ù±ù paneÀÎ ÄÁÅÙÆ®ÆäÀÎÀ» ´ãÀ» °´Ã¼ ¼±¾ğÇÏ°í ´ëÀÔ
 		
 		
-		//ìœ„ì—ì„œ ìƒì„±í–ˆë˜ ì»¨í…íŠ¸í˜ì¸ ë‹´ê¸´ ê°ì²´ contì— ì„œìª½íŒë„¬ì´ë‘ ì…ë ¥íŒë„¬ ì¶”ê°€
+		//À§¿¡¼­ »ı¼ºÇß´ø ÄÁÅÙÆ®ÆäÀÎ ´ã±ä °´Ã¼ cont¿¡ ¼­ÂÊÆÇ³ÚÀÌ¶û ÀÔ·ÂÆÇ³Ú Ãß°¡
 		this.add(p_stateInput,"Center");
 		
-		//ì„œìª½íŒë„¬ í¬ê¸° ë§ì¶”ê¸° ìœ„í•´ ì¶”ê°€í•  ì„ì˜ì˜ ë¼ë²¨ ìƒì„± 
-		l_menu1 = new JLabel("íšŒê³„ê´€ë¦¬");
+		//¼­ÂÊÆÇ³Ú Å©±â ¸ÂÃß±â À§ÇØ Ãß°¡ÇÒ ÀÓÀÇÀÇ ¶óº§ »ı¼º 
+		l_menu1 = new JLabel("È¸°è°ü¸®");
 		l_menu1.setForeground(Color.white);
-		l_menu1.setFont(new Font("ë§‘ì€ ê³ ë”•",Font.BOLD,20));
+		l_menu1.setFont(new Font("¸¼Àº °íµñ",Font.BOLD,20));
 		l_menu1.setHorizontalAlignment(JLabel.CENTER);
 		
 //		p_stateInput.setBackground(Color.white);
@@ -158,7 +158,7 @@ public class State_Input extends JPanel{
 		
 		
 	}
-	//ì½¤ë³´ë°•ìŠ¤ í™”ì‚´í‘œ ë””ìì¸
+	//ÄŞº¸¹Ú½º È­»ìÇ¥ µğÀÚÀÎ
 	public void jcb_design(JComboBox jcb) {
 		jcb.setUI(new BasicComboBoxUI() {
 			@Override
