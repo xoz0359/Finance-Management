@@ -29,7 +29,7 @@ import javax.swing.table.TableRowSorter;
 public class Finance_Management extends Frame implements ActionListener, MouseListener, MouseMotionListener, KeyListener{
 	
 	HashMap <Integer, String> isp_map, sfp_map, ssp_map;
-	ArrayList <String> uiflist, isplist, siplist, uilist, aiplist, sfp_list, tnamelist, sfplist, ssplist, tiplist, p_backwardlog, p_forwardlog;
+	ArrayList <String> uiflist, isplist, siplist, uilist, aiplist, sfp_list, tnamelist, sfplist, ssplist, sspdatelist, tiplist, p_backwardlog, p_forwardlog;
 	ResultSet rs, sirs;
 	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, ti_input, sfp_show, ssp_show, stp_show, jb_teaminput, jb_stateinput, jb_stateselect, 
 	jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_teamselect, jb_backward, jb_forward, jb_userregist;
@@ -40,7 +40,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	Integer backcnt, forcnt, accesslv;
 	JTable ispjt, aipjt;
 	JComboBox is_date, ai_sort, si_tname, si_date, sfp_statetype, ssp_date1, ssp_date2;
-	
+	String editingdata;
 	// 할일 동사 명사 순서로 객체 명명규칙 바꾸기...
 	
 	public Finance_Management() {
@@ -109,22 +109,18 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				
 				// 장부 입력 메뉴화면 호출
 				State_Input isp = new State_Input();
-				
-				// 장부 입력화면 테이블에 대한 이벤트 리스너
-				isplist = new ArrayList<String>();
 				ispdtm = isp.dtm;
-				ispdtm.addTableModelListener(new TableModelListener() {
-		            @Override
-		            public void tableChanged(TableModelEvent e) {
-		                int row = e.getFirstRow();
-		                int column = e.getColumn();
-		                
-		                if (column >= 0) { // 컬럼이 -1이면 구조 변경이므로 무시
-		                	isplist.add(isp.jt_s.getValueAt(row, column).toString());
-		                }
-		            }
-		        });
-				
+				// 장부 입력화면 테이블에 대한 이벤트 리스너
+				/*
+				 * isplist = new ArrayList<String>(); ispdtm = isp.dtm;
+				 * ispdtm.addTableModelListener(new TableModelListener() {
+				 * 
+				 * @Override public void tableChanged(TableModelEvent e) { int row =
+				 * e.getFirstRow(); int column = e.getColumn();
+				 * 
+				 * if (column >= 0) { // 컬럼이 -1이면 구조 변경이므로 무시
+				 * isplist.add(isp.jt_s.getValueAt(row, column).toString()); } } });
+				 */
 				// 장부 조회 화면 호출
 				ShowState ssp = new ShowState();
 				sspdtm = ssp.dtm;
@@ -409,6 +405,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	public void mouseClicked(MouseEvent e) {
 		if (e.getSource() == isp_save) {
 			try {
+				isplist = new ArrayList<String>();
 				// 사용자가 수정을 완료하지 않고 저장 버튼을 누르면 수정하던 내용을 포함시켜서 처리하는 부분
 				int row = ispjt.getEditingRow();
 				int col = ispjt.getEditingColumn();
@@ -418,48 +415,55 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				    Component editorComponent = ispjt.getEditorComponent();
 				    if (editorComponent instanceof JTextField) {
 				        JTextField textField = (JTextField) editorComponent;
-				        String editingdata = textField.getText();
-				        isplist.add(editingdata);
+				        editingdata = textField.getText();
 				    }
 				}
 				
-				InsertState is = new InsertState();
-				int cnt = is.getDML(isplist);
-				is.pstmt.close();
-				is.conn.close();
-				System.out.println(cnt+"행 state에 insert 성공!");
+					for (int i = 1; i < ispjt.getColumnCount(); i++) {
+						if (ispjt.getValueAt(0, i) == "") {
+							isplist.add(editingdata);
+						}else {
+						 isplist.add(ispjt.getValueAt(0, i).toString());
+						}
+					}
+					
+					InsertState is = new InsertState();
+					int cnt = is.getDML(isplist);
+					is.pstmt.close();
+					is.conn.close();
+					System.out.println(cnt+"행 state에 insert 성공!");
+					
+					// 주비교자는 map에 보조 비교자는 list에 담아서 전달
+					// 주비교자는 ?를 통해서 세팅할 수 없기 때문
+					if(isplist.get(1).equals("6")) {
+						isp_map = new HashMap<Integer, String>();
+						uilist = new ArrayList<String>();
+						
+						int mon = Integer.parseInt(isplist.get(0).substring(5, 7));
+						switch (mon) {
+						case 1 : isp_map.put(0, "JAN"); break;
+						case 2 : isp_map.put(0, "FEB"); break;
+						case 3 : isp_map.put(0, "MAR"); break;
+						case 4 : isp_map.put(0, "APR"); break;
+						case 5 : isp_map.put(0, "MAY"); break;
+						case 6 : isp_map.put(0, "JUN"); break;
+						case 7 : isp_map.put(0, "JUL"); break;
+						case 8 : isp_map.put(0, "AUG"); break;
+						case 9 : isp_map.put(0, "SEP"); break;
+						case 10 : isp_map.put(0, "OCT"); break;
+						case 11 : isp_map.put(0, "NOV"); break;
+						case 12 : isp_map.put(0, "DEC"); break;
+						default :
+						}
+						uilist.add(isplist.get(3));
+						uilist.add(isplist.get(2));
+						UpdateIncome ui = new UpdateIncome();
+						cnt = ui.getDML(isp_map, uilist);
+						System.out.println(cnt+"income에 update 완료!");
+						isplist.clear();
+					}
 				
-				// 주비교자는 map에 보조 비교자는 list에 담아서 전달
-				// 주비교자는 ?를 통해서 세팅할 수 없기 때문
-				if(isplist.get(0).equals("6")) {
-					isp_map = new HashMap<Integer, String>();
-					uilist = new ArrayList<String>();
-					
-					//int mon = Integer.parseInt(isplist.get(0).substring(5, 7));
-					//switch (mon) {
-					//case 1 : map.put(0, "JAN"); break;
-					//case 2 : map.put(0, "FEB"); break;
-					//case 3 : map.put(0, "MAR"); break;
-					//case 4 : map.put(0, "APR"); break;
-					//case 5 : map.put(0, "MAY"); break;
-					//case 6 : map.put(0, "JUN"); break;
-					//case 7 : map.put(0, "JUL"); break;
-					//case 8 : map.put(0, "AUG"); break;
-					//case 9 : map.put(0, "SEP"); break;
-					//case 10 : map.put(0, "OCT"); break;
-					//case 11 : map.put(0, "NOV"); break;
-					//case 12 : map.put(0, "DEC"); break;
-					//default :
-					//}
-					
-					isp_map.put(0, "JAN");
-					uilist.add(isplist.get(3-1));
-					uilist.add(isplist.get(2-1));
-					UpdateIncome ui = new UpdateIncome();
-					cnt = ui.getDML(isp_map, uilist);
-					System.out.println(cnt+"income에 update 완료!");
-				}
-				isplist.clear();
+				
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -467,8 +471,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 		} else if (e.getSource() == sip_show) {
 			try {
 				String tname = si_tname.getSelectedItem().toString();
-				System.out.println(tname);
 				boolean a = true;
+				int rowcnt = 0;
 				SelectIncome si = new SelectIncome();
 				//System.out.println("조회 이벤트 발생!");
 				rs = si.getSelection();
@@ -479,14 +483,11 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 					si.conn.close();
 				} else {
 					do {
-						for (int i = 0; i < tnamelist.size(); i++) {
-							if (tname.equals(tnamelist.get(i))) {
-								a = false;
-							}
+						if (!tname.equals(tnamelist.get((rs.getInt("DEPT")/10)-1))) {
+							a = false;
 						}
 						// 기존의 row를 삭제 후 새 row 삽입
-						int rowcnt = 0;
-						if (a) {
+						if (a || tname.equals("전체")) {
 							sipdtm.removeRow(rowcnt);
 							sipdtm.insertRow(rowcnt,
 									new Object[] { rs.getString("DEPT"), rs.getString("JAN"), rs.getString("FEB"),
@@ -550,6 +551,9 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 					do {
 						int sum = rs.getInt("JAN")+rs.getInt("FEB")+rs.getInt("MAR")+rs.getInt("APR")+rs.getInt("MAY")+rs.getInt("JUN")+
 						rs.getInt("JUL")+rs.getInt("AUG")+rs.getInt("SEP")+rs.getInt("OCT")+rs.getInt("NOV")+rs.getInt("DEC");
+						if (sum == 0) {
+							continue;
+						}
 						int rate = Math.round((rs.getInt("EXPECTINCOME")/sum)/10)*10;
 						// 기존의 row를 삭제 후 새 row 삽입
 						aipdtm.removeRow(rowcnt);
@@ -613,8 +617,16 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			
 		} else if (e.getSource() == ssp_show) {
 			try {
+				if (!ssp_date1.getSelectedItem().toString().equals("전체")) {
+				sspdatelist.add(ssp_date1.getSelectedItem().toString());
+				sspdatelist.add(ssp_date2.getSelectedItem().toString());	
+				}
 				SelectState ss = new SelectState();
+				if (sspdatelist.isEmpty()) {
 				rs = ss.getSelection();
+				}else {
+					rs = ss.getSelection(sspdatelist);
+				}
 				int rowcnt = 0;
 				if(!rs.next()) {
 					System.out.println("가져올 데이터가 없어요");
