@@ -56,10 +56,10 @@ public class NorthMenuBar extends JPanel {
 		northFirstP.add(b_backward);
 		northFirstP.add(b_forward);
 		northFirstP.add(b_menufavorites);
-		northFirstP.add(b_menuclose);
+		//northFirstP.add(b_menuclose);
 
 		this.add(northFirstP, "Center");
-		String iconPath = "src\\img\\setting4.png";
+		String iconPath = "images\\setting4.png";
 		ImageIconAdd iconAdd = new ImageIconAdd(iconPath, 50, 50);
 		JButton jb_icon = new JButton(iconAdd.icon);
 		this.add(jb_icon, "East");

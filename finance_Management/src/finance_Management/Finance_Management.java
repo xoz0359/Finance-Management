@@ -29,7 +29,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	HashMap <Integer, String> isp_map, sfp_map, ssp_map;
 	ArrayList <String> uiflist, isplist, siplist, uilist, aiplist, sfp_list, tnamelist, sfplist, ssplist, sspdatelist, tiplist, p_backwardlog, p_forwardlog;
 	ResultSet rs, sirs;
-	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, ti_input, sfp_show, ssp_show, stp_show, fmenu, jb_teaminput, jb_stateinput, jb_stateselect, 
+	JButton login_btt, isp_save, urp_save, urp_close, isp_dateinsert, sip_show, aip_show, ti_input, sfp_show, ssp_show, stp_show, fmenu, jb_teaminput, jb_stateinput, jb_stateselect, 
 	jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_teamselect, jb_backward, jb_forward, jb_userregist, btn_codeRegi, btn_userRegi, btn_adminMode;
 	JTextField id_jtext, pwd_jtext, ti_jtext, si_jtext;
 	CardLayout incard, outcard;
@@ -181,6 +181,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				
 				// 환경설정 화면 호출
 				urp = new CodeUserRegistration();
+				urp_save = urp.btn_save;
+				urp_close = urp.btn_close;
 				btn_userRegi = urp.btn_userRegi;
 				btn_codeRegi = urp.btn_codeRegi;
 				btn_adminMode = urp.btn_adminMode;
@@ -275,6 +277,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				si_tname.addActionListener(this);
 				isp_dateinsert.addMouseListener(this);
 				sfp_show.addMouseListener(this);
+
+				
 				btn_codeRegi.addActionListener(this);
 				btn_userRegi.addActionListener(this);
 				btn_adminMode.addActionListener(this);
@@ -396,8 +400,12 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			p_forwardlog.removeLast();
 			}else {
 				
-			}
-		} // 여기까지 메뉴버튼
+			} // 여기까지 메뉴버튼
+		}
+		 
+		 
+		 
+		 
 		else if (e.getSource() == ai_sort) {
 			aipjt.setAutoCreateRowSorter(true);
 			TableRowSorter sorter = new TableRowSorter<TableModel>(aipjt.getModel());
@@ -424,15 +432,17 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				System.out.println(newdate1[i]);
 			}
 			ssp_date1.setModel(new DefaultComboBoxModel<>(newdate1));
-		} else if (e.getSource() == btn_userRegi) {
-			System.out.println("이벤트 호출");
-			urp.openUserRegistrationDialog(this).show();
-		} else if (e.getSource() == btn_userRegi) {
-			System.out.println("이벤트 호출");
-			urp.openUserRegistrationDialog(this).show();
-		} else if (e.getSource() == btn_userRegi) {
-			System.out.println("이벤트 호출");
-			urp.openUserRegistrationDialog(this).show();
+		}  else if (e.getSource() == btn_userRegi) {
+			System.out.println("사용자 등록");
+			urp.openUserRegistrationDialog(this).show(true);
+			
+		}  else if (e.getSource() == btn_codeRegi) {
+			System.out.println("계정코드");
+			urp.openCodeRegistrationDialog(this).show(true);
+			
+		}  else if (e.getSource() == btn_adminMode) {
+			System.out.println("관리자 모드");
+			urp.openAdminModeDialog(this).show(true);
 		}
 	}
 	

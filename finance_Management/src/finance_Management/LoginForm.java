@@ -14,18 +14,20 @@ public class LoginForm extends JPanel {
     GridBagLayout gridB;
 
     public LoginForm() {
-        setLayout(new GridBagLayout());
-        
         gridB = new GridBagLayout();
         gbc = new GridBagConstraints();
+        setLayout(new BorderLayout());
 
+        JPanel outerPl = new JPanel(gridB );
+        outerPl.setBackground(Color.decode("#3F91D5"));
         JPanel pWindow = new JPanel(gridB);
+        
         pWindow.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder(new LineBorder(Color.LIGHT_GRAY, 2)),
-                new EmptyBorder(40, 40, 40, 40)
+                new EmptyBorder(40, 40,40, 40)
         ));
 
-        Font font = new Font("Monospaced", Font.PLAIN, 15);
+        Font font = new Font("¸¼Àº °íµñ",Font.BOLD, 15);
 
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -33,6 +35,7 @@ public class LoginForm extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         jlId = new JLabel("ID :", JLabel.RIGHT);
+        jlId.setBorder(BorderFactory.createEmptyBorder(0 , 0, 6 , 0));
         jlId.setFont(font);
         gridB.setConstraints(jlId, gbc);
         pWindow.add(jlId);
@@ -40,18 +43,21 @@ public class LoginForm extends JPanel {
         gbc.gridx = 1;
         gbc.gridy = 0;
         jtId = createFocusChangingTextField(15);
+        jtId.setPreferredSize(new Dimension(200, 25));
         gridB.setConstraints(jtId, gbc);
         pWindow.add(jtId);
  
         gbc.gridx = 0;
         gbc.gridy = 1;
         jlPw = new JLabel("PASSWORD :", JLabel.RIGHT);
+        jlPw.setBorder(BorderFactory.createEmptyBorder(0 , 0, 6 , 0));
         jlPw.setFont(font);
         gridB.setConstraints(jlPw, gbc);
         pWindow.add(jlPw);
  
         gbc.gridx = 1;
         jpPw = createFocusChangingJPasswordField(15);
+        jpPw.setPreferredSize(new Dimension(200, 25));
         gridB.setConstraints(jpPw, gbc);
         pWindow.add(jpPw);
  
@@ -60,6 +66,7 @@ public class LoginForm extends JPanel {
         gbc.gridwidth = 1;
         gbc.gridheight = 2;
         jbSave = new JButton("·Î±×ÀÎ");
+        jbSave.setFont(font);
         gridB.setConstraints(jbSave, gbc);
         pWindow.add(jbSave);
 
@@ -70,8 +77,9 @@ public class LoginForm extends JPanel {
         frameConstraints.weighty = 1;
         frameConstraints.anchor = GridBagConstraints.CENTER;
         
-        add(pWindow, frameConstraints);
 
+        outerPl.add(pWindow, frameConstraints);
+        add(outerPl);
         setVisible(true);
     }
 

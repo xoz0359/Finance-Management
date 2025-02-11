@@ -86,7 +86,8 @@ public class Main_west extends JPanel{
 		p_main_west.add(jb_stateInput);p_main_west.add(jb_stateSelect);
 		
 		p_main_west.add(l_menu2);//부서관리 메뉴 + 버튼
-		p_main_west.add(jb_teamInput); p_main_west.add(jb_teamSelect);p_main_west.add(jb_teamExpectIncomeSet);
+		//p_main_west.add(jb_teamInput); 
+		p_main_west.add(jb_teamSelect);p_main_west.add(jb_teamExpectIncomeSet);
 		
 		p_main_west.add(l_menu3);//매출정보 메뉴 + 버튼
 		p_main_west.add(jb_incomeSelect); p_main_west.add(jb_incomeAnalysis);
@@ -95,7 +96,8 @@ public class Main_west extends JPanel{
 		p_main_west.add(jb_fin_st); //재무제표 메뉴 버튼 추가
 		
 		p_main_west.add(l_menu5);//환경설정 메뉴 라벨+관련 버튼 추가
-		p_main_west.add(jb_codeRegiser);p_main_west.add(jb_userRegiser);
+		p_main_west.add(jb_codeRegiser);
+		p_main_west.add(jb_userRegiser);
 		
 		
 		//라벨 클릭 시 이벤트 발생
