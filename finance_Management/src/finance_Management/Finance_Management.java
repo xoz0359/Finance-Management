@@ -30,7 +30,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	ArrayList <String> uiflist, isplist, siplist, uilist, aiplist, sfp_list, tnamelist, sfplist, ssplist, sspdatelist, tiplist, p_backwardlog, p_forwardlog;
 	ResultSet rs, sirs;
 	JButton login_btt, isp_save, urp_save, urp_close, isp_dateinsert, sip_show, aip_show, ti_input, sfp_show, ssp_show, stp_show, fmenu, jb_teaminput, jb_stateinput, jb_stateselect, 
-	jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_teamselect, jb_backward, jb_forward, jb_userregist, btn_codeRegi, btn_userRegi, btn_adminMode;
+	jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_teamselect, jb_backward, jb_forward, jb_userregist, btn_codeRegi, btn_userRegi, btn_adminMode, btn_deptRegi;
 	JTextField id_jtext, pwd_jtext, ti_jtext, si_jtext;
 	CardLayout incard, outcard;
 	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, spanel5, spanel6, spanel7, spanel8, spanel9, westbar, northbar;
@@ -186,6 +186,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				btn_userRegi = urp.btn_userRegi;
 				btn_codeRegi = urp.btn_codeRegi;
 				btn_adminMode = urp.btn_adminMode;
+				btn_deptRegi = urp.btn_deptRegi;
 				
 				
 				// 패널 조립
@@ -278,7 +279,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				isp_dateinsert.addMouseListener(this);
 				sfp_show.addMouseListener(this);
 
-				
+				btn_deptRegi.addActionListener(this);
 				btn_codeRegi.addActionListener(this);
 				btn_userRegi.addActionListener(this);
 				btn_adminMode.addActionListener(this);
@@ -443,6 +444,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 		}  else if (e.getSource() == btn_adminMode) {
 			System.out.println("관리자 모드");
 			urp.openAdminModeDialog(this).show(true);
+		}	else if (e.getSource() == btn_deptRegi) {
+			urp.insertDeptDialog(this).show(true);
 		}
 	}
 	

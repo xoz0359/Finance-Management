@@ -211,13 +211,12 @@ public class CodeUserRegistration extends JPanel {
 
 	      btn_save.addActionListener(e -> {
 	    	  ArrayList <String> al = new <String> ArrayList();
-	          al.add(tf_idInput.getText());
+	    	  al.add(tf_idInput.getText());
 	          try {
-				InsertUserInfo iu = new InsertUserInfo();
-				
-				int cnt = iu.getDML(al);
-				System.out.println(cnt+"사용자 등록 되었습니다");
-				JOptionPane.showMessageDialog(this, "사용자 등록: " + al.get(0));
+				InsertTeam it = new InsertTeam();
+				int cnt = it.getDML(al);
+				System.out.println(cnt+" 부서 등록 되었습니다");
+				JOptionPane.showMessageDialog(this, "부서 등록: " + al.get(0));
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
