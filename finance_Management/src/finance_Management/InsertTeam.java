@@ -27,7 +27,6 @@ public class InsertTeam extends Finance_Class implements Finance_Interface {
 		int cnt = pstmt.executeUpdate();
 
 		return cnt;
-		}
 		
 	}
 
