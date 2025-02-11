@@ -1,10 +1,6 @@
 package finance_Management;
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -33,8 +29,8 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	HashMap <Integer, String> isp_map, sfp_map, ssp_map;
 	ArrayList <String> uiflist, isplist, siplist, uilist, aiplist, sfp_list, tnamelist, sfplist, ssplist, sspdatelist, tiplist, p_backwardlog, p_forwardlog;
 	ResultSet rs, sirs;
-	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, ti_input, sfp_show, ssp_show, stp_show, jb_teaminput, jb_stateinput, jb_stateselect, 
-	jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_teamselect, jb_backward, jb_forward, jb_userregist;
+	JButton login_btt, isp_save, isp_dateinsert, sip_show, aip_show, ti_input, sfp_show, ssp_show, stp_show, fmenu, jb_teaminput, jb_stateinput, jb_stateselect, 
+	jb_incomeselect, jb_incomeanalysis, jb_fin_stselect, jb_teamselect, jb_backward, jb_forward, jb_userregist, btn_codeRegi, btn_userRegi, btn_adminMode;
 	JTextField id_jtext, pwd_jtext, ti_jtext, si_jtext;
 	CardLayout incard, outcard;
 	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, spanel5, spanel6, spanel7, spanel8, spanel9, westbar, northbar;
@@ -44,6 +40,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	JComboBox is_date, ai_sort, si_tname, si_date, sfp_statetype, ssp_date1, ssp_date2;
 	String editingdata;
 	SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+	CodeUserRegistration urp;
 	// 할일 동사 명사 순서로 객체 명명규칙 바꾸기...
 	
 	public Finance_Management() {
@@ -112,7 +109,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				// northbar 생성
 				NorthMenuBar nb  = new NorthMenuBar();
 				northbar = nb;
-				
+				fmenu = nb.b_menufavorites;
 				// 장부 입력 메뉴화면 호출
 				State_Input isp = new State_Input();
 				ispdtm = isp.dtm;
@@ -183,8 +180,10 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				sfpdtm = sfp.fs_tableModel;
 				
 				// 환경설정 화면 호출
-				CodeUserRegistration urp = new CodeUserRegistration();
-				
+				urp = new CodeUserRegistration();
+				btn_userRegi = urp.btn_userRegi;
+				btn_codeRegi = urp.btn_codeRegi;
+				btn_adminMode = urp.btn_adminMode;
 				
 				
 				// 패널 조립
@@ -220,9 +219,9 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				
 				
 				// 호출된 인스턴스의 주소 연결
-				login_btt = tp.check;
+				login_btt = tp.jbSave;
 				id_jtext = tp.jtId;
-				pwd_jtext = tp.jtPw;
+				pwd_jtext = tp.jpPw;
 				sip_show = sip.jb_infoShow;
 				si_date = sip.jcb_period;
 				si_tname = sip.jcb_dname;
@@ -264,6 +263,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				jb_userregist.addActionListener(this);
 				jb_backward.addActionListener(this);
 				jb_forward.addActionListener(this);
+				fmenu.addActionListener(this);
 				isp_save.addMouseListener(this);
 				stp_show.addMouseListener(this);
 				ssp_show.addMouseListener(this);
@@ -275,6 +275,9 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				si_tname.addActionListener(this);
 				isp_dateinsert.addMouseListener(this);
 				sfp_show.addMouseListener(this);
+				btn_codeRegi.addActionListener(this);
+				btn_userRegi.addActionListener(this);
+				btn_adminMode.addActionListener(this);
 				
 				
 				
@@ -420,10 +423,16 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 			for (int i=0; i < newdate1.length; i++) {
 				System.out.println(newdate1[i]);
 			}
-			
-			
 			ssp_date1.setModel(new DefaultComboBoxModel<>(newdate1));
-			
+		} else if (e.getSource() == btn_userRegi) {
+			System.out.println("이벤트 호출");
+			urp.openUserRegistrationDialog(this).show();
+		} else if (e.getSource() == btn_userRegi) {
+			System.out.println("이벤트 호출");
+			urp.openUserRegistrationDialog(this).show();
+		} else if (e.getSource() == btn_userRegi) {
+			System.out.println("이벤트 호출");
+			urp.openUserRegistrationDialog(this).show();
 		}
 	}
 	

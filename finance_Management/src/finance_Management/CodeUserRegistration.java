@@ -63,6 +63,90 @@ public class CodeUserRegistration extends JPanel {
       add(Box.createVerticalStrut(20));
    }
 
+   public JDialog openUserRegistrationDialog(Frame f) {
+	      userDialog = new JDialog(f, "»ç¿ëÀÚ µî·Ï", true); 
+	      userDialog.setSize(300, 200);
+	      userDialog.setLayout(new GridLayout(4, 2, 10, 10));
+
+	      lbl_id = new JLabel("ID:");
+	      lbl_id.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
+	      tf_idInput = new JTextField();
+	      tf_idInput.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 12));
+
+	      lbl_pwd = new JLabel("PASSWORD:");
+	      lbl_pwd.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
+	      tf_accesslvInput = new JTextField();
+	      tf_accesslvInput.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 12));
+
+	      lbl_accesslv = new JLabel("±ÇÇÑ±¸ºÐ:");
+	      lbl_accesslv.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
+	      cb_accesslvInput = new JComboBox<>(new String[] { "°ü¸®ÀÚ", "»ç¿ëÀÚ" });
+	      cb_accesslvInput.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 12));
+
+	      btn_save = new JButton("ÀúÀå");
+	      btn_close = new JButton("´Ý±â");
+
+	      userDialog.add(lbl_id);
+	      userDialog.add(tf_idInput);
+	      userDialog.add(lbl_pwd);
+	      userDialog.add(tf_accesslvInput);
+	      userDialog.add(lbl_accesslv);
+	      userDialog.add(cb_accesslvInput);
+	      userDialog.add(btn_save);
+	      userDialog.add(btn_close);
+	      
+	      return userDialog;
+	   }
+
+   public JDialog openCodeRegistrationDialog(Frame f) {
+	      codeDialog = new JDialog(f, "°èÁ¤ÄÚµå µî·Ï", true);
+	      codeDialog.setSize(300, 200);
+	      codeDialog.setLayout(new GridLayout(3, 2, 10, 10));
+
+	      lbl_laCodeChoose = new JLabel("´ëºÐ·ùÄÚµå:");
+	      lbl_laCodeChoose.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
+	      cb_laCodeChoose = new JComboBox<>(new String[] { "100. ÀÚ»ê", "200. ºÎÃ¤", "300. ¼öÀÍ", "400. ºñ¿ë" });
+	      cb_laCodeChoose.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 12));
+
+	      lbl_smCodeName = new JLabel("°èÁ¤ÄÚµå¸í:");
+	      lbl_smCodeName.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
+	      tf_smCodeNameInput = new JTextField(20);
+	      tf_smCodeNameInput.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 12));
+
+	      btn_save = new JButton("ÀúÀå");
+	      btn_close = new JButton("´Ý±â");
+
+	      codeDialog.add(lbl_laCodeChoose);
+	      codeDialog.add(cb_laCodeChoose);
+	      codeDialog.add(lbl_smCodeName);
+	      codeDialog.add(tf_smCodeNameInput);
+	      codeDialog.add(btn_save);
+	      codeDialog.add(btn_close);
+
+	      return codeDialog;
+	   }
+
+   public JDialog openAdminModeDialog(Frame f) {
+
+	      adminDialog = new JDialog(f, "°èÁ¤ÄÚµå µî·Ï", true);
+	      adminDialog.setSize(300, 200);
+	      adminDialog.setLayout(new FlowLayout());
+
+	      
+	      btn_confirm = new JButton("È®ÀÎ");
+	      btn_close = new JButton("´Ý±â");
+
+	      adminDialog.add(cb_adminMode);
+	      adminDialog.add(btn_confirm);
+	      adminDialog.add(btn_close);
+
+	      btn_close.addActionListener(e -> adminDialog.dispose());
+
+	      adminDialog.setLocationRelativeTo(this);
+	      adminDialog.setVisible(true);
+	      
+	      return adminDialog;
+	   }
 
  
 }

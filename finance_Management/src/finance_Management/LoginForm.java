@@ -2,83 +2,116 @@ package finance_Management;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
+import javax.swing.border.*;
+import java.awt.event.*;
 
 public class LoginForm extends JPanel {
-    GridBagLayout gbl = new GridBagLayout();
-    GridBagConstraints gbc = new GridBagConstraints();
-    JPanel pWindow;
-    JPanel jp1;
-    JPanel jp2;
-    JPanel jp3;
-    JPanel jp4;
-    JPanel jp5;
-    JPanel jp6;
-    JLabel jlId;
+    JButton jbSave;
+    JLabel jlId, jlPw;
     JTextField jtId;
-    JLabel jlPw;
-    JPasswordField jtPw;
-    JLabel jlAut;
-    String[] authority = {"관리자", "사용자"};
-    JButton cancle;
-    JButton check;
-    JComboBox<String> jcAut;
+    JPasswordField jpPw;
+    GridBagConstraints gbc;
+    GridBagLayout gridB;
 
     public LoginForm() {
-
-        pWindow = new JPanel(new GridBagLayout());
-
-        jp1 = new JPanel(new BorderLayout());
-        jlId = new JLabel("ID : ", JLabel.RIGHT);
-        gbadd(jp1, 0, 0, 1, 1, pWindow);
-
-        jp2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        jtId = new JTextField(12);
-        gbadd(jp2, 1, 0, 2, 2, pWindow);
-
-        jp3 = new JPanel(new BorderLayout());
-        jlPw = new JLabel("PASSWORD : ", JLabel.RIGHT);
-        gbadd(jp3, 0, 1, 1, 1, pWindow);
-
-        jp4 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        jtPw = new JPasswordField(12);
-        gbadd(jp4, 1, 1, 2, 1, pWindow);
-
-        jp5 = new JPanel(new BorderLayout());
-        jlAut = new JLabel("권한 : ", JLabel.RIGHT);
-        gbadd(jp5, 0, 2, 1, 1, pWindow);
-
-        jp6 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        jcAut = new JComboBox<String>(authority);
-        jcAut.setPreferredSize(new Dimension(135, 25));
-        gbadd(jp6, 1, 2, 2, 1, pWindow);
-
+        setLayout(new GridBagLayout());
         
-        cancle = new JButton("취소");
-        check = new JButton("저장");
+        gridB = new GridBagLayout();
+        gbc = new GridBagConstraints();
 
-        cancle.setBounds(235, 185, 70, 25);
-        check.setBounds(320, 185, 70, 25);
+        JPanel pWindow = new JPanel(gridB);
+        pWindow.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(new LineBorder(Color.LIGHT_GRAY, 2)),
+                new EmptyBorder(40, 40, 40, 40)
+        ));
+
+        Font font = new Font("Monospaced", Font.PLAIN, 15);
+
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(5, 5, 5, 5);
+ 
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        jlId = new JLabel("ID :", JLabel.RIGHT);
+        jlId.setFont(font);
+        gridB.setConstraints(jlId, gbc);
+        pWindow.add(jlId);
+ 
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        jtId = createFocusChangingTextField(15);
+        gridB.setConstraints(jtId, gbc);
+        pWindow.add(jtId);
+ 
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        jlPw = new JLabel("PASSWORD :", JLabel.RIGHT);
+        jlPw.setFont(font);
+        gridB.setConstraints(jlPw, gbc);
+        pWindow.add(jlPw);
+ 
+        gbc.gridx = 1;
+        jpPw = createFocusChangingJPasswordField(15);
+        gridB.setConstraints(jpPw, gbc);
+        pWindow.add(jpPw);
+ 
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 2;
+        jbSave = new JButton("로그인");
+        gridB.setConstraints(jbSave, gbc);
+        pWindow.add(jbSave);
+
+        GridBagConstraints frameConstraints = new GridBagConstraints();
+        frameConstraints.gridx = 0;
+        frameConstraints.gridy = 0;
+        frameConstraints.weightx = 1;
+        frameConstraints.weighty = 1;
+        frameConstraints.anchor = GridBagConstraints.CENTER;
         
+        add(pWindow, frameConstraints);
 
-        jp1.add(jlId);
-        jp2.add(jtId);
-        jp3.add(jlPw);
-        jp4.add(jtPw);
-        jp5.add(jlAut);
-        jp6.add(jcAut);
-        this.add(cancle);
-        this.add(check);
-        this.add(pWindow);
+        setVisible(true);
     }
 
-    public void gbadd(Component c, int x, int y, int tx, int w, JPanel p_window) {
-        gbc.gridx = x;
-        gbc.gridy = y;
-        gbc.weightx = tx;
-        gbc.gridwidth = w;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+    public JTextField createFocusChangingTextField(int columns) {
+        JTextField textField = new JTextField(columns);
+        Color defaultColor = Color.WHITE;
+        Color focusColor = new Color(200, 230, 255);
 
-        p_window.add(c, gbc);
+        textField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                textField.setBackground(focusColor);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                textField.setBackground(defaultColor);
+            }
+        });
+
+        return textField;
+    }
+
+    private JPasswordField createFocusChangingJPasswordField(int columns) {
+        JPasswordField passwordField = new JPasswordField(columns);
+        Color defaultColor = Color.WHITE;
+        Color focusColor = new Color(200, 230, 255);
+
+        passwordField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                passwordField.setBackground(focusColor);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                passwordField.setBackground(defaultColor);
+            }
+        });
+
+        return passwordField;
     }
 }
