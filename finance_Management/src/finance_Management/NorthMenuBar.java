@@ -1,6 +1,10 @@
 package finance_Management;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class NorthMenuBar extends JPanel {
@@ -24,11 +28,15 @@ public class NorthMenuBar extends JPanel {
 		String forwardPath = "images\\forward.png";
 		String starPath = "images\\star.png";
 		String closePath = "images\\close.png";
+		
+
 		ImageIconAdd backwardIcon = new ImageIconAdd(backwardPath, 20, 20);
 		ImageIconAdd forwardIcon = new ImageIconAdd(forwardPath, 20, 20);
 		ImageIconAdd starIcon = new ImageIconAdd(starPath, 20, 20);
 		ImageIconAdd closeIcon = new ImageIconAdd(closePath, 20, 20);
-
+		
+		
+		
 		b_backward = new JButton(backwardIcon.icon);
 		this.l_menu_design(b_backward);
 		this.jb_color_change(b_backward);

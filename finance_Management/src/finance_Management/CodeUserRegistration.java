@@ -5,69 +5,64 @@ import javax.swing.*;
 
 public class CodeUserRegistration extends JPanel {
 
-   JPanel p_center, p_bottom;
+   JPanel p_center, p_bottom, adminPanel;
    JTextField tf_smCodeNameInput, tf_idInput, tf_accesslvInput;
    JComboBox<String> cb_laCodeChoose, cb_accesslvInput;
-   JButton btn_save, btn_close;
-   JLabel lbl_substitle, lbl_laCodeChoose, lbl_smCodeName,
-         lbl_id, lbl_pwd, lbl_accesslv;
+   JButton btn_save, btn_close, btn_codeRegi, btn_userRegi, btn_adminMode, btn_confirm;
+   JLabel lbl_substitle, lbl_laCodeChoose, lbl_smCodeName, lbl_id, lbl_pwd, lbl_accesslv;
+   JDialog userDialog, codeDialog, adminDialog;
+   JCheckBox cb_adminMode;
 
    public CodeUserRegistration() {
-           super();
-           
-           p_center = new JPanel();
-           p_center.setLayout(new GridLayout(5, 2, 10, 10));
-           p_center.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-           lbl_laCodeChoose = new JLabel("´ëºÐ·ùÄÚµå:");
-           lbl_laCodeChoose.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
-           cb_laCodeChoose = new JComboBox<>(new String[] { "100. ÀÚ»ê", "200. ºÎÃ¤", "300. ¼öÀÍ", "400. ºñ¿ë" });
-           cb_laCodeChoose.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 12));
+      p_center = new JPanel();
+      p_center.setLayout(new BoxLayout(p_center, BoxLayout.Y_AXIS));
 
-           lbl_smCodeName = new JLabel("°èÁ¤ÄÚµå¸í:");
-           lbl_smCodeName.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
-           tf_smCodeNameInput = new JTextField(20);
-           tf_smCodeNameInput.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 12));
-           
-           lbl_id = new JLabel("ID:");
-         lbl_id.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
-         tf_idInput = new JTextField();
-         tf_idInput.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 12));
+      btn_userRegi = new JButton("»ç¿ëÀÚ µî·Ï");
+      btn_userRegi.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
+      btn_userRegi.setPreferredSize(getPreferredSize());
 
-         lbl_pwd = new JLabel("PASSWORD:");
-         lbl_pwd.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
-         tf_accesslvInput = new JTextField();
-         tf_accesslvInput.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 12));
+      btn_codeRegi = new JButton("°èÁ¤ÄÚµå µî·Ï");
+      btn_codeRegi.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
 
-         lbl_accesslv = new JLabel("±ÇÇÑ±¸ºÐ:");
-         lbl_accesslv.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
-         cb_accesslvInput = new JComboBox<>(new String[] { "°ü¸®ÀÚ", "»ç¿ëÀÚ" });
-         cb_accesslvInput.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 12));
+      adminPanel = new JPanel();
+      adminPanel.setLayout(new BoxLayout(adminPanel, BoxLayout.X_AXIS));
+      adminPanel.setMaximumSize(new Dimension(300, 50));
+      adminPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-           p_center.add(lbl_laCodeChoose);
-           p_center.add(cb_laCodeChoose);
-           p_center.add(lbl_smCodeName);
-           p_center.add(tf_smCodeNameInput);
-          p_center.add(lbl_id);
-         p_center.add(tf_idInput);
-         p_center.add(lbl_pwd);
-         p_center.add(tf_accesslvInput);
-         p_center.add(lbl_accesslv);
-         p_center.add(cb_accesslvInput);
+      btn_adminMode = new JButton("°ü¸®ÀÚ ¸ðµå");
+      btn_adminMode.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
+      cb_adminMode = new JCheckBox();
 
-           p_bottom = new JPanel();
-           p_bottom.setLayout(new FlowLayout(FlowLayout.CENTER, 15, 10));
+      btn_adminMode.setPreferredSize(new Dimension(200, 40));
+      cb_adminMode.setPreferredSize(new Dimension(20, 20));
 
-           btn_save = new JButton("ÀúÀå");
-           btn_save.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
+      adminPanel.add(Box.createHorizontalGlue());
+      adminPanel.add(btn_adminMode);
+      adminPanel.add(cb_adminMode);
+      adminPanel.add(Box.createHorizontalGlue());
 
-           btn_close = new JButton("´Ý±â");
-           btn_close.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 12));
+      Dimension buttonSize = new Dimension(300, 50);
+      btn_userRegi.setPreferredSize(buttonSize);
+      btn_codeRegi.setPreferredSize(buttonSize);
+      btn_adminMode.setPreferredSize(buttonSize);
 
-           p_bottom.add(btn_save);
-           p_bottom.add(btn_close);
+      btn_userRegi.setMaximumSize(buttonSize);
+      btn_codeRegi.setMaximumSize(buttonSize);
+      btn_adminMode.setMaximumSize(buttonSize);
 
-           add(p_center, BorderLayout.CENTER);
-           add(p_bottom, BorderLayout.SOUTH);
-       }
+      btn_userRegi.setAlignmentX(Component.CENTER_ALIGNMENT);
+      btn_codeRegi.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+      add(Box.createVerticalStrut(20));
+      add(btn_userRegi);
+      add(Box.createVerticalStrut(10));
+      add(btn_codeRegi);
+      add(Box.createVerticalStrut(10));
+      add(adminPanel);
+      add(Box.createVerticalStrut(20));
    }
+
+
+ 
+}

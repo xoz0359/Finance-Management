@@ -16,7 +16,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import javax.swing.*;
@@ -41,6 +43,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 	JTable ispjt, aipjt;
 	JComboBox is_date, ai_sort, si_tname, si_date, sfp_statetype, ssp_date1, ssp_date2;
 	String editingdata;
+	SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
 	// 할일 동사 명사 순서로 객체 명명규칙 바꾸기...
 	
 	public Finance_Management() {
@@ -98,6 +101,9 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				
 				// 로그인 패널 생성
 				LoginForm tp = new LoginForm();
+				
+				// 메인 패널 생성
+				MainPanel nmp = new MainPanel();
 				
 				// westbar 생성
 				Main_west mp = new Main_west();
@@ -176,7 +182,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				FinancialStatements sfp = new FinancialStatements();
 				sfpdtm = sfp.fs_tableModel;
 				
-				
+				// 환경설정 화면 호출
 				CodeUserRegistration urp = new CodeUserRegistration();
 				
 				
@@ -198,7 +204,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				cardpanel.add(spanel9, "RegistUserPanel");
 				
 				
-				spanel1.add(mp, "Center");
+				spanel1.add(nmp, "Center");
 				spanel2.add(isp, "Center");
 				spanel3.add(ssp, "Center");
 				spanel4.add(stp, "Center");
@@ -229,7 +235,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				sfp_statetype = sfp.cb_stateType;
 				ssp_show = ssp.jb_save;
 				ssp_date1 = ssp.jc_date1;
-				ssp_date2 = ssp.jc_date1;
+				ssp_date2 = ssp.jc_date2;
 				jb_stateinput = mp.jb_stateInput;
 				jb_stateselect = mp.jb_stateSelect;
 				jb_teaminput = mp.jb_teamInput;
@@ -399,7 +405,26 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				System.out.println("오름차순이지롱");
 				sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
 			}
-		} else if (true);
+		} else if (e.getSource() == ssp_date2) {
+			System.out.println("콤보 박스 변경 발생!");
+			ssp_date2.getSelectedItem().toString();
+			Date date = Date.valueOf(ssp_date2.getSelectedItem().toString());
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			String[] newdate1 = new String[30];
+			for (int i=0; i < newdate1.length; i++) {
+				cal.add(Calendar.DATE, -1);
+				Date ndate = new Date(cal.getTimeInMillis());
+				newdate1[i] = sdf.format(ndate);
+			}
+			for (int i=0; i < newdate1.length; i++) {
+				System.out.println(newdate1[i]);
+			}
+			
+			
+			ssp_date1.setModel(new DefaultComboBoxModel<>(newdate1));
+			
+		}
 	}
 	
 	@Override
@@ -484,7 +509,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 					si.conn.close();
 				} else {
 					do {
-						if (!tname.equals(tnamelist.get((rs.getInt("DEPT")/10)-1))) {
+						if (!tname.equals("["+tnamelist.get((rs.getInt("DEPT")/10)-1)+"]")) { // 현재 부서 넘버 20번이 건너 뛰어졌음
 							a = false;
 						}
 						// 기존의 row를 삭제 후 새 row 삽입
