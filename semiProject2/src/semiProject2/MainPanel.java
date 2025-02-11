@@ -28,17 +28,13 @@ public class MainPanel extends JPanel{
 		ImageIconAdd icon_outline = new ImageIconAdd("src\\img\\outline_icon.png", 120, 120);
 		ImageIconAdd icon_organization = new ImageIconAdd("src\\img\\organization_icon.png", 120, 120);
 		ImageIconAdd icon_servicelist = new ImageIconAdd("src\\img\\ser_list_icon.png", 120, 120);
-		ImageIconAdd icon_service_center = new ImageIconAdd("src\\img\\ser_list_icon.png", 90, 90);
+		ImageIconAdd icon_service_center = new ImageIconAdd("src\\img\\service_center.png", 90, 90);
 		ImageIconAdd icon_email = new ImageIconAdd("src\\img\\email.png", 90, 90);
 		
 		
 		jb_outline = new JButton("사업 개요",icon_outline.icon);this.jb_design(jb_outline);
 		jb_organization = new JButton("사업 조직도",icon_organization.icon);this.jb_design(jb_organization);
 		jb_serviceList = new JButton("서비스 현황",icon_servicelist.icon);this.jb_design(jb_serviceList);
-		
-		ImagePanel ip_outline = new ImagePanel("src\\img\\outline.png");
-		ImagePanel ip_organization = new ImagePanel("src\\img\\organization2.png");
-		ImagePanel ip_serviceList = new ImagePanel("src\\img\\servicelist.png");
 		//사업 개요란
 		this.add(jb_outline);
 		this.add(jp_etc);
