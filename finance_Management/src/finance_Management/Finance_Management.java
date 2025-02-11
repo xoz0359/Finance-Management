@@ -261,6 +261,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				isp_save.addMouseListener(this);
 				stp_show.addMouseListener(this);
 				ssp_show.addMouseListener(this);
+				ssp_date2.addActionListener(this);
 				sip_show.addMouseListener(this);
 				aip_show.addMouseListener(this);
 				ai_sort.addActionListener(this);
@@ -398,7 +399,7 @@ public class Finance_Management extends Frame implements ActionListener, MouseLi
 				System.out.println("오름차순이지롱");
 				sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
 			}
-		}
+		} else if (true);
 	}
 	
 	@Override

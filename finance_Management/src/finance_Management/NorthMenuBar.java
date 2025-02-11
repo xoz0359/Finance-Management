@@ -17,21 +17,31 @@ public class NorthMenuBar extends JPanel {
 		northFirstP = new JPanel();
 		FlowLayout northLayout = new FlowLayout(FlowLayout.LEFT, 15, 15);
 		northFirstP.setLayout(northLayout);
-		northFirstP.setBackground(Color.black);
+		northFirstP.setBackground(Color.decode("#1879C9"));
+		
+		//æ∆¿Ãƒ‹ª˝º∫
+		String backwardPath = "images\\backward.png";
+		String forwardPath = "images\\forward.png";
+		String starPath = "images\\star.png";
+		String closePath = "images\\close.png";
+		ImageIconAdd backwardIcon = new ImageIconAdd(backwardPath, 20, 20);
+		ImageIconAdd forwardIcon = new ImageIconAdd(forwardPath, 20, 20);
+		ImageIconAdd starIcon = new ImageIconAdd(starPath, 20, 20);
+		ImageIconAdd closeIcon = new ImageIconAdd(closePath, 20, 20);
 
-		b_backward = new JButton("°Á");
+		b_backward = new JButton(backwardIcon.icon);
 		this.l_menu_design(b_backward);
 		this.jb_color_change(b_backward);
 		
-		b_forward = new JButton("°Ê");
+		b_forward = new JButton(forwardIcon.icon);
 		this.l_menu_design(b_forward);
 		this.jb_color_change(b_forward);
 		
-		b_menufavorites = new JButton("¡Ò∞‹√£±‚");
+		b_menufavorites = new JButton("¡Ò∞‹√£±‚",starIcon.icon);
 		this.l_menu_design(b_menufavorites);
 		this.jb_color_change(b_menufavorites);
 
-		b_menuclose = new JButton("¥›±‚");
+		b_menuclose = new JButton("¥›±‚",closeIcon.icon);
 		this.l_menu_design(b_menuclose);
 		this.jb_color_change(b_menuclose);
 
@@ -41,11 +51,17 @@ public class NorthMenuBar extends JPanel {
 		northFirstP.add(b_menuclose);
 
 		this.add(northFirstP, "Center");
+		String iconPath = "src\\img\\setting4.png";
+		ImageIconAdd iconAdd = new ImageIconAdd(iconPath, 50, 50);
+		JButton jb_icon = new JButton(iconAdd.icon);
+		this.add(jb_icon, "East");
+		jb_icon.setBackground(Color.decode("#1879C9"));
+		this.setBackground(Color.decode("#1879C9"));
 
 	}
 
 	public void jb_color_change(JButton jb) {
-		jb.setBackground(Color.black);
+		jb.setBackground(Color.decode("#1879C9"));
 		jb.setForeground(Color.white);
 	}
 

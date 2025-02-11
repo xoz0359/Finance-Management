@@ -21,7 +21,7 @@ public class TeamInsert extends JPanel {
 
     	constraint.gridx = 0;
         constraint.gridy = 0;
-        deptCode = new JLabel("°èÁ¤ÄÚµå¸í  :", JLabel.RIGHT);
+        deptCode = new JLabel("�μ��� :", JLabel.RIGHT);
         gridbag.setConstraints(deptCode, constraint);
         add(deptCode);
         
@@ -47,19 +47,17 @@ public class TeamInsert extends JPanel {
         constraint.anchor = GridBagConstraints.EAST;
         constraint.gridx = 1;
         constraint.gridy = 1;
-        jbttnSave = new JButton("ÀúÀå");
+        jbttnSave = new JButton("����");
         jbttnSave.setPreferredSize(new Dimension(60, 23));
         gridbag.setConstraints(jbttnSave, constraint);
         add(jbttnSave);
         
         constraint.gridx = 2;
         constraint.gridy = 1;
-        jbttnClose = new JButton("´Ý±â");
+        jbttnClose = new JButton("�ݱ�");
         jbttnClose.setPreferredSize(new Dimension(60, 23));
         gridbag.setConstraints(jbttnClose, constraint);
         add(jbttnClose);
-        
-        setVisible(true);
-        setBounds(1000, 200, 450, 250);
+
     }
 }

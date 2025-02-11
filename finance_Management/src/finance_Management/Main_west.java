@@ -17,12 +17,18 @@ public class Main_west extends JPanel{
 	
 	
 	public Main_west() {
+		String path = "images\\finIcon.png";
+		ImageIconAdd iconAdd = new ImageIconAdd(path, 20,20);
+
 		//센터판넬과 서쪽판넬 생성
 		p_main_west = new JPanel(new GridLayout(14,1));
 		p_main_center = new JPanel(new GridLayout(1,1));
 		
 		//메인 화면에 센터판넬에 들어갈 라벨 생성
-		title = new JLabel("재무 관리 프로그램v1.0",JLabel.CENTER);
+		title = new JLabel("재무 관리 프로그램v1.0",iconAdd.icon,JLabel.CENTER);
+		
+//		title.setText("재무");
+//		title.setIcon(icon);
 		
 		//센터판넬에 라벨 추가
 		p_main_center.add(title);
@@ -33,13 +39,23 @@ public class Main_west extends JPanel{
 		
 		//서쪽판넬 배경 검은색
 		p_main_west.setBackground(Color.decode("#3F91D5"));
-
+		
+		String pathState = "images\\wirte.png";
+		String pathTeam = "images\\department.png";
+		String pathIncome = "images\\income2.png";
+		String pathSetting = "images\\setting4.png";
+		
+		ImageIconAdd IconState = new ImageIconAdd(pathState, 20, 20);
+		ImageIconAdd IconTeam = new ImageIconAdd(pathTeam, 20, 20);
+		ImageIconAdd IconIncome = new ImageIconAdd(pathIncome, 20, 20);
+		ImageIconAdd IconSetting = new ImageIconAdd(pathSetting, 20, 20);
+		
 		//큰 메뉴 객체 생성 & 디자인 메서드 사용
-		l_menu1 = new JLabel("회계관리");this.l_menu_design(l_menu1);
-		l_menu2 = new JLabel("부서관리");this.l_menu_design(l_menu2);
-		l_menu3 = new JLabel("매출정보");this.l_menu_design(l_menu3);
+		l_menu1 = new JLabel("회계관리",IconState.icon,JLabel.CENTER);this.l_menu_design(l_menu1);
+		l_menu2 = new JLabel("부서관리",IconTeam.icon,JLabel.CENTER);this.l_menu_design(l_menu2);
+		l_menu3 = new JLabel("매출정보",IconIncome.icon,JLabel.CENTER);this.l_menu_design(l_menu3);
 //		l_menu4 = new JLabel("재무제표");this.l_menu_design(l_menu4);
-		l_menu5 = new JLabel("*환경설정");this.l_menu_design(l_menu5);
+		l_menu5 = new JLabel("환경설정",IconSetting.icon,JLabel.CENTER);this.l_menu_design(l_menu5);
 		
 		//회계 관련 작은메뉴버튼 생성 & 디자인
 		jb_stateInput=new JButton("회계정보 입력");jb_stateSelect=new JButton("회계정보 조회");
