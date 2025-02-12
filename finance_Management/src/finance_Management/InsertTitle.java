@@ -21,10 +21,10 @@ public class InsertTitle extends Finance_Class implements Finance_Interface {
 	public Integer getDML(ArrayList <String> l) throws SQLException {
 	inlist = l;
 	sql = "insert into title values(?, sq_title_smcode.nextval, ?)";
-	System.out.println(sql);
+	//System.out.println(sql);
 	pstmt = conn.prepareStatement(sql);
 	for (int i = 0; i < inlist.size(); i++) {
-		System.out.println("inlist:"+inlist.get(i));
+		//System.out.println("inlist:"+inlist.get(i));
 		pstmt.setString(i+1, inlist.get(i));
 	}
 	int cnt = pstmt.executeUpdate();

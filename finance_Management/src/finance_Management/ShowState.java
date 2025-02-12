@@ -24,7 +24,7 @@ public class ShowState extends JPanel{
 	JTextField jtf_d;
 	JTable jt_s;
 	DefaultTableModel dtm;
-	JButton jb_save, jb_dateinsert;
+	JButton jb_save;
 	ArrayList<String> list;
 	
 	
@@ -39,22 +39,23 @@ public class ShowState extends JPanel{
 		p_dateInput = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		//저장 판넬 & 버튼 생성
 		p_save = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		jb_save = new JButton("저장"); 
-		jb_dateinsert = new JButton("선택");
+		jb_save = new JButton("조회"); 
 		//저장 버튼 디자인
 //		jb_save.setBackground(Color.black);
 		jb_save.setBackground(Color.white);
-		jb_dateinsert.setBackground(Color.white);
 		
 		// 날짜입력판넬에 들어갈 String 배열 생성
-		String[] date = new String [31];
+		String[] date1 = new String [32];
+		String[] date2 = new String [31];
 		
-		for (int i = 0; i < 31; i++) {
+		date1[0] = "전체";
+		for (int i = 0; i < date2.length; i++) {
 		Calendar cal1 = Calendar.getInstance();
 		cal1.add(Calendar.DATE, (i-(i*2))); // 빼고 싶다면 음수 입력
 		Date now = new Date(cal1.getTimeInMillis());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		date [i] = sdf.format(now);
+		date1 [i+1] = sdf.format(now);
+		date2 [i] = sdf.format(now);
 		}
 		
 		
@@ -121,8 +122,8 @@ public class ShowState extends JPanel{
 		
 		
 		//날짜 입력하는 콤보박스랑 텍스트필드(길이:3) 생성 + 콤보박스 디자인
-		jc_date1 = new JComboBox(date);this.jcb_design(jc_date1);
-		jc_date2 = new JComboBox(date);this.jcb_design(jc_date2);
+		jc_date1 = new JComboBox(date1);this.jcb_design(jc_date1);
+		jc_date2 = new JComboBox(date2);this.jcb_design(jc_date2);
 		
 		//날짜 관련 라벨 생성
 		l_date = new JLabel("일자: ");
@@ -133,7 +134,6 @@ public class ShowState extends JPanel{
 		p_dateInput.add(jc_date1);
 		p_dateInput.add(new JLabel("~"));
 		p_dateInput.add(jc_date2);
-		p_dateInput.add(jb_dateinsert);
 		
 		//저장버튼을 저장 판넬에 추가
 		p_save.add(jb_save);

@@ -59,7 +59,7 @@ public class NorthMenuBar extends JPanel {
 		//northFirstP.add(b_menuclose);
 
 		this.add(northFirstP, "Center");
-		String iconPath = "images\\setting4.png";
+		String iconPath = "images\\logout.png";
 		ImageIconAdd iconAdd = new ImageIconAdd(iconPath, 50, 50);
 		JButton jb_icon = new JButton(iconAdd.icon);
 		this.add(jb_icon, "East");

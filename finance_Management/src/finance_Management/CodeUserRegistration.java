@@ -1,8 +1,10 @@
 package finance_Management;
 
 import java.awt.*;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.*;
 
@@ -13,7 +15,7 @@ public class CodeUserRegistration extends JPanel {
    JComboBox<String> cb_laCodeChoose, cb_accesslvInput;
    JButton btn_save, btn_close, btn_codeRegi, btn_userRegi, btn_adminMode, btn_confirm, btn_deptRegi;
    JLabel lbl_substitle, lbl_laCodeChoose, lbl_smCodeName, lbl_id, lbl_pwd, lbl_accesslv;
-	JDialog userDialog, codeDialog, adminDialog;
+	JDialog userDialog, deptDialog, codeDialog, adminDialog, incomeDialog;
 	JCheckBox cb_adminMode;
 
 	public CodeUserRegistration() {
@@ -107,6 +109,7 @@ public class CodeUserRegistration extends JPanel {
 	      userDialog.add(lbl_pwd);
 	      userDialog.add(tf_pwInput);
 	      userDialog.add(lbl_accesslv);
+	      userDialog.add(cb_accesslvInput);
 	      userDialog.add(btn_save);
 	      userDialog.add(btn_close);
 
@@ -125,7 +128,9 @@ public class CodeUserRegistration extends JPanel {
 				
 				int cnt = iu.getDML(al);
 				System.out.println(cnt+"사용자 등록 되었습니다");
+				
 				JOptionPane.showMessageDialog(this, "사용자 등록: " + al.get(0));
+				userDialog.dispose();
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -177,8 +182,10 @@ public class CodeUserRegistration extends JPanel {
 				try {
 					InsertTitle it = new InsertTitle();
 					int cnt = it.getDML(al);
+					
 					System.out.println(cnt + "계정코드 등록 되었습니다");
 					JOptionPane.showMessageDialog(this, "계정과목 등록: " + al.get(1));
+					codeDialog.dispose();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -192,9 +199,9 @@ public class CodeUserRegistration extends JPanel {
 
 	public JDialog insertDeptDialog(Frame f) {
 		   
-	      userDialog = new JDialog(f, "부서등록", true); 
-	      userDialog.setSize(300, 200);
-	      userDialog.setLayout(new GridLayout(4, 2, 10, 10));
+		deptDialog = new JDialog(f, "부서등록", true); 
+		deptDialog.setSize(300, 200);
+		deptDialog.setLayout(new GridLayout(4, 2, 10, 10));
 
 	      lbl_id = new JLabel("부서명:");
 	      lbl_id.setFont(new Font("맑은 고딕", Font.BOLD, 12));
@@ -204,27 +211,31 @@ public class CodeUserRegistration extends JPanel {
 	      btn_save = new JButton("저장");
 	      btn_close = new JButton("닫기");
 
-	      userDialog.add(lbl_id);
-	      userDialog.add(tf_idInput);
-	      userDialog.add(btn_save);
-	      userDialog.add(btn_close);
+	      deptDialog.add(lbl_id);
+	      deptDialog.add(tf_idInput);
+	      deptDialog.add(btn_save);
+	      deptDialog.add(btn_close);
 
-	      btn_save.addActionListener(e -> {
-	    	  ArrayList <String> al = new <String> ArrayList();
-	    	  al.add(tf_idInput.getText());
-	          try {
-				InsertTeam it = new InsertTeam();
-				int cnt = it.getDML(al);
-				System.out.println(cnt+" 부서 등록 되었습니다");
-				JOptionPane.showMessageDialog(this, "부서 등록: " + al.get(0));
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			btn_save.addActionListener(e -> {
+
+				ArrayList<String> al = new <String>ArrayList();
+				al.add(tf_idInput.getText());
+				try {
+					InsertTeam it = new InsertTeam();
+					int cnt = it.getDML(al);
+					System.out.println(cnt+"행 입력완료");
+					
+					System.out.println(cnt + " 부서 등록 되었습니다");
+					JOptionPane.showMessageDialog(this, "부서 등록: " + al.get(0));
+					deptDialog.dispose();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 	        });
-	      btn_close.addActionListener(e -> userDialog.dispose());
+	      btn_close.addActionListener(e -> deptDialog.dispose());
 	      
-	      return userDialog;
+	      return deptDialog;
 	   }
    
    public JDialog openAdminModeDialog(Frame f) {
@@ -259,5 +270,58 @@ public class CodeUserRegistration extends JPanel {
 	      return adminDialog;
 	   }
 
+   public JDialog insertincomeDialog(Frame f) {
+	   
+	      incomeDialog = new JDialog(f, "예상매출 설정", true); 
+	      incomeDialog.setSize(300, 200);
+	      incomeDialog.setLayout(new GridLayout(4, 2, 10, 10));
+
+	      lbl_laCodeChoose = new JLabel("부서 선택:");
+	      lbl_laCodeChoose.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+	      
+	      Finance_Management fm = new Finance_Management();
+	      String dpte [] = new String[fm.tnamelist.size()];
+	      for (int i = 0; i < dpte.length; i++) {
+	    	  dpte[i] = fm.tnamelist.get(i);
+	      }
+	      cb_laCodeChoose = new JComboBox<>(dpte);
+	      cb_laCodeChoose.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
+
+	      lbl_smCodeName = new JLabel("예상 매출(백만):");
+	      lbl_smCodeName.setFont(new Font("맑은 고딕", Font.BOLD, 12));
+	      tf_smCodeNameInput = new JTextField(20);
+	      tf_smCodeNameInput.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
+
+	      btn_save = new JButton("저장");
+	      btn_close = new JButton("닫기");
+
+	      incomeDialog.add(lbl_laCodeChoose);
+	      incomeDialog.add(cb_laCodeChoose);
+	      incomeDialog.add(lbl_smCodeName);
+	      incomeDialog.add(tf_smCodeNameInput);
+	      incomeDialog.add(btn_save);
+	      incomeDialog.add(btn_close);
+	      
+	      btn_save.addActionListener(e -> {
+	    	  HashMap <Integer, String> im = new HashMap<Integer, String>();
+	    	  im.put(0, "EXPECTINCOME");
+	    	  ArrayList <String> il = new <String> ArrayList();
+	    	  il.add(tf_smCodeNameInput.getText());
+	    	  il.add(((cb_laCodeChoose.getSelectedIndex()+1)*10)+"");
+	          try {
+				UpdateIncome ui = new UpdateIncome();
+				int cnt = ui.getDML(im, il);
+				System.out.println(cnt+" 예상매출 등록 되었습니다");
+				incomeDialog.dispose();
+				JOptionPane.showMessageDialog(this, "예상매출: " + il.get(0));
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+	        });
+	      btn_close.addActionListener(e -> incomeDialog.dispose());
+	      
+	      return incomeDialog;
+	   }
  
 }

@@ -66,8 +66,8 @@ public class IncomeAnalysis extends JPanel{
 	
 		
 		//예상 매출액 입력판넬에 다이얼로그 버튼 추가
-		p_eiInput.add(jb_eiInput);
-		p_infoShow.add(jcb_order);
+		//p_eiInput.add(jb_eiInput);
+		//p_infoShow.add(jcb_order);
 		p_infoShow.add(jb_infoShow);
 		
 		

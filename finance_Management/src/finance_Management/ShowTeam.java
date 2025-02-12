@@ -20,12 +20,12 @@ public class ShowTeam extends JPanel {
 		
 		BorderLayout bl_fs = new BorderLayout(10, 10);
 		this.setLayout(bl_fs);
-		this.setBackground(Color.white);
+		this.setBackground(Color.WHITE);
 		
 		p_north = new JPanel();
 		BorderLayout fs_title = new BorderLayout();
 		p_north.setLayout(fs_title);
-		p_north.setBackground(Color.white);
+		p_north.setBackground(Color.WHITE);
 		
 		p_north_titlebox = new JPanel();
 		BorderLayout fs_titlebox = new BorderLayout();
@@ -33,7 +33,7 @@ public class ShowTeam extends JPanel {
 		p_north_titlebox.setBorder(BorderFactory.createLineBorder(Color.black, 3));
 		p_north_titlebox.setBackground(Color.WHITE);
 		
-		l_titlename = new JLabel("4팀 주식회사", SwingConstants.CENTER);
+		l_titlename = new JLabel("부서정보 조회", SwingConstants.CENTER);
 		l_titlename.setFont(new Font("맑은 고딕",Font.BOLD,20));
 		p_north_titlebox.add(l_titlename, BorderLayout.CENTER);
 	
@@ -47,9 +47,9 @@ public class ShowTeam extends JPanel {
         p_subtitlerow.setLayout(new BorderLayout());
         p_subtitlerow.setBackground(Color.WHITE);
 
-        l_positionname = new JLabel("재무상태표", SwingConstants.LEFT);
+        l_positionname = new JLabel("부서목록표", SwingConstants.LEFT);
         l_positionname.setFont(new Font("맑은 고딕", Font.BOLD, 15));
-        p_subtitlerow.add(l_positionname, BorderLayout.WEST);
+        //p_subtitlerow.add(l_positionname, BorderLayout.WEST);
 
         b_check = new JButton("조회");
         b_check.setFont(new Font("맑은 고딕", Font.BOLD, 12));
@@ -58,7 +58,7 @@ public class ShowTeam extends JPanel {
 
         p_center.add(p_subtitlerow, BorderLayout.NORTH);
         
-        String[] columnNames = {"계정과목", "누적금액"}; // 열 이름
+        String[] columnNames = {"부서번호", "부서이름"}; // 열 이름
         fs_tableModel = new DefaultTableModel(columnNames, 13);
         t_table = new JTable(fs_tableModel);
         t_table.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
