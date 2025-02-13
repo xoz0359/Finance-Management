@@ -64,13 +64,14 @@ public class FinancialStatements extends JPanel {
         cb_stateType.setSelectedIndex(0);
         cb_stateType.setFont(new Font("맑은 고딕", Font.BOLD, 15));
         
-        p_r.add(cb_stateType);
+        p_l.add(cb_stateType);
 
         b_check = new JButton("조회");
         b_check.setFont(new Font("맑은 고딕", Font.BOLD, 12));
         b_check.setBackground(Color.WHITE);
-        p_l.add(b_check);
-
+        
+        
+        p_r.add(b_check);
         p_center.add(p_subtitlerow, BorderLayout.NORTH);
         
         String[] columnNames = {"계정과목", "누적금액"}; // 열 이름

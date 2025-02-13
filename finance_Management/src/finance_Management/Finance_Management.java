@@ -569,12 +569,15 @@ public class Finance_Management extends Frame
 					row = ispdtm.getRowCount();
 					ispdtm.setRowCount(0);
 					ispdtm.setRowCount(row);
+					JOptionPane.showMessageDialog(null, "정보가 저장 되었습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
 				}
 			} catch (SQLRecoverableException e1) {
 				JOptionPane.showMessageDialog(this, "조회할 데이터가 없습니다", "정보", JOptionPane.INFORMATION_MESSAGE);
 			} catch (SQLException e2) {
 				JOptionPane.showMessageDialog(this, "입력한 값이 형식과 맞지 않습니다!", "경고", JOptionPane.WARNING_MESSAGE);
-			} 
+			} catch (IllegalArgumentException e3 ) {
+				JOptionPane.showMessageDialog(this, "컬럼에 공백이 입력되었습니다!", "경고", JOptionPane.WARNING_MESSAGE);
+			}
 		} else if (e.getSource() == sip_show) { 
 			int rows = sipdtm.getRowCount();
 			sipdtm.setRowCount(0);
@@ -940,24 +943,22 @@ public class Finance_Management extends Frame
 	
 	
 
-		public static void main(String[] args) {
-
-			// TransparentLogo 실행
-			TransparentLogo tl = new TransparentLogo();
-			tl.setSize(300, 300);
-			tl.setLocationRelativeTo(null);
-			tl.setVisible(true);
-
-			// TransparentLogo가 닫힐 때 Finance_Management 실행
-			tl.addWindowListener(new java.awt.event.WindowAdapter() {
-				@Override
-				public void windowClosed(java.awt.event.WindowEvent e) {
-					// Finance_Management 실행
-					Finance_Management fm = new Finance_Management();
-					fm.setSize(800, 800);
-					fm.setLocationRelativeTo(null);
-					fm.setVisible(true);
-				}
-			});
-		}
-	}
+	    public static void main(String[] args) {
+	        // TransparentLogo 실행
+	        TransparentLogo tl = new TransparentLogo();
+	        
+	        // TransparentLogo가 닫힐 때 Finance_Management 실행
+	        tl.addWindowListener(new java.awt.event.WindowAdapter() {
+	            @Override
+	            public void windowClosed(java.awt.event.WindowEvent e) {
+	                SwingUtilities.invokeLater(() -> {
+	                    // Finance_Management 실행
+	                    Finance_Management fm = new Finance_Management();
+	                    fm.setSize(800, 800);
+	                    fm.setLocationRelativeTo(null);
+	                    fm.setVisible(true);
+	                });
+	            }
+	        });
+	    }
+}
