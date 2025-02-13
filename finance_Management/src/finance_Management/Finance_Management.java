@@ -389,7 +389,11 @@ public class Finance_Management extends Frame
 				JOptionPane.showMessageDialog(this, "비밀번호가 일치하지 않습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
 			}
 			uiflist.clear();
-		} else if (e.getSource() == jb_stateinput && accesslv > 0) {
+		} else if (e.getSource() == jb_stateinput) {
+			if (accesslv > 0) {
+				JOptionPane.showMessageDialog(this, "사원 이상 접근 가능한 기능입니다!", "경고", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
 				jb_forward.setBackground(Color.gray);
@@ -414,6 +418,10 @@ public class Finance_Management extends Frame
 			jb_backward.setBackground(Color.decode("#1879C9"));
 			incard.show(cardpanel, "SelectStatePanel");
 		} else if (e.getSource() == jb_exinconinsert) {
+			if (accesslv > 0) {
+				JOptionPane.showMessageDialog(this, "사원 이상 접근 가능한 기능입니다!", "경고", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
 			CodeUserRegistration cur = new CodeUserRegistration();
 			cur.insertincomeDialog(this).show();
 		} else if (e.getSource() == jb_teamselect) {
@@ -464,7 +472,11 @@ public class Finance_Management extends Frame
 			p_thislog.add("SelectFin_stPanel");
 			jb_backward.setBackground(Color.decode("#1879C9"));
 			incard.show(cardpanel, "SelectFin_stPanel");
-		} else if (e.getSource() == jb_userregist && accesslv > 1) {
+		} else if (e.getSource() == jb_userregist) {
+			if (accesslv > 1) {
+				JOptionPane.showMessageDialog(this, "관리자 이상 접근 가능한 기능입니다!", "경고", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
 				jb_forward.setBackground(Color.gray);
@@ -719,6 +731,7 @@ public class Finance_Management extends Frame
 			} catch (SQLException e2) {
 				e2.printStackTrace();
 			} 
+			
 		} else if (e.getSource() == stp_show) {
 			try {
 				SelectTeam st = new SelectTeam();
@@ -897,6 +910,22 @@ public class Finance_Management extends Frame
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			}
+			// 날짜입력판넬에 들어갈 String 배열 생성
+			String[] date1 = new String [32];
+			String[] date2 = new String [31];
+			
+			date1[0] = "전체";
+			for (int i = 0; i < date2.length; i++) {
+			Calendar cal1 = Calendar.getInstance();
+			cal1.add(Calendar.DATE, (i-(i*2))); // 빼고 싶다면 음수 입력
+			Date now = new Date(cal1.getTimeInMillis());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			date1 [i+1] = sdf.format(now);
+			date2 [i] = sdf.format(now);
+			}
+			
+			ssp_date1.setModel(new DefaultComboBoxModel<>(date1));
+			ssp_date2.setModel(new DefaultComboBoxModel<>(date2));
 
 		}
 	}
