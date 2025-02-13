@@ -47,7 +47,7 @@ public class IncomeAnalysis extends JPanel{
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				// TODO Auto-generated method stub
-				return column!=0 ;
+				return false;
 			}
 		};
 		
@@ -116,6 +116,7 @@ public class IncomeAnalysis extends JPanel{
 		p_infoShow.setOpaque(true);
 		p_infoShow.setBackground(Color.WHITE);
 
+		
 		
 		
 	}

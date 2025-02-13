@@ -1,6 +1,8 @@
 package finance_Management;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -75,7 +77,13 @@ public class FinancialStatements extends JPanel {
         p_center.add(p_subtitlerow, BorderLayout.NORTH);
         
         String[] columnNames = {"계정과목", "누적금액"}; // 열 이름
-        fs_tableModel = new DefaultTableModel(columnNames, 11);
+        fs_tableModel = new DefaultTableModel(columnNames, 11) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		};
         t_table = new JTable(fs_tableModel);
         t_table.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
         t_table.setRowHeight(40);
@@ -101,6 +109,9 @@ public class FinancialStatements extends JPanel {
 		
 		this.add(p_north, BorderLayout.NORTH);
 		this.add(p_center, BorderLayout.CENTER);
+		
+		
+
 			
 	}
 }

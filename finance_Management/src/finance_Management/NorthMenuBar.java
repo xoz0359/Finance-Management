@@ -96,7 +96,7 @@ public class NorthMenuBar extends JPanel implements ActionListener{
     }
 
     public void jb_color_change(JButton jb) {
-        jb.setBackground(Color.decode("#1879C9"));
+        jb.setBackground(Color.gray);
         jb.setForeground(Color.white);
     }
 

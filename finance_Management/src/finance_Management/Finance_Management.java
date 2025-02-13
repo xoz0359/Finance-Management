@@ -3,6 +3,9 @@ package finance_Management;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.HierarchyEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -40,7 +43,7 @@ public class Finance_Management extends Frame
 
 	HashMap<Integer, String> isp_map, sfp_map, ssp_map;
 	ArrayList<String> uiflist, isplist, siplist, uilist, aiplist, sfp_list, tnamelist, smcodelist, sfplist, ssplist, sspdatelist,
-			tiplist, p_backwardlog, p_forwardlog;
+			tiplist, p_backwardlog, p_forwardlog, p_thislog; //Color.decode("#1879C9"));
 	ResultSet rs, sirs;
 	JButton login_btt, isp_save, urp_save, urp_close, isp_dateinsert, sip_show, aip_show, ti_input, sfp_show, ssp_show,
 			stp_show, fmenu, jb_teaminput, jb_stateinput, jb_stateselect, jb_incomeselect, jb_incomeanalysis,
@@ -72,7 +75,8 @@ public class Finance_Management extends Frame
 		// backward, forward 정보 저장용 리스트 생성
 		p_backwardlog = new ArrayList<String>();
 		p_forwardlog = new ArrayList<String>();
-
+		p_thislog = new ArrayList<String>();
+		
 		// 화면 전환용 카드 레이아웃 생성
 		outcard = new CardLayout();
 		this.setLayout(outcard);
@@ -137,21 +141,46 @@ public class Finance_Management extends Frame
 		ShowState ssp = new ShowState();
 		sspdtm = ssp.dtm;
 		sspjt = ssp.jt_s;
+		// 테이블이 화면에 감지되지 않을 때 작동하는 리스너
+		ssp.addHierarchyListener(e -> {
+		    if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && !ssp.isShowing()) {
+				int row = sspdtm.getRowCount();
+				sspdtm.setRowCount(0);
+				sspdtm.setRowCount(row);
+			}
+		});
 
 		// 부서 조회 화면 호출
 		ShowTeam stp = new ShowTeam();
 		stpdtm = stp.fs_tableModel;
+		// 테이블이 화면에 감지되지 않을 때 작동하는 리스너
+		stp.addHierarchyListener(e -> {
+		    if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && !ssp.isShowing()) {
+				int row = sspdtm.getRowCount();
+				stpdtm.setRowCount(0);
+				stpdtm.setRowCount(row);
+			}
+		});
 
 		// 매출 조회 메뉴화면 호출
 		IncomeSP sip = new IncomeSP();
 		sip.inputdata(tnamelist);
 		sip_tname = sip.jcb_dname;
 		sipjt = sip.jt_s;
+		
+		// 테이블이 화면에 감지되지 않을 때 작동하는 리스너
+		sipjt.addHierarchyListener(e -> {
+		    if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && !ssp.isShowing()) {
+				int row = sspdtm.getRowCount();
+				sipdtm.setRowCount(0);
+				sipdtm.setRowCount(row);
+			}
+		});
 
-		// 매출 조회화면 테이블에 대한 이벤트 리스너
 		siplist = new ArrayList<String>();
 		sipdtm = sip.dtm;
 
+		
 
 		// 매출 분석 메뉴화면 호출
 		IncomeAnalysis aip = new IncomeAnalysis();
@@ -160,15 +189,13 @@ public class Finance_Management extends Frame
 		aiplist = new ArrayList<String>();
 		aipjt = aip.jt_s;
 		aipdtm = aip.dtm;
-		aipdtm.addTableModelListener(new TableModelListener() {
-			@Override
-			public void tableChanged(TableModelEvent e) {
-				int row = e.getFirstRow();
-				int column = e.getColumn();
-
-				if (column >= 0) { // 컬럼이 음수면 구조변경이므로 무시
-					aiplist.add(aip.jt_s.getValueAt(row, column).toString());
-				}
+		
+		// 테이블이 화면에 감지되지 않을 때 작동하는 리스너
+		aipjt.addHierarchyListener(e -> {
+		    if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && !ssp.isShowing()) {
+				int row = aipdtm.getRowCount();
+				aipdtm.setRowCount(0);
+				aipdtm.setRowCount(row);
 			}
 		});
 
@@ -177,6 +204,14 @@ public class Finance_Management extends Frame
 		sfpdtm = sfp.fs_tableModel;
 		sfpjt = sfp.t_table;
 		
+		// 테이블이 화면에 감지되지 않을 때 작동하는 리스너
+		sfpjt.addHierarchyListener(e -> {
+		    if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 && !ssp.isShowing()) {
+				int row = sspdtm.getRowCount();
+				sfpdtm.setRowCount(0);
+				sfpdtm.setRowCount(row);
+			}
+		});
 		
 		
 		// 숫자 표현 테이블에 , 구분자 표시 ex) 1,000
@@ -345,7 +380,7 @@ public class Finance_Management extends Frame
 			}
 			if (grant) {// 로그인 기능 활성화
 				saveUserData();
-				p_backwardlog.add("MainPanel");
+				p_thislog.add("MainPanel");
 				outcard.show(this, "menu");
 				incard.show(cardpanel, "MainPanel");
 				id_jtext.setText(null);
@@ -357,14 +392,26 @@ public class Finance_Management extends Frame
 		} else if (e.getSource() == jb_stateinput && accesslv > 0) {
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
+				jb_forward.setBackground(Color.gray);
 			}
-			p_backwardlog.add("InsertStatePanel");
+			if (p_thislog.size() > 0) {
+			p_backwardlog.add(p_thislog.getLast());
+			}
+			p_thislog.clear();
+			p_thislog.add("InsertStatePanel");
+			jb_backward.setBackground(Color.decode("#1879C9"));
 			incard.show(cardpanel, "InsertStatePanel");
 		} else if (e.getSource() == jb_stateselect) {
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
+				jb_forward.setBackground(Color.gray);
 			}
-			p_backwardlog.add("SelectStatePanel");
+			if (p_thislog.size() > 0) {
+			p_backwardlog.add(p_thislog.getLast());
+			}
+			p_thislog.clear();
+			p_thislog.add("SelectStatePanel");
+			jb_backward.setBackground(Color.decode("#1879C9"));
 			incard.show(cardpanel, "SelectStatePanel");
 		} else if (e.getSource() == jb_exinconinsert) {
 			CodeUserRegistration cur = new CodeUserRegistration();
@@ -372,50 +419,89 @@ public class Finance_Management extends Frame
 		} else if (e.getSource() == jb_teamselect) {
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
+				jb_forward.setBackground(Color.gray);
 			}
-			p_backwardlog.add("SelectTeamPanel");
+			if (p_thislog.size() > 0) {
+			p_backwardlog.add(p_thislog.getLast());
+			}
+			p_thislog.clear();
+			p_thislog.add("SelectTeamPanel");
+			jb_backward.setBackground(Color.decode("#1879C9"));
 			incard.show(cardpanel, "SelectTeamPanel");
 		} else if (e.getSource() == jb_incomeselect) {
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
+				jb_forward.setBackground(Color.gray);
 			}
-			p_backwardlog.add("SelectIncomPanel");
+			if (p_thislog.size() > 0) {
+			p_backwardlog.add(p_thislog.getLast());
+			}
+			p_thislog.clear();
+			p_thislog.add("SelectIncomPanel");
+			jb_backward.setBackground(Color.decode("#1879C9"));
 			incard.show(cardpanel, "SelectIncomPanel");
 		} else if (e.getSource() == jb_incomeanalysis) {
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
+				jb_forward.setBackground(Color.gray);
 			}
-			p_backwardlog.add("AnalysisIncomPanel");
+			if (p_thislog.size() > 0) {
+			p_backwardlog.add(p_thislog.getLast());
+			}
+			p_thislog.clear();
+			p_thislog.add("AnalysisIncomPanel");
+			jb_backward.setBackground(Color.decode("#1879C9"));
 			incard.show(cardpanel, "AnalysisIncomPanel");
 		} else if (e.getSource() == jb_fin_stselect) {
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
+				jb_forward.setBackground(Color.gray);
 			}
-			p_backwardlog.add("SelectFin_stPanel");
+			if (p_thislog.size() > 0) {
+			p_backwardlog.add(p_thislog.getLast());
+			}
+			p_thislog.clear();
+			p_thislog.add("SelectFin_stPanel");
+			jb_backward.setBackground(Color.decode("#1879C9"));
 			incard.show(cardpanel, "SelectFin_stPanel");
 		} else if (e.getSource() == jb_userregist && accesslv > 1) {
-			System.out.println(accesslv);
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
+				jb_forward.setBackground(Color.gray);
 			}
-			p_backwardlog.add("RegistUserPanel");
+			if (p_thislog.size() > 0) {
+			p_backwardlog.add(p_thislog.getLast());
+			}
+			p_thislog.clear();
+			p_thislog.add("RegistUserPanel");
+			jb_backward.setBackground(Color.decode("#1879C9"));
 			incard.show(cardpanel, "RegistUserPanel");
 		} else if (e.getSource() == jb_backward) {
 			if (p_backwardlog.size() > 1) {
-				p_forwardlog.add(p_backwardlog.getLast());
-				incard.show(cardpanel, p_backwardlog.get(p_backwardlog.size() - 2));
-				p_backwardlog.removeLast();
-			} else {// 뒤로가거나 앞으로 갈 페이지 없으면 버튼 비활성화
-
-			}
+				if (p_thislog.size() > 0) {
+					p_forwardlog.add(p_thislog.getLast());
+					p_thislog.clear();
+				}else {
+					p_forwardlog.add(p_backwardlog.getLast());
+					p_backwardlog.removeLast();
+				}
+				incard.show(cardpanel, p_backwardlog.getLast());
+				jb_forward.setBackground(Color.decode("#1879C9"));
+				if(p_backwardlog.size()==1) {
+					jb_backward.setBackground(Color.gray);
+				}
+			} 
 		} else if (e.getSource() == jb_forward) {
 			if (p_forwardlog.size() > 0) {
 				p_backwardlog.add(p_forwardlog.getLast());
 				incard.show(cardpanel, p_forwardlog.getLast());
 				p_forwardlog.removeLast();
-			} else {
+				jb_backward.setBackground(Color.decode("#1879C9"));
 
-			}
+				if(p_forwardlog.size()==0) {
+					jb_forward.setBackground(Color.gray);
+				}
+			} 
 		} else if (e.getSource() == jb_logout) {
 			int logout = JOptionPane.showConfirmDialog(
 				    this, 
@@ -439,8 +525,9 @@ public class Finance_Management extends Frame
 				Date date = Date.valueOf(ssp_date2.getSelectedItem().toString());
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(date);
-				String[] newdate1 = new String[30];
-				for (int i = 0; i < newdate1.length; i++) {
+				String[] newdate1 = new String[31];
+				newdate1[0] = ssp_date2.getSelectedItem().toString();
+				for (int i = 1; i < newdate1.length; i++) {
 					cal.add(Calendar.DATE, -1);
 					Date ndate = new Date(cal.getTimeInMillis());
 					newdate1[i] = sdf.format(ndate);

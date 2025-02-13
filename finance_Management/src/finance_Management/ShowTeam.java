@@ -1,6 +1,9 @@
 package finance_Management;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -59,7 +62,13 @@ public class ShowTeam extends JPanel {
         p_center.add(p_subtitlerow, BorderLayout.NORTH);
         
         String[] columnNames = {"부서번호", "부서이름"}; // 열 이름
-        fs_tableModel = new DefaultTableModel(columnNames, 11);
+        fs_tableModel = new DefaultTableModel(columnNames, 11){
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		};
         t_table = new JTable(fs_tableModel);
         t_table.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
         t_table.setRowHeight(40);
@@ -85,6 +94,6 @@ public class ShowTeam extends JPanel {
 		
 		this.add(p_north, BorderLayout.NORTH);
 		this.add(p_center, BorderLayout.CENTER);
-			
+
 	}
 }

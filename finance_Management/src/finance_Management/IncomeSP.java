@@ -54,7 +54,7 @@ public class IncomeSP extends JPanel {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				// TODO Auto-generated method stub
-				return column != 0;
+				return false;
 			}
 		};
 
@@ -117,8 +117,9 @@ public class IncomeSP extends JPanel {
 		// 내부 패널들도 배경색 적용
 		p_search.setOpaque(true);
 		p_search.setBackground(Color.decode("#FFFFFF"));
-
 	}
+
+		
 
 	// 콤보박스 화살표 디자인
 	public void jcb_design(JComboBox jcb) {

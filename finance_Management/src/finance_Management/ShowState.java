@@ -72,39 +72,13 @@ public class ShowState extends JPanel{
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				// TODO Auto-generated method stub
-				return column < 0 || column > 1;
+				return false;
 			}
 		};
 		
 		//테이블 객체를 생성해 놓은 테이블 모델을 이용해 생성
 		jt_s = new JTable(dtm);
-		
-
-        // jt_s의 셀 렌더러 설정 (편집 불가능한 행을 회색으로 표시)
-        DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable jt_s, Object value,
-                                                           boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
-                Component cell = super.getTableCellRendererComponent(jt_s, value, isSelected, hasFocus, row, column);
-                
-                // 편집 불가능한 행을 회색으로 설정
-                if (!jt_s.isCellEditable(row, column)) {
-                    cell.setBackground(Color.LIGHT_GRAY); // 편집할 수 없는 컬럼의 색상
-                } else {
-                    cell.setBackground(Color.WHITE); // 기본 색상
-                }
-
-                return cell;
-            }
-        };
-
-        // 모든 열에 대해 렌더러 적용
-        for (int i = 0; i < jt_s.getColumnCount(); i++) {
-            jt_s.getColumnModel().getColumn(i).setCellRenderer(renderer);
-        }
-
-		
+	
 		
 		//부서 번호랑 계정과목 배열로 콤보박스 객체 생성 + 디자인
 		//jc_cn = new JComboBox(cn_array);this.jcb_design(jc_cn);
@@ -156,16 +130,13 @@ public class ShowState extends JPanel{
 		
 		p_stateInput.setBackground(Color.WHITE);
 		//위에서 생성했던 컨텐트페인 담긴 객체 cont에 서쪽판넬이랑 입력판넬 추가
-		this.add(p_stateInput,"Center");
+		this.add(p_stateInput, "Center");
 		TitleSet ts = new TitleSet("전표 조회");
-		this.add(ts.jp_title,"North");
-		
+		this.add(ts.jp_title, "North");
+	}
 
 		
-		
-		
-	}
-	//콤보박스 화살표 디자인
+	// 콤보박스 화살표 디자인
 	public void jcb_design(JComboBox jcb) {
 		jcb.setUI(new BasicComboBoxUI() {
 			@Override

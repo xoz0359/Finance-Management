@@ -5,6 +5,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.ArrayList;
 
 public class LoginForm extends JPanel {
     JButton jbSave;
@@ -106,7 +107,17 @@ public class LoginForm extends JPanel {
                 }
             }
         });
-
+        
+		/*
+		 * // 포커스 이동 순서 지정 ArrayList<Component> order = new ArrayList<>();
+		 * order.add(jtId); order.add(jpPw); order.add(rememberIdCheckBox);
+		 * order.add(jbSave);
+		 * 
+		 * setFocusTraversalPolicy(new CustomFocusTraversalPolicy(order));
+		 * setFocusTraversalPolicyProvider(true);
+		 */
+        
+        
         GridBagConstraints frameConstraints = new GridBagConstraints();
         frameConstraints.gridx = 0;
         frameConstraints.gridy = 0;
