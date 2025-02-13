@@ -37,8 +37,10 @@ public class ShowState extends JPanel{
 		p_siNorth = new JPanel(new GridLayout(1,2));
 		//입력판넬 맨 위에 들어갈 날짜입력판넬 생성
 		p_dateInput = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		p_dateInput.setBackground(Color.WHITE);
 		//저장 판넬 & 버튼 생성
 		p_save = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		p_save.setBackground(Color.WHITE);
 		jb_save = new JButton("조회"); 
 		//저장 버튼 디자인
 //		jb_save.setBackground(Color.black);
@@ -60,7 +62,7 @@ public class ShowState extends JPanel{
 		
 		
 		// 날짜입력판넬에 들어갈 연도,월 콤보박스 생성 + 일 텍스트 필드
-		String[] columnName = {"","전표일자", "계정과목", "부서번호", "금액"};
+		String[] columnName = {"전표번호","전표일자", "계정과목", "부서번호", "금액"};
 		String[] cn_array = {"","영업수익(매출)","금융수익","영업비용","기타비용","금융비용",
 				"유형자산 취득","유형자산 처분","부채상환"};
 		String[] tc_array = {"","10","20","30","40"};
@@ -139,7 +141,12 @@ public class ShowState extends JPanel{
 		p_save.add(jb_save);
 		
 		//jt_s테이블에 스크롤을 추가하고 그 스크롤을 전표입력판넬에 추가 + jt_s 테이블을 입력판넬에 추가
-		p_stateInput.add(new JScrollPane(jt_s));
+		JScrollPane jsp = new JScrollPane(jt_s);
+		jsp.setBackground(Color.WHITE);
+		jsp.getViewport().setBackground(Color.WHITE); 
+		jsp.setBackground(Color.WHITE); 
+		jt_s.setBackground(Color.WHITE);
+		p_stateInput.add(jsp);
 		//입력판넬에 날짜입력판넬 추가
 		p_stateInput.add(p_siNorth,"North");
 		p_siNorth.add(p_dateInput);
@@ -147,13 +154,13 @@ public class ShowState extends JPanel{
 		
 		//JFrame가장 바깥 pane인 컨텐트페인을 담을 객체 선언하고 대입
 		
-		
+		p_stateInput.setBackground(Color.WHITE);
 		//위에서 생성했던 컨텐트페인 담긴 객체 cont에 서쪽판넬이랑 입력판넬 추가
 		this.add(p_stateInput,"Center");
 		TitleSet ts = new TitleSet("전표 조회");
 		this.add(ts.jp_title,"North");
 		
-//		p_stateInput.setBackground(Color.white);
+
 		
 		
 		
@@ -170,6 +177,7 @@ public class ShowState extends JPanel{
 				return button;
 			}
 		});
+		jcb.setPreferredSize(new Dimension(90, 23));
 	}
 
 }

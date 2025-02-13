@@ -31,14 +31,17 @@ public class State_Input extends JPanel{
 	
 	public State_Input() {
 		this.setLayout(new BorderLayout());
+		this.setBackground(Color.WHITE);
 		
 		p_stateInput = new JPanel(new BorderLayout());
 		//전표입력판넬 위쪽에 들어갈 판넬 생성
 		p_siNorth = new JPanel(new GridLayout(1,2));
 		//입력판넬 맨 위에 들어갈 날짜입력판넬 생성
 		p_dateInput = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		p_dateInput.setBackground(Color.WHITE);
 		//저장 판넬 & 버튼 생성
 		p_save = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		p_save.setBackground(Color.WHITE);
 		jb_save = new JButton("저장"); 
 		jb_dateinsert = new JButton("선택");
 		//저장 버튼 디자인
@@ -135,12 +138,24 @@ public class State_Input extends JPanel{
 		//저장버튼을 저장 판넬에 추가
 		p_save.add(jb_save);
 		
+		
+		
+		
+		
 		//jt_s테이블에 스크롤을 추가하고 그 스크롤을 전표입력판넬에 추가 + jt_s 테이블을 입력판넬에 추가
-		p_stateInput.add(new JScrollPane(jt_s));
+		JScrollPane jsp = new JScrollPane(jt_s);
+		jsp.setBackground(Color.WHITE);
+		jsp.getViewport().setBackground(Color.WHITE); 
+		jsp.setBackground(Color.WHITE); 
+		jt_s.setBackground(Color.WHITE);
+		
+		p_stateInput.add(jsp);
 		//입력판넬에 날짜입력판넬 추가
 		p_stateInput.add(p_siNorth,"North");
 		p_siNorth.add(p_dateInput);
 		p_siNorth.add(p_save);
+		
+		
 		
 		//JFrame가장 바깥 pane인 컨텐트페인을 담을 객체 선언하고 대입
 		
@@ -148,7 +163,7 @@ public class State_Input extends JPanel{
 		//판넬에 센터에 입력판넬, 그리고 위쪽에 제목판넬 추가
 		this.add(p_stateInput,"Center");
 		TitleSet ts = new TitleSet("전표 입력");
-		this.add(ts.jp_title,"North");
+		this.add(ts.jp_title,"North"); 
 		
 		//서쪽판넬 크기 맞추기 위해 추가할 임의의 라벨 생성 
 		l_menu1 = new JLabel("회계관리");
@@ -156,7 +171,7 @@ public class State_Input extends JPanel{
 		l_menu1.setFont(new Font("맑은 고딕",Font.BOLD,20));
 		l_menu1.setHorizontalAlignment(JLabel.CENTER);
 		
-//		p_stateInput.setBackground(Color.white);
+		
 		
 		
 		
@@ -173,6 +188,7 @@ public class State_Input extends JPanel{
 				return button;
 			}
 		});
+		jcb.setPreferredSize(new Dimension(90, 23));
 	}
 
 }

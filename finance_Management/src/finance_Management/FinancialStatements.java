@@ -1,13 +1,17 @@
 package finance_Management;
 
 import java.awt.*;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 public class FinancialStatements extends JPanel {
 	
-	JPanel p_north, p_north_titlebox, p_subtitlerow, p_center;
+	JPanel p_north, p_north_titlebox, p_subtitlerow, p_center, p_l, p_r;
 	JTable t_table;
 	JTableHeader tableHeader;
 	JScrollPane t_scrollPane;
@@ -45,24 +49,32 @@ public class FinancialStatements extends JPanel {
         p_center.setBackground(Color.WHITE);
 
         p_subtitlerow = new JPanel();
-        p_subtitlerow.setLayout(new BorderLayout());
+        p_subtitlerow.setLayout(new GridLayout(1, 2));
         p_subtitlerow.setBackground(Color.WHITE);
 
+        p_l = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        p_r = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        p_l.setBackground(Color.WHITE);
+        p_r.setBackground(Color.WHITE);
+        
+        p_subtitlerow.add(p_l);
+        p_subtitlerow.add(p_r);
+        
         cb_stateType = new JComboBox<>(new String[] {"재무상태표","손익계산서"});
         cb_stateType.setSelectedIndex(0);
         cb_stateType.setFont(new Font("맑은 고딕", Font.BOLD, 15));
         
-        p_subtitlerow.add(cb_stateType, BorderLayout.WEST);
+        p_r.add(cb_stateType);
 
         b_check = new JButton("조회");
         b_check.setFont(new Font("맑은 고딕", Font.BOLD, 12));
         b_check.setBackground(Color.WHITE);
-        p_subtitlerow.add(b_check, BorderLayout.EAST);
+        p_l.add(b_check);
 
         p_center.add(p_subtitlerow, BorderLayout.NORTH);
         
         String[] columnNames = {"계정과목", "누적금액"}; // 열 이름
-        fs_tableModel = new DefaultTableModel(columnNames, 13);
+        fs_tableModel = new DefaultTableModel(columnNames, 11);
         t_table = new JTable(fs_tableModel);
         t_table.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
         t_table.setRowHeight(40);
@@ -78,8 +90,12 @@ public class FinancialStatements extends JPanel {
         tableHeader.setReorderingAllowed(false);
         tableHeader.setResizingAllowed(false);
         tableHeader.setPreferredSize(new Dimension(tableHeader.getWidth(), 60));
-       
+        
+        
         t_scrollPane = new JScrollPane(t_table);
+        t_scrollPane.getViewport().setBackground(Color.WHITE);
+        t_scrollPane.setBackground(Color.WHITE);
+		t_table.setBackground(Color.WHITE);
         p_center.add(t_scrollPane, BorderLayout.CENTER);
 		
 		this.add(p_north, BorderLayout.NORTH);

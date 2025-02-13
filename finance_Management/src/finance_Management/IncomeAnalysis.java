@@ -57,7 +57,7 @@ public class IncomeAnalysis extends JPanel{
 		
 		//예상매출액 입력 다이얼로그 버튼 생성
 		jb_eiInput=new JButton("예상매출액 입력");jb_eiInput.setBackground(Color.white);
-		jb_infoShow = new JButton("조회");jb_infoShow.setBackground(Color.white);
+		jb_infoShow = new JButton("조회(백만)");jb_infoShow.setBackground(Color.white);
 		jcb_order = new JComboBox(order);this.jcb_design(jcb_order);
 		
 		

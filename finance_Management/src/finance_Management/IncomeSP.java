@@ -32,6 +32,7 @@ public class IncomeSP extends JPanel {
 		p_search = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		// 조회버튼 판넬
 		p_save = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		p_save.setBackground(Color.WHITE);
 		String[] date = new String [12];	
 		date[0] = "전체";
 		for (int i = 1; i < date.length; i++) {
@@ -66,7 +67,7 @@ public class IncomeSP extends JPanel {
 		this.jcb_design(jcb_dname);
 		jcb_period = new JComboBox <String> (date);
 		this.jcb_design(jcb_period);
-		jb_infoShow = new JButton("조회");
+		jb_infoShow = new JButton("조회(백만)");
 		jb_infoShow.setBackground(Color.white);
 
 		// 날짜 관련 라벨 생성
@@ -91,14 +92,14 @@ public class IncomeSP extends JPanel {
 		jsp_jt.getViewport().setBackground(Color.white);
 		jt_s.setOpaque(true);
 		jt_s.setBackground(Color.white);
-
+		
 		p_stateInput.add(jsp_jt);
 		// 입력판넬에 날짜입력판넬 추가
 		p_stateInput.add(p_siNorth, "North");
 		p_siNorth.add(p_search);
 		p_siNorth.add(p_save);
 		p_save.add(jb_infoShow);
-		
+		p_stateInput.setBackground(Color.WHITE);
 
 		// 위에서 생성했던 컨텐트페인 담긴 객체 cont에 서쪽판넬이랑 입력판넬 추가
 		this.add(p_stateInput, "Center");
@@ -131,6 +132,7 @@ public class IncomeSP extends JPanel {
 				return button;
 			}
 		});
+		jcb.setPreferredSize(new Dimension(80, 23));
 	}
 	
 	public void inputdata(ArrayList <String> l) {

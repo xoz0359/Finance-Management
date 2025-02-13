@@ -44,7 +44,7 @@ public class ShowTeam extends JPanel {
         p_center.setBackground(Color.WHITE);
 
         p_subtitlerow = new JPanel();
-        p_subtitlerow.setLayout(new BorderLayout());
+        p_subtitlerow.setLayout(new FlowLayout(FlowLayout.RIGHT));
         p_subtitlerow.setBackground(Color.WHITE);
 
         l_positionname = new JLabel("부서목록표", SwingConstants.LEFT);
@@ -54,12 +54,12 @@ public class ShowTeam extends JPanel {
         b_check = new JButton("조회");
         b_check.setFont(new Font("맑은 고딕", Font.BOLD, 12));
         b_check.setBackground(Color.WHITE);
-        p_subtitlerow.add(b_check, BorderLayout.EAST);
+        p_subtitlerow.add(b_check);
 
         p_center.add(p_subtitlerow, BorderLayout.NORTH);
         
         String[] columnNames = {"부서번호", "부서이름"}; // 열 이름
-        fs_tableModel = new DefaultTableModel(columnNames, 13);
+        fs_tableModel = new DefaultTableModel(columnNames, 11);
         t_table = new JTable(fs_tableModel);
         t_table.setFont(new Font("맑은 고딕", Font.PLAIN, 12));
         t_table.setRowHeight(40);
@@ -75,8 +75,12 @@ public class ShowTeam extends JPanel {
         tableHeader.setReorderingAllowed(false);
         tableHeader.setResizingAllowed(false);
         tableHeader.setPreferredSize(new Dimension(tableHeader.getWidth(), 60));
-       
+        
+        
         t_scrollPane = new JScrollPane(t_table);
+        t_scrollPane.getViewport().setBackground(Color.WHITE);
+        t_scrollPane.setBackground(Color.WHITE);
+		t_table.setBackground(Color.WHITE);
         p_center.add(t_scrollPane, BorderLayout.CENTER);
 		
 		this.add(p_north, BorderLayout.NORTH);

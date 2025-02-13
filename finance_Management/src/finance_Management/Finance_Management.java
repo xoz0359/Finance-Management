@@ -11,21 +11,32 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.sql.*;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 public class Finance_Management extends Frame
-		implements ActionListener, MouseListener, MouseMotionListener, KeyListener {
+		implements ActionListener, MouseListener, MouseMotionListener {
 
 	HashMap<Integer, String> isp_map, sfp_map, ssp_map;
 	ArrayList<String> uiflist, isplist, siplist, uilist, aiplist, sfp_list, tnamelist, smcodelist, sfplist, ssplist, sspdatelist,
@@ -34,19 +45,21 @@ public class Finance_Management extends Frame
 	JButton login_btt, isp_save, urp_save, urp_close, isp_dateinsert, sip_show, aip_show, ti_input, sfp_show, ssp_show,
 			stp_show, fmenu, jb_teaminput, jb_stateinput, jb_stateselect, jb_incomeselect, jb_incomeanalysis,
 			jb_fin_stselect, jb_teamselect, jb_backward, jb_logout, jb_exinconinsert, jb_forward, jb_userregist,
-			btn_codeRegi, btn_userRegi, btn_adminMode, btn_deptRegi;
+			btn_codeRegi, btn_userRegi, btn_adminMode, btn_deptRegi, b_menufavorites;
 	JTextField id_jtext, pwd_jtext, ti_jtext, si_jtext;
 	CardLayout incard, outcard;
 	JPanel cardpanel, totalpanel, spanel0, spanel1, spanel2, spanel3, spanel4, spanel5, spanel6, spanel7, spanel8,
 			spanel9, westbar, northbar, sip;
 	DefaultTableModel ispdtm, sipdtm, aipdtm, sfpdtm, sspdtm, stpdtm;
 	Integer backcnt, forcnt, accesslv;
-	JTable ispjt, aipjt;
-	JComboBox is_date, ai_sort, si_tname, si_date, sfp_statetype, ssp_date1, ssp_date2, sip_tname;
+	JTable ispjt, aipjt, sfpjt, sspjt, sipjt;
+	JComboBox is_date, ai_sort, si_tname, si_date, sfp_statetype, ssp_date1, ssp_date2, sip_tname, favoritesComboBox;
 	String editingdata;
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	CodeUserRegistration urp;
-	
+	JCheckBox rememberIdCheckBox;
+    DefaultTableCellRenderer numberRenderer;
+		
 	
 	// 할일 동사 명사 순서로 객체 명명규칙 바꾸기...
 
@@ -83,6 +96,7 @@ public class Finance_Management extends Frame
 
 		// 로그인 패널 생성
 		LoginForm tp = new LoginForm();
+		rememberIdCheckBox = tp.rememberIdCheckBox;
 
 		// 메인 패널 생성
 		MainPanel nmp = new MainPanel();
@@ -97,10 +111,15 @@ public class Finance_Management extends Frame
 		northbar = nb;
 		fmenu = nb.b_menufavorites;
 		jb_logout = nb.b_menuclose;
+		b_menufavorites = nb.b_menufavorites;
+		favoritesComboBox = nb.favoritesComboBox;
+		
+		favoritesComboBox.addActionListener(this);
 
 		// 장부 입력 메뉴화면 호출
 		State_Input isp = new State_Input();
 		ispdtm = isp.dtm;
+		ispjt = isp.jt_s;
 		isp_dateinsert = isp.jb_dateinsert;
 		isp_dateinsert.addMouseListener(this);
 		// 장부 입력화면 테이블에 대한 이벤트 리스너
@@ -117,6 +136,7 @@ public class Finance_Management extends Frame
 		// 장부 조회 화면 호출
 		ShowState ssp = new ShowState();
 		sspdtm = ssp.dtm;
+		sspjt = ssp.jt_s;
 
 		// 부서 조회 화면 호출
 		ShowTeam stp = new ShowTeam();
@@ -126,21 +146,12 @@ public class Finance_Management extends Frame
 		IncomeSP sip = new IncomeSP();
 		sip.inputdata(tnamelist);
 		sip_tname = sip.jcb_dname;
+		sipjt = sip.jt_s;
 
 		// 매출 조회화면 테이블에 대한 이벤트 리스너
 		siplist = new ArrayList<String>();
 		sipdtm = sip.dtm;
-		sipdtm.addTableModelListener(new TableModelListener() {
-			@Override
-			public void tableChanged(TableModelEvent e) {
-				int row = e.getFirstRow();
-				int column = e.getColumn();
 
-				if (column >= 0) { // 컬럼이 음수면 구조변경이므로 무시
-					siplist.add(sip.jt_s.getValueAt(row, column).toString());
-				}
-			}
-		});
 
 		// 매출 분석 메뉴화면 호출
 		IncomeAnalysis aip = new IncomeAnalysis();
@@ -164,6 +175,28 @@ public class Finance_Management extends Frame
 		// 재무제표 조회 화면 호출
 		FinancialStatements sfp = new FinancialStatements();
 		sfpdtm = sfp.fs_tableModel;
+		sfpjt = sfp.t_table;
+		
+		
+		
+		// 숫자 표현 테이블에 , 구분자 표시 ex) 1,000
+        // 숫자 포맷터 생성
+        numberRenderer = new DefaultTableCellRenderer() {
+            private final NumberFormat formatter = NumberFormat.getNumberInstance(Locale.KOREA);
+
+            @Override
+            public void setValue(Object value) {
+                if (value instanceof Number) {
+                    setText(formatter.format(value));
+                } else if (value != null) {  // Null이 아닐 때만 문자열로 변환
+                    setText(value.toString());
+                } else {
+                    setText(null); // Null일 경우 빈 문자열 설정
+                }
+            }
+        };
+
+        
 
 		// 환경설정 화면 호출
 		urp = new CodeUserRegistration();
@@ -256,6 +289,9 @@ public class Finance_Management extends Frame
 		btn_codeRegi.addActionListener(this);
 		btn_userRegi.addActionListener(this);
 		btn_adminMode.addActionListener(this);
+		
+		
+		loadUserData();
 
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
@@ -269,6 +305,14 @@ public class Finance_Management extends Frame
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == login_btt) {
 			boolean grant = false;
+			if (id_jtext.getText().equals("")) {
+				JOptionPane.showMessageDialog(this, "아이디를 입력해주세요", "알림", JOptionPane.INFORMATION_MESSAGE);
+				return;
+			} else if ( pwd_jtext.getText().equals("")) {
+				JOptionPane.showMessageDialog(this, "비밀번호를 입력해주세요", "알림", JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			
 			uiflist = new ArrayList<String>();
 			uiflist.add(id_jtext.getText());
 			uiflist.add(pwd_jtext.getText());
@@ -276,10 +320,11 @@ public class Finance_Management extends Frame
 				SelectUser_Info su = new SelectUser_Info();
 				rs = su.getSelection(uiflist);
 				if (!rs.next()) {
-					System.out.println("잘못된 ID입니다");
+					JOptionPane.showMessageDialog(this, "등록되지 않은 아이디입니다", "알림", JOptionPane.INFORMATION_MESSAGE);
 					su.rs.close();
 					su.pstmt.close();
 					su.conn.close();
+					return;
 				} else {
 					do {
 						// db에 저장된 id와 pwd 모두 매치하지 않으면 grant는 false
@@ -298,15 +343,18 @@ public class Finance_Management extends Frame
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
 			}
-			if (true) {// 로그인 기능 비활성화
+			if (grant) {// 로그인 기능 활성화
+				saveUserData();
 				p_backwardlog.add("MainPanel");
 				outcard.show(this, "menu");
 				incard.show(cardpanel, "MainPanel");
+				id_jtext.setText(null);
+				pwd_jtext.setText(null);
 			} else {
-				System.out.println("잘못된 비밀번호입니다");
+				JOptionPane.showMessageDialog(this, "비밀번호가 일치하지 않습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
 			}
 			uiflist.clear();
-		} else if (e.getSource() == jb_stateinput) {
+		} else if (e.getSource() == jb_stateinput && accesslv > 0) {
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
 			}
@@ -345,7 +393,8 @@ public class Finance_Management extends Frame
 			}
 			p_backwardlog.add("SelectFin_stPanel");
 			incard.show(cardpanel, "SelectFin_stPanel");
-		} else if (e.getSource() == jb_userregist) {
+		} else if (e.getSource() == jb_userregist && accesslv > 1) {
+			System.out.println(accesslv);
 			if (p_forwardlog.size() > 0) {
 				p_forwardlog.clear();
 			}
@@ -368,25 +417,24 @@ public class Finance_Management extends Frame
 
 			}
 		} else if (e.getSource() == jb_logout) {
-			System.out.println("이벤트 발생!");
+			int logout = JOptionPane.showConfirmDialog(
+				    this, 
+				    "정말 로그아웃하시겠습니까?", 
+				    "질문", 
+				    JOptionPane.YES_NO_OPTION, 
+				    JOptionPane.QUESTION_MESSAGE
+				);
+			switch(logout){
+				case 1 : return;
+			}
+			
+			accesslv = 0;
 			p_forwardlog.clear();
 			p_backwardlog.clear();
-			outcard.show(this, "menu");
+			loadUserData();
 			outcard.show(this, "TitlePanel");
-
-		} else if (e.getSource() == ai_sort) {
-			aipjt.setAutoCreateRowSorter(true);
-			TableRowSorter sorter = new TableRowSorter<TableModel>(aipjt.getModel());
-			if (ai_sort.getSelectedItem().toString().equals("내림차순")) {
-				System.out.println("내림차순이지롱");
-				sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(0, SortOrder.DESCENDING)));
-			} else {
-				System.out.println("오름차순이지롱");
-				sorter.setSortKeys(java.util.List.of(new RowSorter.SortKey(0, SortOrder.ASCENDING)));
-			}
 		} else if (e.getSource() == ssp_date2) {
-			// System.out.println("콤보 박스 변경 발생!");
-			if (!ssp_date1.getSelectedItem().toString().equals("전체")) {
+			if (!ssp_date2.getSelectedItem().toString().equals("전체")) {
 				ssp_date2.getSelectedItem().toString();
 				Date date = Date.valueOf(ssp_date2.getSelectedItem().toString());
 				Calendar cal = Calendar.getInstance();
@@ -403,30 +451,14 @@ public class Finance_Management extends Frame
 				ssp_date1.setModel(new DefaultComboBoxModel<>(newdate1));
 			}
 		} else if (e.getSource() == btn_userRegi) {
-			System.out.println("사용자 등록");
 			urp.openUserRegistrationDialog(this).show(true);
 
 		} else if (e.getSource() == btn_codeRegi) {
-			System.out.println("계정코드");
-			urp.openCodeRegistrationDialog(this).show(true);
+			urp.openCodeRegistrationDialog(this, smcodelist).show(true);
 			dbtodata();
-			
-			try {
-			InsertFin iif = new InsertFin();
-			ArrayList <String> al = new ArrayList <String> ();
-			al.add((smcodelist.size()-1)+"");
-			int cnt;
-			
-				cnt = iif.getDML(al);
-				System.out.println(cnt+"행 입력");
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			
 
 		} else if (e.getSource() == btn_adminMode) {
-			System.out.println("관리자 모드");
 			urp.openAdminModeDialog(this).show(true);
 		} else if (e.getSource() == btn_deptRegi) {
 			urp.insertDeptDialog(this).show(true);
@@ -437,8 +469,15 @@ public class Finance_Management extends Frame
 				 tnlist[i] = tnamelist.get(i-1); 
 			}
 			 sip_tname.setModel(new DefaultComboBoxModel<>(tnlist));
+		} else if (e.getSource() == favoritesComboBox) {
+			favoritesComboBox.getSelectedItem().toString();
 		}
 	}
+	
+		
+	
+	
+	
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -525,21 +564,18 @@ public class Finance_Management extends Frame
 					UpdateIncome ui = new UpdateIncome();
 					cnt = ui.getDML(isp_map, uilist);
 					System.out.println(cnt + "income에 update 완료!");
+					
 					isplist.clear();
+					row = ispdtm.getRowCount();
+					ispdtm.setRowCount(0);
+					ispdtm.setRowCount(row);
 				}
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			// 테이블 초기화
-			// System.out.println("테이블 초기화 시도");
-			for (int i = 0; i < ispdtm.getRowCount(); i++) {
-				for (int j = 0; j < ispdtm.getColumnCount(); j++) {
-					ispdtm.setValueAt(null, i, j);
-				}
-			}
-		} else if (e.getSource() == sip_show) { // 찜찜
-
+			} catch (SQLRecoverableException e1) {
+				JOptionPane.showMessageDialog(this, "조회할 데이터가 없습니다", "정보", JOptionPane.INFORMATION_MESSAGE);
+			} catch (SQLException e2) {
+				JOptionPane.showMessageDialog(this, "입력한 값이 형식과 맞지 않습니다!", "경고", JOptionPane.WARNING_MESSAGE);
+			} 
+		} else if (e.getSource() == sip_show) { 
 			int rows = sipdtm.getRowCount();
 			sipdtm.setRowCount(0);
 			sipdtm.setRowCount(rows);
@@ -548,10 +584,8 @@ public class Finance_Management extends Frame
 				String tname = si_tname.getSelectedItem().toString();
 				int rowcnt = 0;
 				SelectIncome si = new SelectIncome();
-				// System.out.println("조회 이벤트 발생!");
 				rs = si.getSelection();
 				if (!rs.next()) {
-					// System.out.println("가져올 row가 없자너 ㅠㅠ");
 					si.rs.close();
 					si.pstmt.close();
 					si.conn.close();
@@ -559,45 +593,48 @@ public class Finance_Management extends Frame
 					do {
 						// 기존의 row를 삭제 후 새 row 삽입
 						if (tname.equals("전체")) {
+							
 							sipdtm.removeRow(rowcnt);
 							sipdtm.insertRow(rowcnt,
-									new Object[] { rs.getString("DEPT"), rs.getString("JAN"), rs.getString("FEB"),
-											rs.getString("MAR"), rs.getString("APR"), rs.getString("MAY"),
-											rs.getString("JUN"), rs.getString("JUL"), rs.getString("AUG"),
-											rs.getString("SEP"), rs.getString("OCT"), rs.getString("NOV"),
-											rs.getString("DEC"), rs.getString("EXPECTINCOME") });
+									new Object[] { tnamelist.get((rs.getInt("DEPT") / 10) - 1), rs.getInt("JAN")/1000000, rs.getInt("FEB")/1000000,
+											rs.getInt("MAR")/1000000, rs.getInt("APR")/1000000, rs.getInt("MAY")/1000000,
+											rs.getInt("JUN")/1000000, rs.getInt("JUL")/1000000, rs.getInt("AUG")/1000000,
+											rs.getInt("SEP")/1000000, rs.getInt("OCT")/1000000, rs.getInt("NOV")/1000000,
+											rs.getInt("DEC")/1000000, rs.getInt("EXPECTINCOME") });
 						} else {
 							if (tname.equals(tnamelist.get((rs.getInt("DEPT") / 10) - 1))) { // 현재 부서 넘버 20번이 건너 뛰어졌음
 								rowcnt = 0;
 								sipdtm.removeRow(rowcnt);
 								sipdtm.insertRow(rowcnt,
-										new Object[] { rs.getString("DEPT"), rs.getString("JAN"), rs.getString("FEB"),
-												rs.getString("MAR"), rs.getString("APR"), rs.getString("MAY"),
-												rs.getString("JUN"), rs.getString("JUL"), rs.getString("AUG"),
-												rs.getString("SEP"), rs.getString("OCT"), rs.getString("NOV"),
-												rs.getString("DEC"), rs.getString("EXPECTINCOME") });
+										new Object[] { tnamelist.get((rs.getInt("DEPT") / 10) - 1), rs.getInt("JAN")/1000000, rs.getInt("FEB")/1000000,
+												rs.getInt("MAR")/1000000, rs.getInt("APR")/1000000, rs.getInt("MAY")/1000000,
+												rs.getInt("JUN")/1000000, rs.getInt("JUL")/1000000, rs.getInt("AUG")/1000000,
+												rs.getInt("SEP")/1000000, rs.getInt("OCT")/1000000, rs.getInt("NOV")/1000000,
+												rs.getInt("DEC")/1000000, rs.getInt("EXPECTINCOME") });
 							}
 						}
 						rowcnt++;
 					} while (rs.next());
+					for (int i = 1; i < sipdtm.getColumnCount(); i++) {
+						sipjt.getColumnModel().getColumn(i).setCellRenderer(numberRenderer);
+					}
 					si.rs.close();
 					si.pstmt.close();
 					si.conn.close();
 					sipdtm.fireTableDataChanged(); // 패널 안 바뀔 때 새로고침
-					// System.out.println("아마 출력 잘 된 것 같지롱~");
 				}
 
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			} catch (SQLRecoverableException e1) {
+				JOptionPane.showMessageDialog(this, "조회할 데이터가 없습니다", "데이터 조회 실패", JOptionPane.INFORMATION_MESSAGE);
+			} catch (SQLException e2) {
+				e2.printStackTrace();
+			} 
 		} else if (e.getSource() == stp_show) {
 			try {
 				SelectTeam st = new SelectTeam();
 				rs = st.getSelection();
 				int rowcnt = 0;
 				if (!rs.next()) {
-					// System.out.println("가져올 row가 없자너 ㅠㅠ");
 					st.rs.close();
 					st.pstmt.close();
 					st.conn.close();
@@ -613,16 +650,17 @@ public class Finance_Management extends Frame
 					st.pstmt.close();
 					st.conn.close();
 				}
-			} catch (SQLException e1) {
+			} catch (SQLRecoverableException e1) {
+				JOptionPane.showMessageDialog(this, "조회할 데이터가 없습니다", "데이터 조회 실패", JOptionPane.INFORMATION_MESSAGE);
+			} catch (SQLException e2) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				e2.printStackTrace();
 			}
 		} else if (e.getSource() == aip_show) {
 			// 필요한 정보들 부서이름, 예상매출액, 누적매출액, 달성률
 			// team, income table에서 각각 select 받은 정보로 테이블 구성해서 보여주기
 			try {
 				SelectIncome ai = new SelectIncome();
-				// System.out.println("조회 이벤트 발생!");
 				rs = ai.getSelection();
 				int rowcnt = 0;
 				if (!rs.next()) {
@@ -635,10 +673,11 @@ public class Finance_Management extends Frame
 					ai.conn.close();
 				} else {
 					do {
-						int rate;
-						int sum = rs.getInt("JAN") + rs.getInt("FEB") + rs.getInt("MAR") + rs.getInt("APR")
+						double rate;
+						double sum = rs.getInt("JAN") + rs.getInt("FEB") + rs.getInt("MAR") + rs.getInt("APR")
 								+ rs.getInt("MAY") + rs.getInt("JUN") + rs.getInt("JUL") + rs.getInt("AUG")
 								+ rs.getInt("SEP") + rs.getInt("OCT") + rs.getInt("NOV") + rs.getInt("DEC");
+						sum /= 1000000;
 						if (sum == 0) {
 							rate = 0;
 						}else {
@@ -648,17 +687,20 @@ public class Finance_Management extends Frame
 						// 기존의 row를 삭제 후 새 row 삽입
 						aipdtm.removeRow(rowcnt);
 						aipdtm.insertRow(rowcnt, new Object[] { tnamelist.get(rowcnt),
-								rs.getString("EXPECTINCOME").toString(), "" + sum, rate+"%" });
+								rs.getInt("EXPECTINCOME"), sum, rate+"%" });
 						rowcnt++;
 					} while (rs.next());
+					for (int i = 1; i < aipdtm.getColumnCount()-1; i++) {
+						aipjt.getColumnModel().getColumn(i).setCellRenderer(numberRenderer);
+					}
 					ai.rs.close();
 					ai.pstmt.close();
 					ai.conn.close();
-					// System.out.println("아마 출력 잘 된 것 같지롱~");
 				}
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+			}catch (SQLRecoverableException e1) {
+				JOptionPane.showMessageDialog(this, "조회할 데이터가 없습니다", "데이터 조회 실패", JOptionPane.INFORMATION_MESSAGE);
+			}catch (SQLException e2) {
+				e2.printStackTrace();	
 			}
 		} else if (e.getSource() == isp_dateinsert) {
 			for (int i = 0; i < ispdtm.getRowCount(); i++) {
@@ -682,12 +724,9 @@ public class Finance_Management extends Frame
 		} else if (e.getSource() == sfp_show) {
 			SelectFin_st sf;
 			String stype = sfp_statetype.getSelectedItem().toString();
-			for (int i = 0; i < sfpdtm.getRowCount(); i++) {// 테이블의 내용만 초기화
-				for (int j = 0; j < sfpdtm.getColumnCount(); j++) {
-					sfpdtm.setValueAt(null, i, j);
-				}
-			}
-
+			int rnum = sfpdtm.getRowCount();
+			sfpdtm.setRowCount(0);
+			sfpdtm.setRowCount(rnum);
 			try {
 				sf = new SelectFin_st();
 				rs = sf.getSelection();
@@ -703,34 +742,35 @@ public class Finance_Management extends Frame
 							if (rs.getInt("smcode") < 7) {
 								sfpdtm.removeRow(rowcnt);
 								sfpdtm.insertRow(rowcnt,
-										new Object[] { rs.getString("smcode"), rs.getString("AMOUNT") });
+										new Object[] { smcodelist.get(rs.getInt("smcode")-1), rs.getInt("AMOUNT") });
 								rowcnt++;
 							}
 						} else {
 							if (rs.getInt("smcode") >= 7) {// 계정과목 목록 수정 고려
 								sfpdtm.removeRow(rowcnt);
 								sfpdtm.insertRow(rowcnt,
-										new Object[] { rs.getString("smcode"), "(" + rs.getString("AMOUNT") + ")" });
+										new Object[] { smcodelist.get(rs.getInt("smcode")-1), "(" + rs.getInt("AMOUNT") + ")" });
 								rowcnt++;
 							}
 						}
 						
 					} while (rs.next());
+					sfpjt.getColumnModel().getColumn(1).setCellRenderer(numberRenderer);
 					rs.close();
 					sf.pstmt.close();
 					sf.conn.close();
 				}
-			} catch (SQLException e1) {
+			} catch (SQLRecoverableException e1) {
+				JOptionPane.showMessageDialog(this, "조회할 데이터가 없습니다", "데이터 조회 실패", JOptionPane.INFORMATION_MESSAGE);
+			}catch (SQLException e2) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				e2.printStackTrace();
 			}
 
 		} else if (e.getSource() == ssp_show) {
 			int rows = sspdtm.getRowCount();
 			sspdtm.setRowCount(0);
 			sspdtm.setRowCount(rows);
-
-			
 			try {
 				sspdatelist = new ArrayList<String>();
 				if (!ssp_date1.getSelectedItem().toString().equals("전체")) {
@@ -753,16 +793,19 @@ public class Finance_Management extends Frame
 				}
 				do {
 					sspdtm.removeRow(rowcnt);
-					sspdtm.insertRow(rowcnt, new Object[] { rs.getString("LECNO"), rs.getString("LECDATE"),
-							rs.getString("SMCODE"), rs.getString("DEPT"), rs.getString("AMOUNT") });
+					sspdtm.insertRow(rowcnt, new Object[] { rs.getInt("LECNO"), rs.getString("LECDATE"),
+							rs.getString("SMCODE"), rs.getInt("DEPT"), rs.getInt("AMOUNT") });
 					rowcnt++;
 				} while (rs.next());
+				sspjt.getColumnModel().getColumn(4).setCellRenderer(numberRenderer);
 				rs.close();
 				ss.pstmt.close();
 				ss.conn.close();
-			} catch (SQLException e1) {
+			} catch (SQLRecoverableException e1) {
+				JOptionPane.showMessageDialog(this, "조회할 데이터가 없습니다", "데이터 조회 실패", JOptionPane.INFORMATION_MESSAGE); 
+			} catch (SQLException e2) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				e2.printStackTrace();
 			}
 
 		}
@@ -799,24 +842,6 @@ public class Finance_Management extends Frame
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 
 	}
@@ -870,13 +895,69 @@ public class Finance_Management extends Frame
 		}
 	}
 
-	public static void main(String[] args) {
+	    
+	    public void saveUserData() {
+	        File file = new File("text//userinfo");
+	        System.out.println(id_jtext.getText());
+	        try {
+	            if (!file.exists()) {
+	                // 부모 디렉터리 생성
+	                file.getParentFile().mkdirs();
+	                file.createNewFile(); // 파일 생성
+	            }
 
-		Finance_Management fm = new Finance_Management();
-		// gui생성
-		fm.setSize(800, 800);
-		fm.setVisible(true);
-		// fm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	            // MS949 인코딩을 사용하여 파일 작성
+	            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "MS949"))) {
+	                if (rememberIdCheckBox.isSelected()) {
+	                    writer.write(id_jtext.getText() + "\n"); // ID 저장
+	                    writer.write("true"); // 체크박스 상태 저장
+	                } else {
+	                    // 체크 해제 시 파일 삭제 (정보 초기화)
+	                    file.delete();
+	                }
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        rememberIdCheckBox.setSelected(false);
+	    }
+
+	    public void loadUserData() {
+	        File file = new File("text//userinfo");
+	        if (!file.exists()) return;
+
+	        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "MS949"))) {
+	            String savedId = reader.readLine();
+	            String isChecked = reader.readLine();
+
+	            if (savedId != null) id_jtext.setText(savedId); // 저장된 아이디 불러오기
+	            rememberIdCheckBox.setSelected("true".equals(isChecked)); // 체크박스 상태 적용
+
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	
+	
+
+		public static void main(String[] args) {
+
+			// TransparentLogo 실행
+			TransparentLogo tl = new TransparentLogo();
+			tl.setSize(300, 300);
+			tl.setLocationRelativeTo(null);
+			tl.setVisible(true);
+
+			// TransparentLogo가 닫힐 때 Finance_Management 실행
+			tl.addWindowListener(new java.awt.event.WindowAdapter() {
+				@Override
+				public void windowClosed(java.awt.event.WindowEvent e) {
+					// Finance_Management 실행
+					Finance_Management fm = new Finance_Management();
+					fm.setSize(800, 800);
+					fm.setLocationRelativeTo(null);
+					fm.setVisible(true);
+				}
+			});
+		}
 	}
-
-}

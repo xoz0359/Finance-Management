@@ -31,10 +31,12 @@ public class MainPanel extends JPanel{
 		ImageIconAdd icon_service_center = new ImageIconAdd("images\\service_center.png", 90, 90);
 		ImageIconAdd icon_email = new ImageIconAdd("images\\email.png", 90, 90);
 		
+		// 이미지 스케일링, 안티엘리어싱 클래스
+		ScaledImage si = new ScaledImage();
 		
-		jb_outline = new JButton("사업 개요",icon_outline.icon);this.jb_design(jb_outline);
-		jb_organization = new JButton("사업 조직도",icon_organization.icon);this.jb_design(jb_organization);
-		jb_serviceList = new JButton("서비스 현황",icon_servicelist.icon);this.jb_design(jb_serviceList);
+		jb_outline = new JButton("사업 개요",si.givemeImage("images\\outline_icon.png", 120, 120));this.jb_design(jb_outline);
+		jb_organization = new JButton("사업 조직도",si.givemeImage("images\\organization_icon.png", 120, 120));this.jb_design(jb_organization);
+		jb_serviceList = new JButton("서비스 현황",si.givemeImage("images\\ser_list_icon.png", 90, 90));this.jb_design(jb_serviceList);
 		//사업 개요란
 		this.add(jb_outline);
 		this.add(jp_etc);
@@ -45,7 +47,7 @@ public class MainPanel extends JPanel{
 		this.setBackground(Color.white);
 		jp_etc.setBackground(Color.white);
 		
-		jb_onlinecenter = new JButton("온라인 고객센터",icon_service_center.icon);this.jb_design(jb_onlinecenter);
+		jb_onlinecenter = new JButton("온라인 고객센터",si.givemeImage("images\\service_center.png", 90, 90));this.jb_design(jb_onlinecenter);
 //		jb_info
 		jb_mail = new JButton("이메일 주소",icon_email.icon);this.jb_design(jb_mail);
 		jp_etc.add(jb_onlinecenter);
@@ -77,7 +79,8 @@ public class MainPanel extends JPanel{
 				String textToCopy = "fourTeam@gmail.com";
 				StringSelection selection = new StringSelection(textToCopy);
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				clipboard.setContents(selection, null);
+				clipboard.setContents(selection, null);				
+				JOptionPane.showMessageDialog(null, "클립보드에 이메일이 복사되었습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 	}
