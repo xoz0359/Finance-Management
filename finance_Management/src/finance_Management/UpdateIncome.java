@@ -21,10 +21,8 @@ public class UpdateIncome extends Finance_Class implements Finance_Interface{
 		sql = "update income set ";
 		StringBuilder sb = new StringBuilder(sql);
 		sb.append(inmap.get(0) + " = "+" ? where dept = ?");
-		System.out.println(sb.toString());
 		pstmt = conn.prepareStatement(sb.toString());
 		for (int i = 0; i < inlist.size(); i++) {
-			System.out.println(inlist.get(i));
 			pstmt.setString(i + 1, inlist.get(i));
 		}
 		int cnt = pstmt.executeUpdate();

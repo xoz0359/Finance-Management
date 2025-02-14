@@ -21,9 +21,7 @@ public class InsertTeam extends Finance_Class implements Finance_Interface {
 		public Integer getDML(ArrayList <String> l) throws SQLException {
 		inlist = l;
 		sql = "insert into team values(sq_team_dept.nextval, ?)";
-		System.out.println(sql);
 		pstmt = conn.prepareStatement(sql);
-		System.out.println(inlist.get(0));
 		pstmt.setString(1, inlist.get(0));
 		int cnt = pstmt.executeUpdate();
 

@@ -496,6 +496,7 @@ public class Finance_Management extends Frame
 				}else {
 					p_forwardlog.add(p_backwardlog.get(p_backwardlog.size()-1));
 					p_backwardlog.remove(p_backwardlog.size()-1);
+					
 				}
 				incard.show(cardpanel, p_backwardlog.get(p_backwardlog.size()-1));
 				jb_forward.setBackground(Color.decode("#1879C9"));
@@ -610,7 +611,6 @@ public class Finance_Management extends Frame
 				int cnt = is.getDML(isplist);
 				is.pstmt.close();
 				is.conn.close();
-				System.out.println(cnt + "행 state에 insert 성공!");
 
 				// 주비교자는 map에 보조 비교자는 list에 담아서 전달
 				// 주비교자는 ?를 통해서 세팅할 수 없기 때문
@@ -662,13 +662,14 @@ public class Finance_Management extends Frame
 					uilist.add(isplist.get(2));
 					UpdateIncome ui = new UpdateIncome();
 					cnt = ui.getDML(isp_map, uilist);
-					System.out.println(cnt + "income에 update 완료!");
 					
 					isplist.clear();
 					row = ispdtm.getRowCount();
 					ispdtm.setRowCount(0);
 					ispdtm.setRowCount(row);
 					JOptionPane.showMessageDialog(null, "정보가 저장 되었습니다", "알림", JOptionPane.INFORMATION_MESSAGE);
+					isp_map.clear();
+					isplist.clear();
 				}
 			} catch (SQLRecoverableException e1) {
 				JOptionPane.showMessageDialog(this, "조회할 데이터가 없습니다", "정보", JOptionPane.INFORMATION_MESSAGE);
@@ -687,6 +688,9 @@ public class Finance_Management extends Frame
 				int rowcnt = 0;
 				SelectIncome si = new SelectIncome();
 				rs = si.getSelection();
+				for (int i = 0; i < tnamelist.size(); i++) {
+					tnamelist.get(i);
+				}
 				if (!rs.next()) {
 					si.rs.close();
 					si.pstmt.close();
@@ -695,7 +699,6 @@ public class Finance_Management extends Frame
 					do {
 						// 기존의 row를 삭제 후 새 row 삽입
 						if (tname.equals("전체")) {
-							
 							sipdtm.removeRow(rowcnt);
 							sipdtm.insertRow(rowcnt,
 									new Object[] { tnamelist.get((rs.getInt("DEPT") / 10) - 1), rs.getInt("JAN")/1000000, rs.getInt("FEB")/1000000,
@@ -835,7 +838,6 @@ public class Finance_Management extends Frame
 				rs = sf.getSelection();
 				int rowcnt = 0;
 				if (!rs.next()) {
-					System.out.println("가져올 데이터가 없어요");
 					rs.close();
 					sf.pstmt.close();
 					sf.conn.close();
@@ -888,7 +890,6 @@ public class Finance_Management extends Frame
 				}
 				int rowcnt = 0;
 				if (!rs.next()) {
-					System.out.println("가져올 데이터가 없어요");
 					rs.close();
 					ss.pstmt.close();
 					ss.conn.close();
@@ -972,7 +973,6 @@ public class Finance_Management extends Frame
 			tnamelist = new ArrayList<String>();
 			rs = at.getSelection();
 			if (!rs.next()) {
-				System.out.println("가져올 row가 없자너 ㅠㅠ");
 				at.rs.close();
 				at.pstmt.close();
 				at.conn.close();
@@ -995,7 +995,6 @@ public class Finance_Management extends Frame
 			smcodelist = new ArrayList<String>();
 			rs = sf.getSelection();
 			if (!rs.next()) {
-				System.out.println("가져올 row가 없자너 ㅠㅠ");
 				sf.rs.close();
 				sf.pstmt.close();
 				sf.conn.close();
@@ -1017,7 +1016,6 @@ public class Finance_Management extends Frame
 	    
 	    public void saveUserData() {
 	        File file = new File("text//userinfo");
-	        System.out.println(id_jtext.getText());
 	        try {
 	            if (!file.exists()) {
 	                // 부모 디렉터리 생성

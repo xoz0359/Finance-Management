@@ -29,15 +29,15 @@ public class NorthMenuBar extends JPanel implements ActionListener{
         // 이미지 스케일링, 안티엘리어싱 클래스
         ScaledImage si = new ScaledImage();
         
-        b_backward = new JButton(si.givemeImage("images\\backward.png", 30, 30));
+        b_backward = new JButton(si.givemeImage("images/backward.png", 30, 30));
         this.l_menu_design(b_backward);
         this.jb_color_change(b_backward);
         
-        b_forward = new JButton(si.givemeImage("images\\forward.png", 30, 30));
+        b_forward = new JButton(si.givemeImage("images/forward.png", 30, 30));
         this.l_menu_design(b_forward);
         this.jb_color_change(b_forward);
         
-        b_menufavorites = new JButton("즐겨찾기", si.givemeImage("images\\star.png", 20, 20));
+        b_menufavorites = new JButton("즐겨찾기", si.givemeImage("images/star.png", 20, 20));
         this.l_menu_design(b_menufavorites);
         this.jb_color_change(b_menufavorites);
         b_menufavorites.addActionListener(this);
@@ -73,7 +73,7 @@ public class NorthMenuBar extends JPanel implements ActionListener{
 
         this.add(northFirstP, "Center");
         
-        b_menuclose = new JButton(si.givemeImage("images\\logout.png", 50, 50));
+        b_menuclose = new JButton(si.givemeImage("images/logout.png", 50, 50));
         this.add(b_menuclose, "East");
         b_menuclose.setBackground(Color.decode("#1879C9"));
         this.setBackground(Color.decode("#1879C9"));

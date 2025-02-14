@@ -37,10 +37,8 @@ public class SelectIncome extends Finance_Class implements Finance_Interface{
 			}
 		}	
 		sql = sb.toString();
-		System.out.println(sql);
 		pstmt = conn.prepareStatement(sql);
 		for (int i = 0; i < inlist.size(); i++) {
-			System.out.println(inlist.get(i));
 			pstmt.setString(i+1, inlist.get(i+1));
 		}
 		rs = pstmt.executeQuery();

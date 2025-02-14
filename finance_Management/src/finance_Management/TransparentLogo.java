@@ -31,39 +31,39 @@ public class TransparentLogo extends JFrame {
         ScaledImage si = new ScaledImage();
 
         // 4개의 작은 이미지 추가 (200x200)
-        JLabel logoLabel1 = new JLabel(si.givemeImage("images//mincat.png", 200, 200));
+        JLabel logoLabel1 = new JLabel(si.givemeImage("images/mincat.png", 200, 200));
         logoLabel1.setOpaque(false);  // JLabel 배경 투명 설정
         logoLabel1.setPreferredSize(new Dimension(200, 200));  // 크기 지정
-        JLabel logoLabel1a = new JLabel(si.givemeImage("images//mincat.png", 200, 200));
+        JLabel logoLabel1a = new JLabel(si.givemeImage("images/mincat.png", 200, 200));
         logoLabel1a.setOpaque(false);  // JLabel 배경 투명 설정
         logoLabel1a.setPreferredSize(new Dimension(200, 200));  // 크기 지정
-        JLabel logoLabel1b = new JLabel(si.givemeImage("images//mincat.png", 200, 200));
+        JLabel logoLabel1b = new JLabel(si.givemeImage("images/mincat.png", 200, 200));
         logoLabel1b.setOpaque(false);  // JLabel 배경 투명 설정
         logoLabel1b.setPreferredSize(new Dimension(200, 200));  // 크기 지정
-        JLabel logoLabel1c = new JLabel(si.givemeImage("images//mincat.png", 200, 200));
+        JLabel logoLabel1c = new JLabel(si.givemeImage("images/mincat.png", 200, 200));
         logoLabel1c.setOpaque(false);  // JLabel 배경 투명 설정
         logoLabel1c.setPreferredSize(new Dimension(200, 200));  // 크기 지정
-        JLabel logoLabel2 = new JLabel(si.givemeImage("images//namblueguy.png", 200, 200));
+        JLabel logoLabel2 = new JLabel(si.givemeImage("images/namblueguy.png", 200, 200));
         logoLabel2.setOpaque(false);  // JLabel 배경 투명 설정
         logoLabel2.setPreferredSize(new Dimension(200, 200));  // 크기 지정
-        JLabel logoLabel2a = new JLabel(si.givemeImage("images//namblueguy.png", 200, 200));
+        JLabel logoLabel2a = new JLabel(si.givemeImage("images/namblueguy.png", 200, 200));
         logoLabel2a.setOpaque(false);  // JLabel 배경 투명 설정
         logoLabel2a.setPreferredSize(new Dimension(200, 200));  // 크기 지정
-        JLabel logoLabel2b = new JLabel(si.givemeImage("images//namblueguy.png", 200, 200));
+        JLabel logoLabel2b = new JLabel(si.givemeImage("images/namblueguy.png", 200, 200));
         logoLabel2b.setOpaque(false);  // JLabel 배경 투명 설정
         logoLabel2b.setPreferredSize(new Dimension(200, 200));  // 크기 지정
-        JLabel logoLabel3 = new JLabel(si.givemeImage("images//jonggithub.png", 200, 200));
+        JLabel logoLabel3 = new JLabel(si.givemeImage("images/jonggithub.png", 200, 200));
         logoLabel3.setOpaque(false);  // JLabel 배경 투명 설정
         logoLabel3.setPreferredSize(new Dimension(200, 200));  // 크기 지정
-        JLabel logoLabel3a = new JLabel(si.givemeImage("images//jonggithub.png", 200, 200));
+        JLabel logoLabel3a = new JLabel(si.givemeImage("images/jonggithub.png", 200, 200));
         logoLabel3a.setOpaque(false);  // JLabel 배경 투명 설정
         logoLabel3a.setPreferredSize(new Dimension(200, 200));  // 크기 지정
-        JLabel logoLabel4 = new JLabel(si.givemeImage("images//soomong.png", 200, 200));
+        JLabel logoLabel4 = new JLabel(si.givemeImage("images/soomong.png", 200, 200));
         logoLabel4.setOpaque(false);  // JLabel 배경 투명 설정
         logoLabel4.setPreferredSize(new Dimension(200, 200));  // 크기 지정
         
         // 큰 이미지 (400x300)
-        JLabel bigLogoLabel = new JLabel(si.givemeImage("images//logo.png", 500, 350));
+        JLabel bigLogoLabel = new JLabel(si.givemeImage("images/logo.png", 500, 350));
         bigLogoLabel.setOpaque(false);  // JLabel 배경 투명 설정
         bigLogoLabel.setPreferredSize(new Dimension(500, 350));  // 크기 지정
 

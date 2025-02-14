@@ -17,7 +17,7 @@ public class Main_west extends JPanel{
 	
 	
 	public Main_west() {
-		String path = "images\\finIcon.png";
+		String path = "images/finIcon.png";
 		ImageIconAdd iconAdd = new ImageIconAdd(path, 20,20);
 
 		//센터판넬과 서쪽판넬 생성
@@ -44,9 +44,9 @@ public class Main_west extends JPanel{
 		ScaledImage si = new ScaledImage();
 		
 		//큰 메뉴 객체 생성 & 디자인 메서드 사용
-		l_menu1 = new JLabel("회계관리",si.givemeImage("images\\wirte.png", 30, 30),JLabel.CENTER);this.l_menu_design(l_menu1);
-		l_menu2 = new JLabel("부서관리",si.givemeImage("images\\department.png", 30, 30),JLabel.CENTER);this.l_menu_design(l_menu2);
-		l_menu3 = new JLabel("매출정보",si.givemeImage("images\\income2.png", 30, 30),JLabel.CENTER);this.l_menu_design(l_menu3);
+		l_menu1 = new JLabel("회계관리",si.givemeImage("images/wirte.png", 30, 30),JLabel.CENTER);this.l_menu_design(l_menu1);
+		l_menu2 = new JLabel("부서관리",si.givemeImage("images/department.png", 30, 30),JLabel.CENTER);this.l_menu_design(l_menu2);
+		l_menu3 = new JLabel("매출정보",si.givemeImage("images/income2.png", 30, 30),JLabel.CENTER);this.l_menu_design(l_menu3);
 		
 		//회계 관련 작은메뉴버튼 생성 & 디자인
 		jb_stateInput=new JButton("전표 입력");jb_stateSelect=new JButton("전표 조회");
@@ -63,13 +63,13 @@ public class Main_west extends JPanel{
 		this.jb_color_change(jb_incomeSelect);this.jb_color_change(jb_incomeAnalysis);
 		
 		//환경설정 관련 메뉴버튼 생성 & 디자인
-		jb_setting=new JButton("ADMIN",si.givemeImage("images\\setting4.png", 30, 30));jb_userRegiser = new JButton("사용자 등록");
+		jb_setting=new JButton("ADMIN",si.givemeImage("images/setting4.png", 30, 30));jb_userRegiser = new JButton("사용자 등록");
 		this.jb_color_change(jb_setting);this.jb_color_change(jb_userRegiser);
 		jb_setting.setFont(new Font("맑은 고딕",Font.BOLD,20));
 		
 		
 		//재무제표 버튼 생성
-		jb_fin_st = new JButton("재무제표",si.givemeImage("images\\financial_statement.png", 30, 30));
+		jb_fin_st = new JButton("재무제표",si.givemeImage("images/financial_statement.png", 30, 30));
 		jb_fin_st.setFont(new Font("맑은 고딕",Font.BOLD,20));
 		this.jb_color_change(jb_fin_st);
 		

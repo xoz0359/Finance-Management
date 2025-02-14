@@ -211,7 +211,6 @@ public class CodeUserRegistration extends JPanel {
 				InsertTitle it = new InsertTitle();
 				int cnt = it.getDML(al);
 
-				System.out.println(cnt + "계정코드 등록 되었습니다");
 				JOptionPane.showMessageDialog(this, "계정과목 등록: " + al.get(1));
 				
 				
@@ -220,7 +219,6 @@ public class CodeUserRegistration extends JPanel {
 				al.add((l.size()-1)+"");
 				iif.getDML(al);
 				codeDialog.dispose();
-				System.out.println(cnt+"행 입력");
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -271,9 +269,8 @@ public class CodeUserRegistration extends JPanel {
 			try {
 				InsertTeam it = new InsertTeam();
 				int cnt = it.getDML(al);
-				System.out.println(cnt + "행 입력완료");
 
-				System.out.println(cnt + " 부서 등록 되었습니다");
+
 				JOptionPane.showMessageDialog(this, "부서 등록: " + al.get(0));
 				deptDialog.dispose();
 			} catch (SQLException e1) {
@@ -367,7 +364,6 @@ public class CodeUserRegistration extends JPanel {
 			try {
 				UpdateIncome ui = new UpdateIncome();
 				int cnt = ui.getDML(im, il);
-				System.out.println(cnt + " 예상매출 등록 되었습니다");
 				incomeDialog.dispose();
 				JOptionPane.showMessageDialog(this, "예상매출: " + il.get(0));
 			} catch (SQLException e1) {

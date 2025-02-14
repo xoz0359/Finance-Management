@@ -25,18 +25,18 @@ public class MainPanel extends JPanel{
 		jp_serviceList = new JPanel(new BorderLayout());
 		jp_etc = new JPanel(new GridLayout(2,1,10,10));
 		
-		ImageIconAdd icon_outline = new ImageIconAdd("images\\outline_icon.png", 120, 120);
-		ImageIconAdd icon_organization = new ImageIconAdd("images\\organization_icon.png", 120, 120);
-		ImageIconAdd icon_servicelist = new ImageIconAdd("images\\ser_list_icon.png", 120, 120);
-		ImageIconAdd icon_service_center = new ImageIconAdd("images\\service_center.png", 90, 90);
-		ImageIconAdd icon_email = new ImageIconAdd("images\\email.png", 90, 90);
+		ImageIconAdd icon_outline = new ImageIconAdd("images/outline_icon.png", 120, 120);
+		ImageIconAdd icon_organization = new ImageIconAdd("images/organization_icon.png", 120, 120);
+		ImageIconAdd icon_servicelist = new ImageIconAdd("images/ser_list_icon.png", 120, 120);
+		ImageIconAdd icon_service_center = new ImageIconAdd("images/service_center.png", 90, 90);
+		ImageIconAdd icon_email = new ImageIconAdd("images/email.png", 90, 90);
 		
 		// 이미지 스케일링, 안티엘리어싱 클래스
 		ScaledImage si = new ScaledImage();
 		
-		jb_outline = new JButton("사업 개요",si.givemeImage("images\\outline_icon.png", 120, 120));this.jb_design(jb_outline);
-		jb_organization = new JButton("사업 조직도",si.givemeImage("images\\organization_icon.png", 120, 120));this.jb_design(jb_organization);
-		jb_serviceList = new JButton("서비스 현황",si.givemeImage("images\\ser_list_icon.png", 90, 90));this.jb_design(jb_serviceList);
+		jb_outline = new JButton("사업 개요",si.givemeImage("images/outline_icon.png", 120, 120));this.jb_design(jb_outline);
+		jb_organization = new JButton("사업 조직도",si.givemeImage("images/organization_icon.png", 120, 120));this.jb_design(jb_organization);
+		jb_serviceList = new JButton("서비스 현황",si.givemeImage("images/ser_list_icon.png", 90, 90));this.jb_design(jb_serviceList);
 		//사업 개요란
 		this.add(jb_outline);
 		this.add(jp_etc);
@@ -47,15 +47,15 @@ public class MainPanel extends JPanel{
 		this.setBackground(Color.white);
 		jp_etc.setBackground(Color.white);
 		
-		jb_onlinecenter = new JButton("온라인 고객센터",si.givemeImage("images\\service_center.png", 90, 90));this.jb_design(jb_onlinecenter);
+		jb_onlinecenter = new JButton("온라인 고객센터",si.givemeImage("images/service_center.png", 90, 90));this.jb_design(jb_onlinecenter);
 //		jb_info
 		jb_mail = new JButton("이메일 주소",icon_email.icon);this.jb_design(jb_mail);
 		jp_etc.add(jb_onlinecenter);
 		jp_etc.add(jb_mail);
 
-		ImageFileOpen ifo_outline = new ImageFileOpen(jb_outline, "images\\outline.png");
-		ImageFileOpen ifo_organization = new ImageFileOpen(jb_organization, "images\\organization.png");
-		ImageFileOpen ifo_servicelist = new ImageFileOpen(jb_serviceList, "images\\servicelist.png");
+		ImageFileOpen ifo_outline = new ImageFileOpen(jb_outline, "images/outline.png");
+		ImageFileOpen ifo_organization = new ImageFileOpen(jb_organization, "images/organization.png");
+		ImageFileOpen ifo_servicelist = new ImageFileOpen(jb_serviceList, "images/servicelist.png");
 //		ImageFileOpen ifo_service_center = new ImageFileOpen(jb_outline, "");
 		jb_onlinecenter.addActionListener(new ActionListener() {
 			
