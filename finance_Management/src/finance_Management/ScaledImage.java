@@ -4,13 +4,16 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 
 public class ScaledImage {
 
 	public ImageIcon givemeImage(String path, int width, int height) {
-		ImageIcon icon = new ImageIcon(path);
+		
+		URL imageUrl = getClass().getClassLoader().getResource(path);
+		ImageIcon icon = new ImageIcon(imageUrl);
 		Image img = icon.getImage();
 
 		BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);

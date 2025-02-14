@@ -390,7 +390,7 @@ public class Finance_Management extends Frame
 			}
 			uiflist.clear();
 		} else if (e.getSource() == jb_stateinput) {
-			if (accesslv > 0) {
+			if (accesslv < 1) {
 				JOptionPane.showMessageDialog(this, "사원 이상 접근 가능한 기능입니다!", "경고", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -399,7 +399,7 @@ public class Finance_Management extends Frame
 				jb_forward.setBackground(Color.gray);
 			}
 			if (p_thislog.size() > 0) {
-			p_backwardlog.add(p_thislog.getLast());
+			p_backwardlog.add(p_thislog.get(p_thislog.size()-1));
 			}
 			p_thislog.clear();
 			p_thislog.add("InsertStatePanel");
@@ -411,14 +411,14 @@ public class Finance_Management extends Frame
 				jb_forward.setBackground(Color.gray);
 			}
 			if (p_thislog.size() > 0) {
-			p_backwardlog.add(p_thislog.getLast());
+				p_backwardlog.add(p_thislog.get(p_thislog.size()-1));
 			}
 			p_thislog.clear();
 			p_thislog.add("SelectStatePanel");
 			jb_backward.setBackground(Color.decode("#1879C9"));
 			incard.show(cardpanel, "SelectStatePanel");
 		} else if (e.getSource() == jb_exinconinsert) {
-			if (accesslv > 0) {
+			if (accesslv < 1) {
 				JOptionPane.showMessageDialog(this, "사원 이상 접근 가능한 기능입니다!", "경고", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -430,7 +430,7 @@ public class Finance_Management extends Frame
 				jb_forward.setBackground(Color.gray);
 			}
 			if (p_thislog.size() > 0) {
-			p_backwardlog.add(p_thislog.getLast());
+				p_backwardlog.add(p_thislog.get(p_thislog.size()-1));
 			}
 			p_thislog.clear();
 			p_thislog.add("SelectTeamPanel");
@@ -442,7 +442,7 @@ public class Finance_Management extends Frame
 				jb_forward.setBackground(Color.gray);
 			}
 			if (p_thislog.size() > 0) {
-			p_backwardlog.add(p_thislog.getLast());
+				p_backwardlog.add(p_thislog.get(p_thislog.size()-1));
 			}
 			p_thislog.clear();
 			p_thislog.add("SelectIncomPanel");
@@ -454,7 +454,7 @@ public class Finance_Management extends Frame
 				jb_forward.setBackground(Color.gray);
 			}
 			if (p_thislog.size() > 0) {
-			p_backwardlog.add(p_thislog.getLast());
+				p_backwardlog.add(p_thislog.get(p_thislog.size()-1));
 			}
 			p_thislog.clear();
 			p_thislog.add("AnalysisIncomPanel");
@@ -466,14 +466,14 @@ public class Finance_Management extends Frame
 				jb_forward.setBackground(Color.gray);
 			}
 			if (p_thislog.size() > 0) {
-			p_backwardlog.add(p_thislog.getLast());
+				p_backwardlog.add(p_thislog.get(p_thislog.size()-1));
 			}
 			p_thislog.clear();
 			p_thislog.add("SelectFin_stPanel");
 			jb_backward.setBackground(Color.decode("#1879C9"));
 			incard.show(cardpanel, "SelectFin_stPanel");
 		} else if (e.getSource() == jb_userregist) {
-			if (accesslv > 1) {
+			if (accesslv < 2) {
 				JOptionPane.showMessageDialog(this, "관리자 이상 접근 가능한 기능입니다!", "경고", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -482,7 +482,7 @@ public class Finance_Management extends Frame
 				jb_forward.setBackground(Color.gray);
 			}
 			if (p_thislog.size() > 0) {
-			p_backwardlog.add(p_thislog.getLast());
+				p_backwardlog.add(p_thislog.get(p_thislog.size()-1));
 			}
 			p_thislog.clear();
 			p_thislog.add("RegistUserPanel");
@@ -491,13 +491,13 @@ public class Finance_Management extends Frame
 		} else if (e.getSource() == jb_backward) {
 			if (p_backwardlog.size() > 1) {
 				if (p_thislog.size() > 0) {
-					p_forwardlog.add(p_thislog.getLast());
+					p_forwardlog.add(p_thislog.get(p_thislog.size()-1));
 					p_thislog.clear();
 				}else {
-					p_forwardlog.add(p_backwardlog.getLast());
-					p_backwardlog.removeLast();
+					p_forwardlog.add(p_backwardlog.get(p_backwardlog.size()-1));
+					p_backwardlog.remove(p_backwardlog.size()-1);
 				}
-				incard.show(cardpanel, p_backwardlog.getLast());
+				incard.show(cardpanel, p_backwardlog.get(p_backwardlog.size()-1));
 				jb_forward.setBackground(Color.decode("#1879C9"));
 				if(p_backwardlog.size()==1) {
 					jb_backward.setBackground(Color.gray);
@@ -505,9 +505,9 @@ public class Finance_Management extends Frame
 			} 
 		} else if (e.getSource() == jb_forward) {
 			if (p_forwardlog.size() > 0) {
-				p_backwardlog.add(p_forwardlog.getLast());
-				incard.show(cardpanel, p_forwardlog.getLast());
-				p_forwardlog.removeLast();
+				p_backwardlog.add(p_forwardlog.get(p_forwardlog.size()-1));
+				incard.show(cardpanel, p_forwardlog.get(p_forwardlog.size()-1));
+				p_forwardlog.remove(p_forwardlog.size()-1);
 				jb_backward.setBackground(Color.decode("#1879C9"));
 
 				if(p_forwardlog.size()==0) {
