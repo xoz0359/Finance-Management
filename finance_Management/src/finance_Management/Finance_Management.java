@@ -490,15 +490,11 @@ public class Finance_Management extends Frame
 			incard.show(cardpanel, "RegistUserPanel");
 		} else if (e.getSource() == jb_backward) {
 			if (p_backwardlog.size() > 1) {
-				if (p_thislog.size() > 0) {
-					p_forwardlog.add(p_thislog.get(p_thislog.size()-1));
-					p_thislog.clear();
-				}else {
-					p_forwardlog.add(p_backwardlog.get(p_backwardlog.size()-1));
-					p_backwardlog.remove(p_backwardlog.size()-1);
-					
-				}
+	
+				p_forwardlog.add(p_thislog.get(p_thislog.size()-1));
+				p_thislog.clear();
 				incard.show(cardpanel, p_backwardlog.get(p_backwardlog.size()-1));
+				p_thislog.add(p_backwardlog.get(p_backwardlog.size()-1));
 				jb_forward.setBackground(Color.decode("#1879C9"));
 				if(p_backwardlog.size()==1) {
 					jb_backward.setBackground(Color.gray);
@@ -506,8 +502,10 @@ public class Finance_Management extends Frame
 			} 
 		} else if (e.getSource() == jb_forward) {
 			if (p_forwardlog.size() > 0) {
-				p_backwardlog.add(p_forwardlog.get(p_forwardlog.size()-1));
+				p_backwardlog.add(p_thislog.get(p_thislog.size()-1));
+				p_thislog.clear();
 				incard.show(cardpanel, p_forwardlog.get(p_forwardlog.size()-1));
+				p_thislog.add(p_forwardlog.get(p_forwardlog.size()-1));
 				p_forwardlog.remove(p_forwardlog.size()-1);
 				jb_backward.setBackground(Color.decode("#1879C9"));
 
